@@ -1,0 +1,15 @@
+{
+  "NetworkTables": {
+    "Persistent Values": {
+      "open": false
+    }
+  },
+  "NetworkTables Info": {
+    "Connections": {
+      "open": true
+    }
+  },
+  "NetworkTables Log": {
+    "visible": true
+  }
+}

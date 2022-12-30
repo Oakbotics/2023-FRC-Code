@@ -6,8 +6,11 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.DriveConstants.MathConstants;
+import frc.robot.commands.AutoCommand;
+import frc.robot.commands.SwerveDriveCommand;
+import frc.robot.subsystems.SwerveDriveTrain;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /**
@@ -18,14 +21,25 @@ import edu.wpi.first.wpilibj2.command.Command;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  private final SwerveDriveTrain m_swerveDriveTrain = new SwerveDriveTrain();
 
-  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+  private final AutoCommand m_autoCommand = new AutoCommand();
+
+  //Controllers
+  XboxController driveController = new XboxController(0);
+
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+
+    m_swerveDriveTrain.setDefaultCommand(
+      new SwerveDriveCommand(m_swerveDriveTrain, 
+        driveController.getLeftY() *2.5, // Forward Speed
+        driveController.getLeftX() *2.5, // Strafing speed
+        driveController.getRightX()                         //Angular momentum in radians/s (positive input will turn robot clockwise)
+      ));
   }
 
   /**

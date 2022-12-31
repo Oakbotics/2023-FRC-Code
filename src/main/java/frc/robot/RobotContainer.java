@@ -36,8 +36,8 @@ public class RobotContainer {
 
     m_swerveDriveTrain.setDefaultCommand(
       new SwerveDriveCommand(m_swerveDriveTrain, 
-        driveController.getLeftY() *2.5, // Forward Speed
-        driveController.getLeftX() *2.5, // Strafing speed
+        driveController.getLeftY(), // Forward Speed
+        driveController.getLeftX(), // Strafing speed
         driveController.getRightX()                         //Angular momentum in radians/s (positive input will turn robot clockwise)
       ));
   }

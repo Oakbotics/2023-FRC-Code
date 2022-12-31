@@ -6,6 +6,8 @@ import com.revrobotics.REVPhysicsSim;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax.ControlType;
 
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.CAN;
@@ -44,13 +46,11 @@ public class SwerveModule {
 
     public void setState(SwerveModuleState targetState){    
 
-        
-
-
         m_steeringMotor.set(targetState.angle.getDegrees());
-        
+    }
 
-
+    public SwerveModulePosition getPos(){
+        return new SwerveModulePosition(m_driveEncoder.getPosition(), Rotation2d.fromDegrees(m_steeringEncoder.getPosition() ));
     }
 
 

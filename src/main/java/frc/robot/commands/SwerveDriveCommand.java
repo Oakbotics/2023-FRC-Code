@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 /** An example command that uses an example subsystem. */
 public class SwerveDriveCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
+
   private final SwerveDriveTrain m_driveTrain;
   private Double m_forward;
   private Double m_leftSpeed;
@@ -40,6 +41,7 @@ public class SwerveDriveCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    m_driveTrain.SwerveDrive(m_forward, m_leftSpeed, m_angularSpeed);
 
   }
 

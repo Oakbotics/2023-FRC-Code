@@ -42,13 +42,25 @@ public final class Constants {
         public static final class MathConstants{
 
             //What to multiply the encoderes position units by. SwerveState returns it in degrees, 4rpm = one rotation of wheel. 
-            public static final double steeringPositionCoefficient = 0.25;  
+            public static final double steeringPositionCoefficient = 360 / 4;  
             
             //What to set as the encoder VelocityConversionFactor. Multiplies the RPM, to give you the wheel RPM
-            // 1RPM = 3in/m, /5 because one rotation of motor is one fifth of wheel movement. /60 to convert /min to /sec
-            public static final double drivingRPMCoefficient = (Units.inchesToMeters(3) * 0.2) /60; 
+            // 1RPM = (circumference of wheel)in/min, /5 because one rotation of motor is one fifth of wheel movement. /60 to convert /min to /sec
+            public static final double drivingRPMCoefficient = (Units.inchesToMeters(Math.PI*3) / 5) /60; 
+
+            //Multiplies the getPosition value, which returns the rotations the motor has spun.
+            //Multiply by the circumference of the wheel in meters, then divides by 5 due to gear ratio(still need to find actual gear ratio)
+            public static final double drivingPositionCoefficient = Units.inchesToMeters(Math.PI*3) / 5;
 
             public static final double moduleMaxSpeed = 3;    //in M/s. Coefficient of Joystick inputs(or of chassis speeds paramaters)
+
+        }
+
+        public static final class SteeringPIDConstants{
+            public static final double P = 0;
+            public static final double I = 0;
+            public static final double D = 0;
+            public static final double F = 0;
 
         }
         

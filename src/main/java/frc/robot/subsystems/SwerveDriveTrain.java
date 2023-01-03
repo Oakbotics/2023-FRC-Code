@@ -4,7 +4,6 @@
 
 package frc.robot.subsystems;
 
-import java.util.concurrent.atomic.DoubleAccumulator;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.REVPhysicsSim;
@@ -26,21 +25,33 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.DriveConstants.DriveCANAddresses;
+import frc.robot.SwerveModule;
 
 public class SwerveDriveTrain extends SubsystemBase {
 
-  private final CANSparkMax frontLeftDrivingMotor = new CANSparkMax(DriveConstants.DriveCANAddresses.FrontLeftDrivingMotor, MotorType.kBrushless);
-  private final CANSparkMax frontLeftSteeringMotor = new CANSparkMax(DriveConstants.DriveCANAddresses.FrontLeftSteeringMotor, MotorType.kBrushless);
-
-  private final CANSparkMax frontRightDrivingMotor = new CANSparkMax(DriveConstants.DriveCANAddresses.FrontRightDrivingMotor, MotorType.kBrushless);
-  private final CANSparkMax frontRightSteeringMotor = new CANSparkMax(DriveConstants.DriveCANAddresses.FrontRightSteeringMotor, MotorType.kBrushless);
+  // private final CANSparkMax FrontLeftDrivingMotor = new CANSparkMax(DriveConstants.DriveCANAddresses.FrontLeftDrivingMotor, MotorType.kBrushless);
+  // private final CANSparkMax FrontLeftSteeringMotor = new CANSparkMax(DriveConstants.DriveCANAddresses.FrontLeftSteeringMotor, MotorType.kBrushless);
+  // private final CANSparkMax FrontRightDrivingMotor = new CANSparkMax(DriveConstants.DriveCANAddresses.FrontRightDrivingMotor, MotorType.kBrushless);
+  // private final CANSparkMax FrontRightSteeringMotor = new CANSparkMax(DriveConstants.DriveCANAddresses.FrontRightSteeringMotor, MotorType.kBrushless);
+  // private final CANSparkMax BackLeftDrivingMotor = new CANSparkMax(DriveConstants.DriveCANAddresses.BackLeftDrivingMotor, MotorType.kBrushless);
+  // private final CANSparkMax BackLeftSteeringMotor = new CANSparkMax(DriveConstants.DriveCANAddresses.BackLeftSteeringMotor, MotorType.kBrushless);
+  // private final CANSparkMax BackRightDrivingMotor = new CANSparkMax(DriveConstants.DriveCANAddresses.BackRightDrivingMotor, MotorType.kBrushless);
+  // private final CANSparkMax BackRightSteeringMotor = new CANSparkMax(DriveConstants.DriveCANAddresses.BackRightSteeringMotor, MotorType.kBrushless);
   
-  private final CANSparkMax BackLeftDrivingMotor = new CANSparkMax(DriveConstants.DriveCANAddresses.BackLeftDrivingMotor, MotorType.kBrushless);
-  private final CANSparkMax BackLeftSteeringMotor = new CANSparkMax(DriveConstants.DriveCANAddresses.BackLeftSteeringMotor, MotorType.kBrushless);
 
-  private final CANSparkMax BackRightDrivingMotor = new CANSparkMax(DriveConstants.DriveCANAddresses.BackRightDrivingMotor, MotorType.kBrushless);
-  private final CANSparkMax BackRightSteeringMotor = new CANSparkMax(DriveConstants.DriveCANAddresses.BackRightSteeringMotor, MotorType.kBrushless);
-  
+  // private final SwerveModule frontLeftSwerveModule = new SwerveModule(FrontLeftDrivingMotor, FrontLeftSteeringMotor);
+  // private final SwerveModule frontRightSwerveModule = new SwerveModule(FrontRightDrivingMotor, FrontRightSteeringMotor);
+  // private final SwerveModule backLeftSwerveModule = new SwerveModule(BackLeftDrivingMotor, BackLeftSteeringMotor);
+  // private final SwerveModule backRightSwerveModule = new SwerveModule(BackRightDrivingMotor, BackRightSteeringMotor);
+
+  private final SwerveModule frontLeftSwerveModule = new SwerveModule(DriveCANAddresses.FrontLeftDrivingMotor, DriveCANAddresses.FrontLeftSteeringMotor);
+  private final SwerveModule frontRightSwerveModule = new SwerveModule(DriveCANAddresses.FrontRightDrivingMotor, DriveCANAddresses.FrontRightSteeringMotor);
+  private final SwerveModule backLeftSwerveModule = new SwerveModule(DriveCANAddresses.BackLeftDrivingMotor, DriveCANAddresses.BackLeftSteeringMotor);
+  private final SwerveModule backRightSwerveModule = new SwerveModule(DriveCANAddresses.BackRightDrivingMotor, DriveCANAddresses.BackRightSteeringMotor);
+
+
+
 
   private final AnalogGyro gyro = new AnalogGyro(DriveConstants.DriveCANAddresses.gyroLocation);  // Change to AHRS NavX when library is downloaded
   private final AnalogGyroSim gyroSim = new AnalogGyroSim(gyro);      
@@ -55,15 +66,12 @@ public class SwerveDriveTrain extends SubsystemBase {
 
                     
   
-  SwerveModulePosition[] positions = {new SwerveModulePosition(), new SwerveModulePosition()};
+  SwerveModulePosition[] swervePositions = {frontLeftSwerveModule.getPos(), frontRightSwerveModule.getPos(), backLeftSwerveModule.getPos(), backRightSwerveModule.getPos()};
   SwerveModuleState[] moduleStates = m_kinematics.toSwerveModuleStates(new ChassisSpeeds(0, 0, 0));   // Creates swerve module state array in default position 
-  SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(m_kinematics, Rotation2d.fromDegrees(0), positions);
+  SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(m_kinematics, Rotation2d.fromDegrees(0), swervePositions);
 
 
-  SwerveModuleState frontLeftState = moduleStates[0];
-  SwerveModuleState frontRightState = moduleStates[1];
-  SwerveModuleState backLeftState = moduleStates[2];
-  SwerveModuleState backRightState = moduleStates[3];
+  
   
   public Field2d field = new Field2d();
 
@@ -78,30 +86,44 @@ public class SwerveDriveTrain extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-
-    frontLeftState = moduleStates[0];
-    frontRightState = moduleStates[1];
-    backLeftState = moduleStates[2];
-    backRightState = moduleStates[3];
-
-
+    getPositionArray();
+    frontLeftSwerveModule.printInfo("Front Left");
+    frontRightSwerveModule.printInfo("Front Right");
+    backLeftSwerveModule.printInfo("Back Left");
+    backRightSwerveModule.printInfo("Back Right");
 
   }
 
   @Override
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
-    //m_odometry.update(Rotation2d.fromDegrees(gyroSim.getAngle()), moduleStates);
+    m_odometry.update(Rotation2d.fromDegrees(gyroSim.getAngle()), swervePositions);
     field.setRobotPose(m_odometry.getPoseMeters());
     REVPhysicsSim.getInstance().run();
 
 
   }
 
-  public void SwerveDrive(Double forwardSpeed, Double leftSpeed, Double rotation){
+  public void SwerveDrive(Double forwardSpeed, Double leftSpeed, Double rotationSpeed){
     moduleStates = m_kinematics.toSwerveModuleStates(
-      ChassisSpeeds.fromFieldRelativeSpeeds(forwardSpeed, leftSpeed, rotation, Rotation2d.fromDegrees(-gyroSim.getAngle()))       //Gyro returns CW positive, ChassisSpeed reads CCW positive
-      );
-    
+      ChassisSpeeds.fromFieldRelativeSpeeds(forwardSpeed, leftSpeed, rotationSpeed, Rotation2d.fromDegrees(-gyroSim.getAngle()))       //Gyro returns CW positive, ChassisSpeed reads CCW positive
+    );
+    SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, 1);
+
+    frontLeftSwerveModule.setState(moduleStates[0]);
+    frontRightSwerveModule.setState(moduleStates[1]);
+    backLeftSwerveModule.setState(moduleStates[2]);
+    backRightSwerveModule.setState(moduleStates[3]);
   }
+
+  public SwerveModulePosition[] getPositionArray(){
+    swervePositions[0] = frontLeftSwerveModule.getPos();
+    swervePositions[1] = frontRightSwerveModule.getPos();
+    swervePositions[2] = backLeftSwerveModule.getPos();
+    swervePositions[3] = backRightSwerveModule.getPos();
+    
+    return swervePositions;
+  }
+
+
 }

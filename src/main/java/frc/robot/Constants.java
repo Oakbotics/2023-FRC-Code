@@ -18,8 +18,8 @@ import edu.wpi.first.math.util.Units;
 public final class Constants {
     public static final class DriveConstants{
         public static final class TranslationLocatoins{
-            public static final double robotYlength = 0.5;
-            public static final double robotXlength = 0.5;   
+            public static final double robotYlength = 0.5;   //double check what dimension this
+            public static final double robotXlength = 0.5;   //double check what dimension this
         }
 
         public static final class DriveCANAddresses{
@@ -40,28 +40,25 @@ public final class Constants {
         }
 
         public static final class MathConstants{
+            /*
+            https://www.swervedrivespecialties.com/products/mk4-swerve-module 
+            Scroll down to gear ratios and motor free speeds
+            */
 
-            //What to multiply the encoderes position units by. SwerveState returns it in degrees, 4rpm = one rotation of wheel. 
+            //What to multiply the encoders position units by. SwervePosition returns degrees. Assuming gear ratio is 4:1. 
+            //Also might just use through-bore encoder that comes with the module
             public static final double steeringPositionCoefficient = 360 / 4;  
             
-            //What to set as the encoder VelocityConversionFactor. Multiplies the RPM, to give you the wheel RPM
-            // 1RPM = (circumference of wheel)in/min, /5 because one rotation of motor is one fifth of wheel movement. /60 to convert /min to /sec
-            public static final double drivingRPMCoefficient = (Units.inchesToMeters(Math.PI*3) / 5) /60; 
+            //What to set as the encoder VelocityConversionFactor. Multiplies the RPM, to give you M/s
+            // 1RPM = (circumference of wheel)in/min, /8.14 because of Gear ratio according to L1 module. /60 to convert /min to /sec
+            public static final double drivingRPMCoefficient = (Units.inchesToMeters(Math.PI*3) / 8.14) /60; 
 
             //Multiplies the getPosition value, which returns the rotations the motor has spun.
-            //Multiply by the circumference of the wheel in meters, then divides by 5 due to gear ratio(still need to find actual gear ratio)
-            public static final double drivingPositionCoefficient = Units.inchesToMeters(Math.PI*3) / 5;
+            //Multiply by the circumference of the wheel in meters, then divides by 8.14 due to gear ratio. Gear ratio is according to L1 Module
+            public static final double drivingPositionCoefficient = Units.inchesToMeters(Math.PI*3) / 8.14;
 
-            public static final double moduleMaxSpeed = 3;    //in M/s. Coefficient of Joystick inputs(or of chassis speeds paramaters)
-
-        }
-
-        public static final class SteeringPIDConstants{
-            public static final double P = 0;
-            public static final double I = 0;
-            public static final double D = 0;
-            public static final double F = 0;
-
+            public static final double moduleMaxSpeed = Units.feetToMeters(12);    //in M/s. Coefficient of Joystick inputs(or of chassis speeds paramaters)
+                                                                                         // According to MK4 Datasheet, if using L1 Module
         }
         
  

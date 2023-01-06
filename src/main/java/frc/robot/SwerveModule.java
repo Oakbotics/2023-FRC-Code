@@ -16,7 +16,6 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.DriveConstants.MathConstants;
-import frc.robot.Constants.DriveConstants.SteeringPIDConstants;
 
 
 
@@ -27,7 +26,9 @@ public class SwerveModule {
     public final RelativeEncoder m_driveEncoder;
     public final RelativeEncoder m_steeringEncoder;
     private SparkMaxPIDController m_steeringPIDController;
+    private SparkMaxPIDController m_drivingPIDController;
     private double targetSteeringAngle = 0;
+    private double targetVelocity = 0;
 
     //Compilation error because it creates new SparkMaxes
     public SwerveModule(final CANSparkMax drivingMotorAddress, CANSparkMax steeringMotorAddress){ 
@@ -45,6 +46,16 @@ public class SwerveModule {
         m_steeringPIDController.setI(0);
         m_steeringPIDController.setD(0);
         m_steeringPIDController.setOutputRange(-1, 1);
+
+        m_drivingPIDController = m_drivingMotor.getPIDController();
+        m_drivingPIDController.setP(0);
+        m_drivingPIDController.setI(0);
+        m_drivingPIDController.setD(0);
+        m_drivingPIDController.setOutputRange(-1, 1);
+
+        
+
+
         if(DriverStation.isFMSAttached()){    //If on field, burn PID settings to the motor, in case sparkmax restarts cause of ie. Brownout. 
             m_steeringMotor.burnFlash();      //Apparently motor can only take a limited number of burnFlash calls, so use sparingly 
             m_drivingMotor.burnFlash();
@@ -68,6 +79,8 @@ public class SwerveModule {
         m_driveEncoder = m_drivingMotor.getEncoder();
         m_steeringEncoder = m_steeringMotor.getEncoder();
 
+
+
         m_steeringPIDController = m_steeringMotor.getPIDController();
         m_steeringPIDController.setP(0);
         m_steeringPIDController.setI(0);
@@ -88,9 +101,11 @@ public class SwerveModule {
         
         targetState = SwerveModuleState.optimize(targetState, Rotation2d.fromDegrees(m_steeringEncoder.getPosition()));        
         m_steeringPIDController.setReference(targetState.angle.getDegrees(), CANSparkMax.ControlType.kPosition);
-        m_drivingMotor.set(targetState.speedMetersPerSecond);
+       
+        m_drivingPIDController.setReference(targetState.speedMetersPerSecond, CANSparkMax.ControlType.kVelocity);
 
         targetSteeringAngle = targetState.angle.getDegrees();
+        targetVelocity = targetState.speedMetersPerSecond;
 
     }
 
@@ -103,7 +118,8 @@ public class SwerveModule {
         SmartDashboard.putNumber(ModuleName + "Steering Angle", m_steeringEncoder.getPosition());
         SmartDashboard.putNumber(ModuleName + "Steering Setpoint", targetSteeringAngle);
         SmartDashboard.putNumber(ModuleName + "Drive Position", m_driveEncoder.getPosition());
-        SmartDashboard.putNumber(ModuleName + "Driving Speed", m_driveEncoder.getVelocity());
+        SmartDashboard.putNumber(ModuleName + "Driving Velocity", m_driveEncoder.getVelocity());
+        SmartDashboard.putNumber(ModuleName + "Target Velocity", targetVelocity);
     }
 
 

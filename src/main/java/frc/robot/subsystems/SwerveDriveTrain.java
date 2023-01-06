@@ -26,6 +26,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.DriveConstants.DriveCANAddresses;
+import frc.robot.Constants.DriveConstants.MathConstants;
 import frc.robot.SwerveModule;
 
 public class SwerveDriveTrain extends SubsystemBase {
@@ -108,7 +109,7 @@ public class SwerveDriveTrain extends SubsystemBase {
     moduleStates = m_kinematics.toSwerveModuleStates(
       ChassisSpeeds.fromFieldRelativeSpeeds(forwardSpeed, leftSpeed, rotationSpeed, Rotation2d.fromDegrees(-gyroSim.getAngle()))       //Gyro returns CW positive, ChassisSpeed reads CCW positive
     );
-    SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, 1);
+    SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, MathConstants.moduleMaxSpeed);
 
     frontLeftSwerveModule.setState(moduleStates[0]);
     frontRightSwerveModule.setState(moduleStates[1]);

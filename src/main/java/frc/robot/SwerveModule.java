@@ -79,15 +79,20 @@ public class SwerveModule {
         m_driveEncoder = m_drivingMotor.getEncoder();
         m_steeringEncoder = m_steeringMotor.getEncoder();
 
-
-
         m_steeringPIDController = m_steeringMotor.getPIDController();
         m_steeringPIDController.setP(0);
         m_steeringPIDController.setI(0);
         m_steeringPIDController.setD(0);
         m_steeringPIDController.setOutputRange(-1, 1);
-        if(DriverStation.isFMSAttached()){
-            m_steeringMotor.burnFlash();
+
+        m_drivingPIDController = m_drivingMotor.getPIDController();
+        m_drivingPIDController.setP(0);
+        m_drivingPIDController.setI(0);
+        m_drivingPIDController.setD(0);
+        m_drivingPIDController.setOutputRange(-1, 1);
+        
+        if(DriverStation.isFMSAttached()){    //If on field, burn PID settings to the motor, in case sparkmax restarts cause of ie. Brownout. 
+            m_steeringMotor.burnFlash();      //Apparently motor can only take a limited number of burnFlash calls, so use sparingly 
             m_drivingMotor.burnFlash();
         }
 

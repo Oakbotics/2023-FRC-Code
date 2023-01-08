@@ -1,6 +1,6 @@
 {
   "NetworkTables": {
-    "Persistent Values": {
+    "Transitory Values": {
       "open": false
     }
   },
@@ -11,5 +11,9 @@
   },
   "NetworkTables Log": {
     "visible": true
+  },
+  "NetworkTables Settings": {
+    "mode": "Client (NT4)",
+    "serverTeam": "localhost"
   }
 }

@@ -4,34 +4,25 @@
 
 package frc.robot.commands;
 
-import frc.robot.subsystems.SwerveDriveTrain;
-
-
+import frc.robot.subsystems.CandleSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 
 /** An example command that uses an example subsystem. */
-public class SwerveDriveCommand extends CommandBase {
+public class OrangeCandleCommand extends InstantCommand {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-
-  private final SwerveDriveTrain m_driveTrain;
-  private Double m_forward;
-  private Double m_leftSpeed;
-  private Double m_angularSpeed;
-
+  private final CandleSubsystem m_candleSubsystem;
+  private int lightState = 0;
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public SwerveDriveCommand(SwerveDriveTrain driveTrain, Double forwardSpeed, Double leftSpeed, Double angularSpeed) {
-    m_driveTrain = driveTrain;
-    m_forward = forwardSpeed;
-    m_leftSpeed = leftSpeed;
-    m_angularSpeed = angularSpeed;
-
+  public OrangeCandleCommand(CandleSubsystem candleSubsystem) {
+    m_candleSubsystem = candleSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(m_driveTrain);
+    addRequirements(candleSubsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -41,9 +32,10 @@ public class SwerveDriveCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_driveTrain.SwerveDrive(m_forward, m_leftSpeed, m_angularSpeed);
-
+      m_candleSubsystem.configBrightness(1.0);
+      m_candleSubsystem.setOrange();
   }
+  
 
   // Called once the command ends or is interrupted.
   @Override

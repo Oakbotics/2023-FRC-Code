@@ -23,17 +23,17 @@ public final class Constants {
         }
 
         public static final class DriveCANAddresses{
-            public static final int FrontLeftSteeringMotor = 11;
-            public static final int FrontLeftDrivingMotor = 1;
+            public static final int FrontLeftSteeringMotor = 10;
+            public static final int FrontLeftDrivingMotor = 11;
 
-            public static final int FrontRightSteeringMotor = 12;
-            public static final int FrontRightDrivingMotor = 2;
+            public static final int FrontRightSteeringMotor = 14;
+            public static final int FrontRightDrivingMotor = 15;
 
-            public static final int BackLeftSteeringMotor = 13;
-            public static final int BackLeftDrivingMotor = 3;
+            public static final int BackLeftSteeringMotor = 12;
+            public static final int BackLeftDrivingMotor = 13;
 
-            public static final int BackRightSteeringMotor = 14;
-            public static final int BackRightDrivingMotor = 4;
+            public static final int BackRightSteeringMotor = 16;
+            public static final int BackRightDrivingMotor = 17;
 
             public static final int gyroLocation = 1;
 

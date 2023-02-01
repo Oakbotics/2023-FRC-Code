@@ -15,11 +15,12 @@ import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.PS4Controller.Button;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.AutonomousCommand;
-import frc.robot.commands.Drive;
+import frc.robot.commands.DriveCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -47,19 +48,22 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
+    SmartDashboard.putNumber("Yjoysticks", m_driverController.getLeftY());
+    SmartDashboard.putNumber("Xjoysticks", m_driverController.getLeftX());
+
     // Configure default commands
-  //   m_robotDrive.setDefaultCommand(
+    m_robotDrive.setDefaultCommand(
   //       // The left stick controls translation of the robot.
   //       // Turning is controlled by the X axis of the right stick.
   //       // 
-
-        new Drive(
-            m_robotDrive,
+      new RunCommand(() -> m_robotDrive.drive(
             MathUtil.applyDeadband(-m_driverController.getLeftY(), 0.06),
             MathUtil.applyDeadband(-m_driverController.getLeftX(), 0.06),
             MathUtil.applyDeadband(-m_driverController.getRightX(), 0.06),            
             true
-            );
+            ),m_robotDrive
+      )
+    );
   }
 
   /**
@@ -73,7 +77,7 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     new JoystickButton(m_driverController, XboxController.Button.kX.value)
-        .onTrue(new RunCommand(
+        .toggleOnTrue(new RunCommand(
             () -> m_robotDrive.setX(),
                   m_robotDrive));
   }

@@ -86,30 +86,14 @@ public class ArmSubsystem extends SubsystemBase {
 
   public void MoveArm (double degrees) {
 
-    double setPoint, processVariable;
-    boolean mode = SmartDashboard.getBoolean("Mode (0 for position, 1 for velocity)", false);
-    if(mode) {
-      setPoint = SmartDashboard.getNumber("Set Velocity", 0);
-      m_pidController.setReference(setPoint, CANSparkMax.ControlType.kVelocity);
-      processVariable = m_encoder.getVelocity();
-    } else {
-      setPoint = SmartDashboard.getNumber("Set Position", 0);
       /**
        * As with other PID modes, Smart Motion is set by calling the
        * setReference method on an existing pid object and setting
        * the control type to kSmartMotion
        */
-      m_pidController.setReference(setPoint, CANSparkMax.ControlType.kSmartMotion);
-      
-      processVariable = m_encoder.getPosition();
-    }
-    
-    SmartDashboard.putNumber("SetPoint", setPoint);
-    SmartDashboard.putNumber("Process Variable", processVariable);
-    SmartDashboard.putNumber("Output", m_motor.getAppliedOutput());
+      m_pidController.setReference(degrees, CANSparkMax.ControlType.kSmartMotion);
   }
-
-
+  
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

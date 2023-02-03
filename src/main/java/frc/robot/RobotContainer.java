@@ -6,9 +6,12 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.subsystems.ExampleSubsystem;
-import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.CandleSubsystem;
+import frc.robot.commands.CandleCommands;
+import frc.robot.commands.OrangeCandleCommand;
+import frc.robot.commands.PurpleCandleCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -18,9 +21,9 @@ import edu.wpi.first.wpilibj2.command.Command;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-
-  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+  private final XboxController joy = new XboxController(Constants.JoystickId);
+  
+  private final CandleSubsystem m_candleSubsystem = new CandleSubsystem(joy, Constants.LightConstants.CANdleID);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -34,15 +37,13 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private void configureButtonBindings() {}
+  private void configureButtonBindings() {
+    // new JoystickButton(joy, Constants.CandleButton).onTrue(new CandleCommands.ConfigBrightness(m_candleSubsystem, 1.0));
+    
+    new JoystickButton(joy, XboxController.Button.kA.value).onTrue(new PurpleCandleCommand(m_candleSubsystem));
+    new JoystickButton(joy, XboxController.Button.kB.value).onTrue(new OrangeCandleCommand(m_candleSubsystem));
 
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
-  public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    return m_autoCommand;
+
+    
   }
 }

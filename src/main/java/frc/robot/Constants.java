@@ -14,9 +14,12 @@ import edu.wpi.first.wpilibj.XboxController;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-   public static final int CANdleID = 0;
-   public static final int LEDStripID = 0;
+   public final class LightConstants{
+
+      public static final int CANdleID = 8;
+
+   }
+  
    public static final int JoystickId = 0;
-   public static final int OrangeButton = XboxController.Button.kA.value;
-   public static final int PurpleButton = XboxController.Button.kB.value;
+
 }

@@ -7,7 +7,6 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.subsystems.CandleSubsystem;
-import frc.robot.commands.BlueCandleCommand;
 import frc.robot.commands.CandleCommands;
 import frc.robot.commands.OrangeCandleCommand;
 import frc.robot.commands.PurpleCandleCommand;
@@ -24,14 +23,12 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final XboxController joy = new XboxController(Constants.JoystickId);
   
-  private final CandleSubsystem m_candleSubsystem = new CandleSubsystem(joy, Constants.CANdleID);
-  private final CandleSubsystem m_stripCandleSubsystem = new CandleSubsystem(joy, Constants.LEDStripID);
+  private final CandleSubsystem m_candleSubsystem = new CandleSubsystem(joy, Constants.LightConstants.CANdleID);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
-    new BlueCandleCommand(m_stripCandleSubsystem);
   }
 
   /**
@@ -43,8 +40,8 @@ public class RobotContainer {
   private void configureButtonBindings() {
     // new JoystickButton(joy, Constants.CandleButton).onTrue(new CandleCommands.ConfigBrightness(m_candleSubsystem, 1.0));
     
-    new JoystickButton(joy, Constants.PurpleButton).onTrue(new PurpleCandleCommand(m_candleSubsystem));
-    new JoystickButton(joy, Constants.OrangeButton).onTrue(new OrangeCandleCommand(m_candleSubsystem));
+    new JoystickButton(joy, XboxController.Button.kA.value).onTrue(new PurpleCandleCommand(m_candleSubsystem));
+    new JoystickButton(joy, XboxController.Button.kB.value).onTrue(new OrangeCandleCommand(m_candleSubsystem));
 
 
     

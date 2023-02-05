@@ -27,7 +27,7 @@ public class AutonomousCommand {
     
     private final DriveSubsystem m_driveSubsystem; 
     private final TrajectoryConfig config = new TrajectoryConfig(
-        AutoConstants.kMaxSpeedMetersPerSecond,
+        AutoConstants.kMaxSpeedFeetPerSecond,
         AutoConstants.kMaxAccelerationMetersPerSecondSquared)
         // Add kinematics to ensure max speed is actually obeyed
         .setKinematics(DriveConstants.kDriveKinematics);

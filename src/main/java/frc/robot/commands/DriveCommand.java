@@ -10,7 +10,7 @@ import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
-public class Drive extends CommandBase {
+public class DriveCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
 
   private final DriveSubsystem m_driveTrain;
@@ -25,7 +25,7 @@ public class Drive extends CommandBase {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public Drive(DriveSubsystem driveTrain, Double forwardSpeed, Double leftSpeed, Double angularSpeed, Boolean fieldCentric) {
+  public DriveCommand(DriveSubsystem driveTrain, Double forwardSpeed, Double leftSpeed, Double angularSpeed, Boolean fieldCentric) {
     m_driveTrain = driveTrain;
     m_forward = forwardSpeed;
     m_leftSpeed = leftSpeed;

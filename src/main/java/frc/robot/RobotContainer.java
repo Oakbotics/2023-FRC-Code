@@ -19,7 +19,7 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.AutonomousCommand;
-import frc.robot.commands.Drive;
+import frc.robot.commands.DriveCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -53,7 +53,7 @@ public class RobotContainer {
   //       // Turning is controlled by the X axis of the right stick.
   //       // 
 
-        new Drive(
+        new DriveCommand(
             m_robotDrive,
             MathUtil.applyDeadband(-m_driverController.getLeftY(), 0.06),
             MathUtil.applyDeadband(-m_driverController.getLeftX(), 0.06),
@@ -73,7 +73,7 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     new JoystickButton(m_driverController, XboxController.Button.kX.value)
-        .onTrue(new RunCommand(
+        .toggleOnTrue(new RunCommand(
             () -> m_robotDrive.setX(),
                   m_robotDrive));
   }

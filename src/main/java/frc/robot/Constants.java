@@ -28,6 +28,7 @@ public final class Constants {
     public static final int ArmID = 1;
     public static final int WristID = 2;
     public static final double gearBoxRatio = 3 * 4 * 4;
+    public static final double ArmVelocityMultiplier = -1000;
 
   }
 

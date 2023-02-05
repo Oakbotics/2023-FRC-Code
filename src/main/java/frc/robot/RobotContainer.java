@@ -8,13 +8,11 @@ import org.ejml.dense.block.MatrixOps_DDRB;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.simulation.JoystickSim;
 import frc.robot.subsystems.CandleSubsystem;
-import frc.robot.commands.ArmCommand;
-import frc.robot.commands.ArmCommandMid;
-import frc.robot.commands.CandleCommands;
 import frc.robot.subsystems.ArmSubsystem;
-import frc.robot.commands.OrangeCandleCommand;
-import frc.robot.commands.PurpleCandleCommand;
+import frc.robot.commands.*;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 
@@ -26,9 +24,10 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final XboxController m_driverController = new XboxController(0);
+  private final XboxController m_opController = new XboxController(0);
+
   private final ArmSubsystem m_armSubsystem = new ArmSubsystem();
-  private final CandleSubsystem m_candleSubsystem = new CandleSubsystem(m_driverController, Constants.LightConstants.CANdleID);
+  private final CandleSubsystem m_candleSubsystem = new CandleSubsystem(m_opController, Constants.LightConstants.CANdleID);
   
 
 
@@ -36,6 +35,13 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+    // m_armSubsystem.setDefaultCommand(
+      // The left stick controls translation of the robot.
+      // Turning is controlled by the X axis of the right stick.
+      // new RunCommand(
+      //     () -> m_armSubsystem.ArmSpeedCommand(
+      //     m_armSubsystem,m_opController.getLeftY()
+      //     )));
   }
 
   /**
@@ -45,13 +51,21 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    new JoystickButton(m_driverController, XboxController.Button.kY.value).onTrue(new ArmCommand(m_armSubsystem));
-    new JoystickButton(m_driverController, XboxController.Button.kX.value).onTrue(new ArmCommandMid(m_armSubsystem));
-      
-    new JoystickButton(m_driverController, XboxController.Button.kA.value).onTrue(new PurpleCandleCommand(m_candleSubsystem));
-    new JoystickButton(m_driverController, XboxController.Button.kB.value).onTrue(new OrangeCandleCommand(m_candleSubsystem));
+    new JoystickButton(m_opController, XboxController.Button.kY.value).onTrue(new ArmCommandLow(m_armSubsystem, m_opController));
+    new JoystickButton(m_opController, XboxController.Button.kX.value).onTrue(new ArmCommandMid(m_armSubsystem, m_opController));
 
+    // new JoystickButton(m_opController, XboxController.Axis.kLeftY).onTrue(new ArmSpeedCommand(m_armSubsystem, m_opController))
 
+    new JoystickButton(m_opController, XboxController.Button.kA.value).onTrue(new PurpleCandleCommand(m_candleSubsystem));
+    new JoystickButton(m_opController, XboxController.Button.kB.value).onTrue(new OrangeCandleCommand(m_candleSubsystem));
+
+    new POVButton(m_opController, 0).toggleOnTrue(
+      new RunCommand(
+      () ->
+        m_candleSubsystem.stopLight(), m_candleSubsystem));
+
+    m_candleSubsystem.setDefaultCommand(new AnimateCommand(m_candleSubsystem));
+    m_armSubsystem.setDefaultCommand(new ArmSpeedCommand(m_armSubsystem, m_opController));
     
   }
 }

@@ -4,21 +4,21 @@
 
 package frc.robot.commands;
 
-import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.CandleSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
-public class ArmCommand extends CommandBase {
+public class AnimateCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final ArmSubsystem m_ArmSubsystem;
+  private final CandleSubsystem m_candleSubsystem;
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ArmCommand(ArmSubsystem subsystem) {
-    m_ArmSubsystem = subsystem;
+  public AnimateCommand(CandleSubsystem subsystem) {
+    m_candleSubsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
@@ -30,14 +30,16 @@ public class ArmCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
-    m_ArmSubsystem.MoveArm(90);
-
+    m_candleSubsystem.setRainbowAnimation();
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    if(interrupted){
+        m_candleSubsystem.stopLight();
+    }
+  }
 
   // Returns true when the command should end.
   @Override

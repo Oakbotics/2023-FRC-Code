@@ -7,25 +7,29 @@ package frc.robot.commands;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 
 /** An example command that uses an example subsystem. */
-public class ArmCommandMid extends InstantCommand {
+public class ArmSpeedCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ArmSubsystem m_ArmSubsystem;
-  private final XboxController m_opperatorController;
+  public double speed = 0;
+  XboxController controller;
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ArmCommandMid(ArmSubsystem subsystem, XboxController controller) {
+  public ArmSpeedCommand(ArmSubsystem subsystem, XboxController opController) {
     m_ArmSubsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
-    m_opperatorController = controller;
+
+    controller = opController;
+    //speed = speedParam;
+    speed = controller.getLeftY();
   }
 
   // Called when the command is initially scheduled.
@@ -36,17 +40,20 @@ public class ArmCommandMid extends InstantCommand {
   @Override
   public void execute() {
 
-    m_ArmSubsystem.MoveArmDegrees(180);
+    m_ArmSubsystem.MoveArmSpeed(controller.getLeftY());
+    SmartDashboard.putNumber("Arm Speed", speed);
 
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    m_ArmSubsystem.MoveArmSpeed(0);
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return m_opperatorController.getLeftY() != 0.0;
+    return false;
   }
 }

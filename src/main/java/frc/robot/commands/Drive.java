@@ -43,7 +43,7 @@ public class Drive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_driveTrain.drive(m_forward, m_leftSpeed, m_angularSpeed, isFieldCentric );
+    m_driveTrain.drive(m_forward, m_leftSpeed, m_angularSpeed, isFieldCentric, true );
 
   }
 

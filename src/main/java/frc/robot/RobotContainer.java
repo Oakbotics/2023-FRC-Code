@@ -85,7 +85,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     AutonomousCommand command = new AutonomousCommand(m_robotDrive);
-    return command.getAutonomousCommand().andThen(() -> m_robotDrive.drive(0, 0, 0, true));
+    return command.getAutonomousCommand().andThen(() -> m_robotDrive.drive(0, 0, 0, true, true));
   }
 }
 

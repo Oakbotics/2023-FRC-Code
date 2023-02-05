@@ -3,6 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
+import edu.wpi.first.wpilibj.XboxController;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -13,6 +14,15 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+   public final class LightConstants{
+
+      public static final int CANdleID = 8;
+
+   }
+  
+   public static final int JoystickId = 0;
+
+
 
   public final class ArmConstants{
     public static final int ArmID = 1;

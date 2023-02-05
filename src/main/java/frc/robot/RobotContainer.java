@@ -4,15 +4,19 @@
 
 package frc.robot;
 
+import org.ejml.dense.block.MatrixOps_DDRB;
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.subsystems.CandleSubsystem;
 import frc.robot.commands.ArmCommand;
 import frc.robot.commands.ArmCommandMid;
-import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.CandleCommands;
 import frc.robot.subsystems.ArmSubsystem;
-import frc.robot.subsystems.ExampleSubsystem;
-import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.commands.OrangeCandleCommand;
+import frc.robot.commands.PurpleCandleCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -22,11 +26,11 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-  private final ArmSubsystem m_armSubsystem = new ArmSubsystem();
-  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
-  
   private final XboxController m_driverController = new XboxController(0);
+  private final ArmSubsystem m_armSubsystem = new ArmSubsystem();
+  private final CandleSubsystem m_candleSubsystem = new CandleSubsystem(m_driverController, Constants.LightConstants.CANdleID);
+  
+
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -41,19 +45,13 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    new JoystickButton(m_driverController, XboxController.Button.kA.value).onTrue(new ArmCommand(m_armSubsystem));
-    new JoystickButton(m_driverController, XboxController.Button.kB.value).onTrue(new ArmCommandMid(m_armSubsystem));
+    new JoystickButton(m_driverController, XboxController.Button.kY.value).onTrue(new ArmCommand(m_armSubsystem));
+    new JoystickButton(m_driverController, XboxController.Button.kX.value).onTrue(new ArmCommandMid(m_armSubsystem));
+      
+    new JoystickButton(m_driverController, XboxController.Button.kA.value).onTrue(new PurpleCandleCommand(m_candleSubsystem));
+    new JoystickButton(m_driverController, XboxController.Button.kB.value).onTrue(new OrangeCandleCommand(m_candleSubsystem));
 
 
-  }
-
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
-  public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    return m_autoCommand;
+    
   }
 }

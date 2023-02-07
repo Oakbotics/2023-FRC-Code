@@ -9,6 +9,8 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
+import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMax.SoftLimitDirection;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -23,8 +25,9 @@ public class ArmSubsystem extends SubsystemBase {
   public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM, maxVel, minVel, maxAcc, allowedErr;
   private final double encoderMultiplier = (1 / (ArmConstants.gearBoxRatio)) * 360;   //Degrees
 
-  private final double MAXPosition = 170;
-  private final double MINPosition = 0;
+  private final float MAXPosition = 170;
+  private final float MINPosition = 0;
+  
   public ArmSubsystem() {
     
     // initialize motor
@@ -84,6 +87,13 @@ public class ArmSubsystem extends SubsystemBase {
     m_pidController.setSmartMotionMinOutputVelocity(minVel, smartMotionSlot);
     m_pidController.setSmartMotionMaxAccel(maxAcc, smartMotionSlot);
     m_pidController.setSmartMotionAllowedClosedLoopError(allowedErr, smartMotionSlot);
+
+    m_motor.setIdleMode(IdleMode.kBrake);
+    m_motor.setSoftLimit(SoftLimitDirection.kForward, MAXPosition);
+    m_motor.setSoftLimit(SoftLimitDirection.kReverse, MINPosition);
+
+    m_motor.enableSoftLimit(SoftLimitDirection.kForward, true);
+    m_motor.enableSoftLimit(SoftLimitDirection.kReverse, true);
     
   }
 
@@ -94,22 +104,14 @@ public class ArmSubsystem extends SubsystemBase {
        * setReference method on an existing pid object and setting
        * the control type to kSmartMotion
        */
-      if(degrees >= MAXPosition){
-        m_pidController.setReference(MAXPosition, CANSparkMax.ControlType.kSmartMotion);
-      }else if(degrees <= MINPosition){
-        m_pidController.setReference(MINPosition, CANSparkMax.ControlType.kSmartMotion);
-      }else{
+
         m_pidController.setReference(degrees, CANSparkMax.ControlType.kSmartMotion);
-      }
   }
   
   public void MoveArmSpeed(double speed){
     speed *= ArmConstants.ArmVelocityMultiplier;
-    if((m_encoder.getPosition() >= MAXPosition && speed > 0) || (m_encoder.getPosition() <= MINPosition && speed < 0)){
-      m_pidController.setReference(0, ControlType.kSmartVelocity);
-    }else{
-      m_pidController.setReference(speed, ControlType.kSmartVelocity);
-    }
+
+    m_pidController.setReference(speed, ControlType.kSmartVelocity);
     
   }
 

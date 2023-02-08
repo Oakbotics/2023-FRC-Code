@@ -15,6 +15,7 @@ import frc.robot.commands.*;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -65,7 +66,14 @@ public class RobotContainer {
         m_candleSubsystem.stopLight(), m_candleSubsystem));
 
     m_candleSubsystem.setDefaultCommand(new AnimateCommand(m_candleSubsystem));
-    m_armSubsystem.setDefaultCommand(new ArmSpeedCommand(m_armSubsystem, m_opController));
     
+    new Trigger(
+      () -> m_opController.getLeftY() != 0
+    ).whileTrue(
+      new ArmSpeedCommand(m_armSubsystem, 
+        () -> m_opController.getLeftY()
+    ));
+    
+
   }
 }

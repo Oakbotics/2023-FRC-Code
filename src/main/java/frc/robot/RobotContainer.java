@@ -48,9 +48,9 @@ public class RobotContainer {
     new JoystickButton(m_driverController, XboxController.Button.kA.value).onTrue(new ArmCommand(m_armSubsystem));
     new JoystickButton(m_driverController, XboxController.Button.kB.value).onTrue(new ArmCommandMid(m_armSubsystem));
 
-    
-
-  }
+    new JoystickButton(m_driverController, XboxController.Button.kLeftBumper.value).onTrue(new IntakeCommand(m_intakeSubsystem));
+    new JoystickButton(m_driverController, XboxController.Button.kRightBumper.value).onTrue(new OuttakeCommand(m_intakeSubsystem));
+   }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

@@ -22,9 +22,9 @@ public final class Constants {
   }
 
   public final class IntakeConstants{
-    public static final int IntakeID = 3;
+    public static final int IntakeID = 10;
     public static final double gearBoxRatio = 0;
     public static final double intakeSpeed = 0.5;
-    
+
   }
 }

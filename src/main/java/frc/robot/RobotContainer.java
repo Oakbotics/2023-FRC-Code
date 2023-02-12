@@ -13,6 +13,9 @@ import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.OuttakeCommand;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -25,7 +28,8 @@ public class RobotContainer {
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final ArmSubsystem m_armSubsystem = new ArmSubsystem();
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
-  
+  private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();  
+
   private final XboxController m_driverController = new XboxController(0);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -44,6 +48,7 @@ public class RobotContainer {
     new JoystickButton(m_driverController, XboxController.Button.kA.value).onTrue(new ArmCommand(m_armSubsystem));
     new JoystickButton(m_driverController, XboxController.Button.kB.value).onTrue(new ArmCommandMid(m_armSubsystem));
 
+    
 
   }
 

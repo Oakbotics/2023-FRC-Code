@@ -9,9 +9,11 @@ import org.ejml.dense.block.MatrixOps_DDRB;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.subsystems.CandleSubsystem;
+import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.commands.ArmCommand;
 import frc.robot.commands.ArmCommandMid;
 import frc.robot.commands.CandleCommands;
+import frc.robot.commands.LimelightValuesCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.commands.OrangeCandleCommand;
 import frc.robot.commands.PurpleCandleCommand;
@@ -29,7 +31,7 @@ public class RobotContainer {
   private final XboxController m_driverController = new XboxController(0);
   private final ArmSubsystem m_armSubsystem = new ArmSubsystem();
   private final CandleSubsystem m_candleSubsystem = new CandleSubsystem(m_driverController, Constants.LightConstants.CANdleID);
-  
+  private final LimelightSubsystem m_limelightSubsystem = new LimelightSubsystem();
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -51,7 +53,7 @@ public class RobotContainer {
     new JoystickButton(m_driverController, XboxController.Button.kA.value).onTrue(new PurpleCandleCommand(m_candleSubsystem));
     new JoystickButton(m_driverController, XboxController.Button.kB.value).onTrue(new OrangeCandleCommand(m_candleSubsystem));
 
-
+    m_limelightSubsystem.setDefaultCommand(new LimelightValuesCommand(m_limelightSubsystem));
     
   }
 }

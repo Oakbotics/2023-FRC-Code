@@ -29,7 +29,7 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final XboxController m_driverController = new XboxController(0);
-  private final ArmSubsystem m_armSubsystem = new ArmSubsystem();
+  // private final ArmSubsystem m_armSubsystem = new ArmSubsystem();
   private final CandleSubsystem m_candleSubsystem = new CandleSubsystem(m_driverController, Constants.LightConstants.CANdleID);
   private final LimelightSubsystem m_limelightSubsystem = new LimelightSubsystem();
 
@@ -47,8 +47,8 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    new JoystickButton(m_driverController, XboxController.Button.kY.value).onTrue(new ArmCommand(m_armSubsystem));
-    new JoystickButton(m_driverController, XboxController.Button.kX.value).onTrue(new ArmCommandMid(m_armSubsystem));
+    // new JoystickButton(m_driverController, XboxController.Button.kY.value).onTrue(new ArmCommand(m_armSubsystem));
+    // new JoystickButton(m_driverController, XboxController.Button.kX.value).onTrue(new ArmCommandMid(m_armSubsystem));
       
     new JoystickButton(m_driverController, XboxController.Button.kA.value).onTrue(new PurpleCandleCommand(m_candleSubsystem));
     new JoystickButton(m_driverController, XboxController.Button.kB.value).onTrue(new OrangeCandleCommand(m_candleSubsystem));

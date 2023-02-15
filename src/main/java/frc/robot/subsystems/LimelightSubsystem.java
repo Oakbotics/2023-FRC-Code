@@ -4,9 +4,15 @@
 
 package frc.robot.subsystems;
 
+import java.lang.reflect.Field;
+
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -14,27 +20,36 @@ public class LimelightSubsystem extends SubsystemBase {
 
   private NetworkTable m_limelightTable;
 
+  private final Field2d m_field = new Field2d();
 
   /** Creates a new ExampleSubsystem. */
   public LimelightSubsystem() {
+
+    SmartDashboard.putData(m_field);
+
     m_limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
   }
 
   public void getNetworkTableValues(){
-    // NetworkTableEntry tx = m_limelightTable.getEntry("tx");
-    // NetworkTableEntry ty = m_limelightTable.getEntry("ty");
-    // NetworkTableEntry ta = m_limelightTable.getEntry("ta");  
+    
+    NetworkTableEntry tx = m_limelightTable.getEntry("tx");
+    NetworkTableEntry ty = m_limelightTable.getEntry("ty");
+    NetworkTableEntry ta = m_limelightTable.getEntry("ta"); 
+    NetworkTableEntry tv = m_limelightTable.getEntry("tv"); 
+
   
 
-    // //read values periodically
-    // double x = tx.getDouble(0.0);
-    // double y = ty.getDouble(0.0);
-    // double area = ta.getDouble(0.0);
+    //read values periodically
+    double x = tx.getDouble(4);
+    double y = ty.getDouble(4);
+    double area = ta.getDouble(4);
+    double targetAvailable = tv.getDouble(4);
 
-    // //post to smart dashboard periodically
-    // SmartDashboard.putNumber("LimelightX", x);
-    // SmartDashboard.putNumber("LimelightY", y);
-    // SmartDashboard.putNumber("LimelightArea", area);
+    //post to smart dashboard periodically
+    SmartDashboard.putNumber("LimelightX", x);
+    SmartDashboard.putNumber("LimelightY", y);
+    SmartDashboard.putNumber("LimelightArea", area);
+    SmartDashboard.putNumber("Target Available", targetAvailable);
 
     SmartDashboard.putString("Alex", "rocks");
 
@@ -43,16 +58,26 @@ public class LimelightSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    double[] botpose = NetworkTableInstance.getDefault().getTable("limelight").getEntry("botpose").getDoubleArray(new double[6]);
+
+
+
+    double[] botPose = m_limelightTable.getEntry("botpose").getDoubleArray(new double[6]); 
+    double id = m_limelightTable.getEntry("tid").getDouble(4);
+
+    Pose2d robotPose = new Pose2d(new Translation2d(Math.abs(botPose[0]), Math.abs(botPose[1])), Rotation2d.fromDegrees(Math.abs(botPose[5])));
     
-    double[] id = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tid").getDoubleArray(new double[6]);
+    m_field.setRobotPose(robotPose);
+    SmartDashboard.putString("Field Pose", m_field.getRobotPose().getTranslation().toString());
+    
+
     // double[] ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("<variablename>").getDoubleArray(new double[6]);
     // double[] tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("<variablename>").getDoubleArray(new double[6]);
     // long ty = m_limelightTable.getEntry("ty").getLastChange();
     // long ta = m_limelightTable.getEntry("ta").getLastChange();
     
-    SmartDashboard.putNumberArray("LimelightX", botpose);
-    SmartDashboard.putNumberArray("LimelightID", id);  
+    
+    SmartDashboard.putNumber("Bot Rotation", botPose[5]);
+    SmartDashboard.putNumber  ("LimelightID", id);  
     // SmartDashboard.putNumber("LimelightY", ty);
     // SmartDashboard.putNumber("LimelightArea", ta);
     // // This method will be called once per scheduler run

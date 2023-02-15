@@ -12,6 +12,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
 import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.RelativeEncoder;
 
@@ -39,6 +40,8 @@ public class MAXSwerveModule {
   public MAXSwerveModule(int drivingCANId, int turningCANId, double chassisAngularOffset) {
     m_drivingSparkMax = new CANSparkMax(drivingCANId, MotorType.kBrushless);
     m_turningSparkMax = new CANSparkMax(turningCANId, MotorType.kBrushless);
+
+    m_drivingSparkMax.setIdleMode(IdleMode.kCoast);
 
     // Factory reset, so we get the SPARKS MAX to a known state before configuring
     // them. This is useful in case a SPARK MAX is swapped out.

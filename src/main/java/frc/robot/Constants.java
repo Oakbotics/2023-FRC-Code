@@ -24,11 +24,17 @@ import edu.wpi.first.math.util.Units;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+  public static final class IntakeConstants {
+    public static final int IntakeTopID = 10;
+    public static final int IntakeBottomID = 20;
+    public static final double intakeSpeed = 0.5; 
+  }
+
   public static final class DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
-    public static final double kMaxSpeedFeetPerSecond = 14;
-    public static final double kMaxAngularSpeed = 5 * Math.PI; // radians per second
+    public static final double kMaxSpeedFeetPerSecond = 4;
+    public static final double kMaxAngularSpeed = 3 * Math.PI; // radians per second
 
     public static final double kDirectionSlewRate = 1.2; // radians per second
     public static final double kMagnitudeSlewRate = 1.8; // percent per second (1 = 100%)
@@ -50,17 +56,17 @@ public final class Constants {
     public static final double kFrontRightChassisAngularOffset = 0;
     public static final double kBackLeftChassisAngularOffset = Math.PI;
     public static final double kBackRightChassisAngularOffset = Math.PI / 2;
-
+    
     // SPARK MAX CAN IDs
-    public static final int kFrontLeftDrivingCanId = 11;
+    public static final int kFrontLeftDrivingCanId = 12;
     public static final int kRearLeftDrivingCanId = 13;
-    public static final int kFrontRightDrivingCanId = 15;
-    public static final int kRearRightDrivingCanId = 17;
+    public static final int kFrontRightDrivingCanId = 3;
+    public static final int kRearRightDrivingCanId = 2;
 
-    public static final int kFrontLeftTurningCanId = 10;
-    public static final int kRearLeftTurningCanId = 12;
-    public static final int kFrontRightTurningCanId = 14;
-    public static final int kRearRightTurningCanId = 16;
+    public static final int kFrontLeftTurningCanId = 8;
+    public static final int kRearLeftTurningCanId = 9;
+    public static final int kFrontRightTurningCanId = 7;
+    public static final int kRearRightTurningCanId = 6;
 
     public static final boolean kGyroReversed = false;
   }

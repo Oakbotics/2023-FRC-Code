@@ -26,6 +26,9 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import java.util.List;
+import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.OuttakeCommand;
+import frc.robot.subsystems.IntakeSubsystem;
 
 /*
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -36,6 +39,7 @@ import java.util.List;
 public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
+  private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();  
 
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
@@ -48,19 +52,19 @@ public class RobotContainer {
     configureButtonBindings();
 
     // Configure default commands
-  //   m_robotDrive.setDefaultCommand(
-  //       // The left stick controls translation of the robot.
-  //       // Turning is controlled by the X axis of the right stick.
-  //       // 
-
-        new DriveCommand(
-            m_robotDrive,
-            MathUtil.applyDeadband(-m_driverController.getLeftY(), 0.06),
-            MathUtil.applyDeadband(-m_driverController.getLeftX(), 0.06),
-            MathUtil.applyDeadband(-m_driverController.getRightX(), 0.06),            
-            true
-            );
+    m_robotDrive.setDefaultCommand(
+        // The left stick controls translation of the robot.
+        // Turning is controlled by the X axis of the right stick.
+        new RunCommand(
+            () -> m_robotDrive.drive(
+                -MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
+                false, true),
+            m_robotDrive));
   }
+
+
 
   /**
    * Use this method to define your button->command mappings. Buttons can be
@@ -76,6 +80,17 @@ public class RobotContainer {
         .toggleOnTrue(new RunCommand(
             () -> m_robotDrive.setX(),
                   m_robotDrive));
+
+    // m_intakeSubsystem.setDefaultCommand(
+    //   new RunCommand(
+    //     if(XboxController.Button.kLeftBumper != 0){
+    //     new IntakeCommand(m_intakeSubsystem)
+    //   }
+    //   )
+    // );
+
+    new JoystickButton(m_driverController, XboxController.Button.kLeftBumper.value).whileTrue(new IntakeCommand(m_intakeSubsystem));
+    new JoystickButton(m_driverController, XboxController.Button.kRightBumper.value).whileTrue(new OuttakeCommand(m_intakeSubsystem));
   }
 
   /**

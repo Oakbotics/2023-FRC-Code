@@ -29,6 +29,18 @@ import java.util.List;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.OuttakeCommand;
 import frc.robot.subsystems.IntakeSubsystem;
+import org.ejml.dense.block.MatrixOps_DDRB;
+
+import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.simulation.JoystickSim;
+import frc.robot.subsystems.CandleSubsystem;
+import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.commands.*;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /*
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -43,6 +55,12 @@ public class RobotContainer {
 
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
+  // The robot's subsystems and commands are defined here...
+  private final XboxController m_opController = new XboxController(1);
+
+  private final ArmSubsystem m_armSubsystem = new ArmSubsystem();
+  private final CandleSubsystem m_candleSubsystem = new CandleSubsystem(m_opController, Constants.LightConstants.CANdleID);
+  
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -50,7 +68,6 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
-
     // Configure default commands
     m_robotDrive.setDefaultCommand(
         // The left stick controls translation of the robot.
@@ -80,14 +97,29 @@ public class RobotContainer {
         .toggleOnTrue(new RunCommand(
             () -> m_robotDrive.setX(),
                   m_robotDrive));
+                  
+     new JoystickButton(m_opController, XboxController.Button.kY.value).onTrue(new ArmCommandLow(m_armSubsystem, m_opController));
+    new JoystickButton(m_opController, XboxController.Button.kX.value).onTrue(new ArmCommandMid(m_armSubsystem, m_opController));
 
-    // m_intakeSubsystem.setDefaultCommand(
+    // new JoystickButton(m_opController, XboxController.Axis.kLeftY).onTrue(new ArmSpeedCommand(m_armSubsystem, m_opController))
+
+    new JoystickButton(m_opController, XboxController.Button.kRightBumper.value).onTrue(new PurpleCandleCommand(m_candleSubsystem));
+    new JoystickButton(m_opController, XboxController.Button.kLeftBumper.value).onTrue(new OrangeCandleCommand(m_candleSubsystem));
+
+    // new POVButton(m_opController, 0).toggleOnTrue(
     //   new RunCommand(
-    //     if(XboxController.Button.kLeftBumper != 0){
-    //     new IntakeCommand(m_intakeSubsystem)
-    //   }
-    //   )
-    // );
+    //   () ->
+    //     m_candleSubsystem.stopLight(), m_candleSubsystem));
+
+    m_candleSubsystem.setDefaultCommand(new AnimateCommand(m_candleSubsystem));
+    
+    new Trigger(
+      () -> m_opController.getLeftY() != 0
+    ).whileTrue(
+      new ArmSpeedCommand(m_armSubsystem, 
+        () -> m_opController.getLeftY()
+    ));
+
 
     new JoystickButton(m_driverController, XboxController.Button.kLeftBumper.value).whileTrue(new IntakeCommand(m_intakeSubsystem));
     new JoystickButton(m_driverController, XboxController.Button.kRightBumper.value).whileTrue(new OuttakeCommand(m_intakeSubsystem));
@@ -103,5 +135,3 @@ public class RobotContainer {
     return command.getAutonomousCommand().andThen(() -> m_robotDrive.drive(0, 0, 0, true, true));
   }
 }
-
-

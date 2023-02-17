@@ -3,6 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
+import edu.wpi.first.wpilibj.XboxController;
 
 import com.revrobotics.CANSparkMax.IdleMode;
 
@@ -145,4 +146,24 @@ public final class Constants {
   public static final class NeoMotorConstants {
     public static final double kFreeSpeedRpm = 5676;
   }
+  
+   public final class LightConstants{
+
+      public static final int CANdleID = 5;
+
+   }
+  
+   public static final int JoystickId = 0;
+
+
+
+  public final class ArmConstants{
+    public static final int ArmID = 14;
+    public static final int WristID = 2;
+    public static final double gearBoxRatio = 3 * 4 * 4;
+    public static final double armGearRatio = ( gearBoxRatio * 58 ) / 15;
+    public static final double ArmVelocityMultiplier = -1000;
+
+  }
+
 }

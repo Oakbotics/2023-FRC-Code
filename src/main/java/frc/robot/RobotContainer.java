@@ -60,10 +60,10 @@ public class RobotContainer {
     new JoystickButton(m_opController, XboxController.Button.kA.value).onTrue(new PurpleCandleCommand(m_candleSubsystem));
     new JoystickButton(m_opController, XboxController.Button.kB.value).onTrue(new OrangeCandleCommand(m_candleSubsystem));
 
-    new POVButton(m_opController, 0).toggleOnTrue(
-      new RunCommand(
-      () ->
-        m_candleSubsystem.stopLight(), m_candleSubsystem));
+    // new POVButton(m_opController, 0).toggleOnTrue(
+    //   new RunCommand(
+    //   () ->
+    //     m_candleSubsystem.stopLight(), m_candleSubsystem));
 
     m_candleSubsystem.setDefaultCommand(new AnimateCommand(m_candleSubsystem));
     

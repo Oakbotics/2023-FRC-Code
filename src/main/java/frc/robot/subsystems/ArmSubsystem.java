@@ -23,10 +23,10 @@ public class ArmSubsystem extends SubsystemBase {
   private SparkMaxPIDController m_pidController;
   private RelativeEncoder m_encoder;
   public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM, maxVel, minVel, maxAcc, allowedErr;
-  private final double encoderMultiplier = (1 / (ArmConstants.gearBoxRatio)) * 360;   //Degrees
+  private final double encoderMultiplier = (1 / (ArmConstants.armGearRatio)) * 360;   //Degrees
 
-  private final float MAXPosition = 170;
-  private final float MINPosition = 0;
+  private final float MAXPosition = 120;
+  private final float MINPosition = 2;
   
   public ArmSubsystem() {
     

@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj.XboxController;
 public final class Constants {
    public final class LightConstants{
 
-      public static final int CANdleID = 8;
+      public static final int CANdleID = 5;
 
    }
   
@@ -25,9 +25,10 @@ public final class Constants {
 
 
   public final class ArmConstants{
-    public static final int ArmID = 1;
+    public static final int ArmID = 14;
     public static final int WristID = 2;
     public static final double gearBoxRatio = 3 * 4 * 4;
+    public static final double armGearRatio = ( gearBoxRatio * 58 ) / 15;
     public static final double ArmVelocityMultiplier = -1000;
 
   }

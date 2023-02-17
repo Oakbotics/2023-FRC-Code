@@ -57,8 +57,8 @@ public class RobotContainer {
 
     // new JoystickButton(m_opController, XboxController.Axis.kLeftY).onTrue(new ArmSpeedCommand(m_armSubsystem, m_opController))
 
-    new JoystickButton(m_opController, XboxController.Button.kA.value).onTrue(new PurpleCandleCommand(m_candleSubsystem));
-    new JoystickButton(m_opController, XboxController.Button.kB.value).onTrue(new OrangeCandleCommand(m_candleSubsystem));
+    new JoystickButton(m_opController, XboxController.Button.kRightBumper.value).onTrue(new PurpleCandleCommand(m_candleSubsystem));
+    new JoystickButton(m_opController, XboxController.Button.kLeftBumper.value).onTrue(new OrangeCandleCommand(m_candleSubsystem));
 
     // new POVButton(m_opController, 0).toggleOnTrue(
     //   new RunCommand(

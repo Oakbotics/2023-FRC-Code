@@ -39,12 +39,12 @@ public class ArmSubsystem extends SubsystemBase {
   public void MoveShoulderDegrees(double degrees) {
     // This method will be called once per scheduler run during simulation
     m_shoulderSubsystem.MoveShoulderDegrees(degrees);
-    AdjustWristSoftLimit();
+    // AdjustWristSoftLimit();
   }
 
   public void MoveShoulderSpeed(double speed){
       m_shoulderSubsystem.MoveShoulderSpeed(speed);
-      AdjustWristSoftLimit();
+      // AdjustWristSoftLimit();
   }
 
   public void MoveWristDegrees(double degrees){

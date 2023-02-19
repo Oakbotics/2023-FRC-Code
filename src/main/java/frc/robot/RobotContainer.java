@@ -125,12 +125,12 @@ public class RobotContainer {
         () -> m_opController.getLeftY()
     ));
 
-    new Trigger(
-      () -> m_opController.getLeftX() != 0
-    ).whileTrue(
-      new WristSpeedCommand(m_armSubsystem, 
-        () -> m_opController.getLeftX()
-    ));
+    // new Trigger(
+    //   () -> m_opController.getRightY() != 0
+    // ).whileTrue(
+    //   new WristSpeedCommand(m_armSubsystem, 
+    //     () -> m_opController.getRightY()
+    // ));
 
 
     new JoystickButton(m_driverController, XboxController.Button.kLeftBumper.value).whileTrue(new IntakeCommand(m_intakeSubsystem));

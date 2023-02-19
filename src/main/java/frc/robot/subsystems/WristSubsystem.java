@@ -32,7 +32,7 @@ public class WristSubsystem extends SubsystemBase {
   public WristSubsystem() {
     
     // initialize motor
-    m_motor = new CANSparkMax(ArmConstants.ShoulderId, MotorType.kBrushless);
+    m_motor = new CANSparkMax(ArmConstants.WristID, MotorType.kBrushless);
     //
 
     /**

@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import frc.robot.subsystems.ShoulderSubsystem;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 
@@ -14,7 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
-public class ArmSpeedCommand extends CommandBase {
+public class ShoulderSpeedCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ArmSubsystem m_ArmSubsystem;
   public DoubleSupplier speed;
@@ -25,7 +26,7 @@ public class ArmSpeedCommand extends CommandBase {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ArmSpeedCommand(ArmSubsystem subsystem, DoubleSupplier m_speed) {
+  public ShoulderSpeedCommand(ArmSubsystem subsystem, DoubleSupplier m_speed) {
     m_ArmSubsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
@@ -43,7 +44,7 @@ public class ArmSpeedCommand extends CommandBase {
   public void execute() {
 
     
-    m_ArmSubsystem.MoveArmSpeed(speed.getAsDouble());
+    m_ArmSubsystem.MoveShoulderSpeed(speed.getAsDouble());
     SmartDashboard.putNumber("Arm Speed", speed.getAsDouble());
 
   }
@@ -51,7 +52,7 @@ public class ArmSpeedCommand extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_ArmSubsystem.MoveArmSpeed(0);
+    m_ArmSubsystem.MoveShoulderSpeed(0);
   }
 
   // Returns true when the command should end.

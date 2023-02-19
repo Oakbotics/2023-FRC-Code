@@ -16,20 +16,19 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmConstants;
 
-public class WristSubsystem extends SubsystemBase {
+public class ShoulderSubsystem extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
 
   public CANSparkMax m_motor;
   private SparkMaxPIDController m_pidController;
-  private RelativeEncoder m_encoder;
+  public RelativeEncoder m_encoder;
   public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM, maxVel, minVel, maxAcc, allowedErr;
-  private final double encoderMultiplier = (1 / (ArmConstants.wristGearRatio)) * 360;   //Degrees
+  private final double encoderMultiplier = (1 / (ArmConstants.shoulderGearRatio)) * 360;   //Degrees
 
-  private final float MAXPosition = 45;
-  private final float MINPosition = -180;
-
-
-  public WristSubsystem() {
+  private final float MAXPosition = 120;
+  private final float MINPosition = 2;
+  
+  public ShoulderSubsystem() {
     
     // initialize motor
     m_motor = new CANSparkMax(ArmConstants.ShoulderId, MotorType.kBrushless);
@@ -47,6 +46,7 @@ public class WristSubsystem extends SubsystemBase {
     m_encoder = m_motor.getEncoder();
 
     m_encoder.setPositionConversionFactor(encoderMultiplier);
+    //m_encoder.setVelocityConversionFactor(ArmConstants.gearBoxRatio);
 
     // PID coefficients
     kP = 5e-5; 
@@ -97,47 +97,34 @@ public class WristSubsystem extends SubsystemBase {
     
   }
 
-  public void MoveWristDegrees (double degrees) {
-      m_pidController.setReference(degrees, CANSparkMax.ControlType.kSmartMotion);
-  }
+  public void MoveShoulderDegrees(double degrees) {
 
-  public void MoveWristSpeed(double speed){
-      speed *= ArmConstants.ArmVelocityMultiplier;
-      m_pidController.setReference(speed, ControlType.kSmartVelocity);
-  }
+      /**
+       * As with other PID modes, Smart Motion is set by calling the
+       * setReference method on an existing pid object and setting
+       * the control type to kSmartMotion
+       */
 
-  public void setForwardSoftLimit(Float degrees){
-    m_motor.setSoftLimit(SoftLimitDirection.kForward, degrees);
-    m_motor.enableSoftLimit(SoftLimitDirection.kForward, true);
-    m_motor.enableSoftLimit(SoftLimitDirection.kReverse, true);
-  }
-
-  public double getForwardSoftLimit(){
-    return m_motor.getSoftLimit(SoftLimitDirection.kForward);
-  }
-
-  public void setReverseSoftLimit(Float limit){
-    m_motor.setSoftLimit(SoftLimitDirection.kReverse, limit);
-    m_motor.enableSoftLimit(SoftLimitDirection.kForward, true);
-
-  }
-
-  public void setDefaultReverseSoftLimit(){
-    m_motor.setSoftLimit(SoftLimitDirection.kReverse, MINPosition);
-    m_motor.enableSoftLimit(SoftLimitDirection.kForward, true);
-  }
-
-  public double getReverseSoftLimint(){
-    return m_motor.getSoftLimit(SoftLimitDirection.kReverse);
+        m_pidController.setReference(degrees, CANSparkMax.ControlType.kSmartMotion);
   }
   
-  public double getReverseSoftLimintDefault(){
-    return MINPosition;
+  public void MoveShoulderSpeed(double speed){
+    speed *= ArmConstants.ArmVelocityMultiplier;
+
+    m_pidController.setReference(speed, ControlType.kSmartVelocity);
+    
   }
 
+  public double GetShoulderPosition(){
+    return m_encoder.getPosition();
+  }
+
+  
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+
+    SmartDashboard.putNumber("Shoulder encord value", m_encoder.getPosition());
   }
 
   @Override

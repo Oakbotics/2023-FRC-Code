@@ -5,13 +5,14 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.ShoulderSubsystem;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 
 /** An example command that uses an example subsystem. */
-public class ArmCommandLow extends InstantCommand {
+public class ShoulderCommandLow extends InstantCommand {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ArmSubsystem m_ArmSubsystem;
   private final XboxController m_opperatorController;
@@ -20,7 +21,7 @@ public class ArmCommandLow extends InstantCommand {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ArmCommandLow(ArmSubsystem subsystem, XboxController oppController) {
+  public ShoulderCommandLow(ArmSubsystem subsystem, XboxController oppController) {
     m_ArmSubsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
@@ -35,7 +36,7 @@ public class ArmCommandLow extends InstantCommand {
   @Override
   public void execute() {
 
-    m_ArmSubsystem.MoveArmDegrees(15);
+    m_ArmSubsystem.MoveShoulderDegrees(15);
 
   }
 

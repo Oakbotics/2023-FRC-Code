@@ -22,6 +22,7 @@ import frc.robot.commands.AutonomousCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -34,8 +35,10 @@ import org.ejml.dense.block.MatrixOps_DDRB;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.simulation.JoystickSim;
-import frc.robot.subsystems.CandleSubsystem;
 import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.CandleSubsystem;
+import frc.robot.subsystems.ShoulderSubsystem;
+import frc.robot.subsystems.WristSubsystem;
 import frc.robot.commands.*;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -58,7 +61,9 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final XboxController m_opController = new XboxController(1);
 
-  private final ArmSubsystem m_armSubsystem = new ArmSubsystem();
+  private final ShoulderSubsystem m_shoulderSubsystem = new ShoulderSubsystem();
+  private final WristSubsystem m_wristSubsystem = new WristSubsystem();
+  private final ArmSubsystem m_armSubsystem = new ArmSubsystem(m_shoulderSubsystem, m_wristSubsystem);
   private final CandleSubsystem m_candleSubsystem = new CandleSubsystem(m_opController, Constants.LightConstants.CANdleID);
   
 
@@ -98,8 +103,8 @@ public class RobotContainer {
             () -> m_robotDrive.setX(),
                   m_robotDrive));
                   
-     new JoystickButton(m_opController, XboxController.Button.kY.value).onTrue(new ArmCommandLow(m_armSubsystem, m_opController));
-    new JoystickButton(m_opController, XboxController.Button.kX.value).onTrue(new ArmCommandMid(m_armSubsystem, m_opController));
+     new JoystickButton(m_opController, XboxController.Button.kY.value).onTrue(new ShoulderCommandLow(m_armSubsystem, m_opController));
+    new JoystickButton(m_opController, XboxController.Button.kX.value).onTrue(new ShoulderCommandMid(m_armSubsystem, m_opController));
 
     // new JoystickButton(m_opController, XboxController.Axis.kLeftY).onTrue(new ArmSpeedCommand(m_armSubsystem, m_opController))
 
@@ -116,13 +121,21 @@ public class RobotContainer {
     new Trigger(
       () -> m_opController.getLeftY() != 0
     ).whileTrue(
-      new ArmSpeedCommand(m_armSubsystem, 
+      new ShoulderSpeedCommand(m_armSubsystem, 
         () -> m_opController.getLeftY()
+    ));
+
+    new Trigger(
+      () -> m_opController.getLeftX() != 0
+    ).whileTrue(
+      new WristSpeedCommand(m_armSubsystem, 
+        () -> m_opController.getLeftX()
     ));
 
 
     new JoystickButton(m_driverController, XboxController.Button.kLeftBumper.value).whileTrue(new IntakeCommand(m_intakeSubsystem));
     new JoystickButton(m_driverController, XboxController.Button.kRightBumper.value).whileTrue(new OuttakeCommand(m_intakeSubsystem));
+
   }
 
   /**

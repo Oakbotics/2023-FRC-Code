@@ -158,10 +158,12 @@ public final class Constants {
 
 
   public final class ArmConstants{
-    public static final int ArmID = 14;
-    public static final int WristID = 2;
-    public static final double gearBoxRatio = 3 * 4 * 4;
-    public static final double armGearRatio = ( gearBoxRatio * 58 ) / 15;
+    public static final int ShoulderId = 14;
+    public static final int WristID = 1;
+    public static final double shoulderGearBoxRatio = 3 * 4 * 4;
+    public static final double wristGearBoxRatio = 3 * 3 * 3;
+    public static final double shoulderGearRatio = ( shoulderGearBoxRatio * 58 ) / 15;
+    public static final double wristGearRatio = ( wristGearBoxRatio * 40 ) / 16;
     public static final double ArmVelocityMultiplier = -1000;
 
   }

@@ -12,6 +12,8 @@ import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMax.SoftLimitDirection;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmConstants;
 
@@ -25,14 +27,13 @@ public class WristSubsystem extends SubsystemBase {
   private final double encoderMultiplier = (1 / (ArmConstants.wristGearRatio)) * 360;   //Degrees
 
   private final float MAXPosition = 45;
-  private final float MINPosition = -180;
+  private final float MINPosition = -90;
 
 
   public WristSubsystem() {
     
     // initialize motor
     m_motor = new CANSparkMax(ArmConstants.WristID, MotorType.kBrushless);
-    //
 
     /**
      * The RestoreFactoryDefaults method can be used to reset the configuration parameters
@@ -137,6 +138,7 @@ public class WristSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("Wrist encord value", m_encoder.getPosition());
   }
 
   @Override

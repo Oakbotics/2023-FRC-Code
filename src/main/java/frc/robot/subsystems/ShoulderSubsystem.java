@@ -98,19 +98,11 @@ public class ShoulderSubsystem extends SubsystemBase {
   }
 
   public void MoveShoulderDegrees(double degrees) {
-
-      /**
-       * As with other PID modes, Smart Motion is set by calling the
-       * setReference method on an existing pid object and setting
-       * the control type to kSmartMotion
-       */
-
         m_pidController.setReference(degrees, CANSparkMax.ControlType.kSmartMotion);
   }
   
   public void MoveShoulderSpeed(double speed){
     speed *= ArmConstants.ArmVelocityMultiplier;
-
     m_pidController.setReference(speed, ControlType.kSmartVelocity);
     
   }
@@ -119,11 +111,9 @@ public class ShoulderSubsystem extends SubsystemBase {
     return m_encoder.getPosition();
   }
 
-  
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-
     SmartDashboard.putNumber("Shoulder encord value", m_encoder.getPosition());
   }
 

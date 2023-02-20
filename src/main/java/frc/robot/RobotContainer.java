@@ -18,16 +18,13 @@ import edu.wpi.first.wpilibj.PS4Controller.Button;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
-import frc.robot.commands.AutonomousCommand;
-import frc.robot.commands.DriveCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import java.util.List;
-import frc.robot.commands.IntakeCommand;
-import frc.robot.commands.OuttakeCommand;
+
 import frc.robot.subsystems.IntakeSubsystem;
 import org.ejml.dense.block.MatrixOps_DDRB;
 
@@ -37,6 +34,7 @@ import edu.wpi.first.wpilibj.simulation.JoystickSim;
 import frc.robot.subsystems.CandleSubsystem;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.commands.*;
+import frc.robot.commands.AutoCommands.SwerveExampleAuto;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
@@ -131,7 +129,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    AutonomousCommand command = new AutonomousCommand(m_robotDrive);
+    SwerveExampleAuto command = new SwerveExampleAuto(m_robotDrive);
     return command.getAutonomousCommand().andThen(() -> m_robotDrive.drive(0, 0, 0, true, true));
   }
 }

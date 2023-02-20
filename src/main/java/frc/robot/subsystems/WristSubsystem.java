@@ -4,15 +4,14 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMax.SoftLimitDirection;
-
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmConstants;
 
@@ -21,7 +20,7 @@ public class WristSubsystem extends SubsystemBase {
 
   public CANSparkMax m_motor;
   private SparkMaxPIDController m_pidController;
-  private RelativeEncoder m_encoder;
+  private AbsoluteEncoder m_encoder;
   public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM, maxVel, minVel, maxAcc, allowedErr;
   private final double encoderMultiplier = (1 / (ArmConstants.wristGearRatio)) * 360;   //Degrees
 
@@ -44,7 +43,7 @@ public class WristSubsystem extends SubsystemBase {
 
     // initialze PID controller and encoder objects
     m_pidController = m_motor.getPIDController();
-    m_encoder = m_motor.getEncoder();
+    m_encoder = m_motor.getAbsoluteEncoder(Type.kDutyCycle);
 
     m_encoder.setPositionConversionFactor(encoderMultiplier);
 

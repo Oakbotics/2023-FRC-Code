@@ -46,7 +46,9 @@ public class WristSubsystem extends SubsystemBase {
     m_pidController = m_motor.getPIDController();
     m_encoder = m_motor.getAbsoluteEncoder(Type.kDutyCycle);
 
+    m_pidController.setFeedbackDevice(m_encoder);
     m_encoder.setPositionConversionFactor(encoderMultiplier);
+
 
     // PID coefficients
     kP = 5e-5; 

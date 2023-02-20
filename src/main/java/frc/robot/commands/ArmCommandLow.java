@@ -14,17 +14,15 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 public class ArmCommandLow extends InstantCommand {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ArmSubsystem m_ArmSubsystem;
-  private final XboxController m_opperatorController;
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ArmCommandLow(ArmSubsystem subsystem, XboxController oppController) {
+  public ArmCommandLow(ArmSubsystem subsystem) {
     m_ArmSubsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
-    m_opperatorController = oppController;
   }
 
   // Called when the command is initially scheduled.

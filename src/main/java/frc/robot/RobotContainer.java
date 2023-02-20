@@ -96,8 +96,8 @@ public class RobotContainer {
             () -> m_robotDrive.setX(),
                   m_robotDrive));
                   
-     new JoystickButton(m_opController, XboxController.Button.kY.value).onTrue(new ArmCommandLow(m_armSubsystem, m_opController));
-    new JoystickButton(m_opController, XboxController.Button.kX.value).onTrue(new ArmCommandMid(m_armSubsystem, m_opController));
+     new JoystickButton(m_opController, XboxController.Button.kY.value).onTrue(new ArmCommandLow(m_armSubsystem));
+    new JoystickButton(m_opController, XboxController.Button.kX.value).onTrue(new ArmCommandMid(m_armSubsystem));
 
     // new JoystickButton(m_opController, XboxController.Axis.kLeftY).onTrue(new ArmSpeedCommand(m_armSubsystem, m_opController))
 

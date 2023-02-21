@@ -127,16 +127,17 @@ public class WristSubsystem extends SubsystemBase {
     m_motor.enableSoftLimit(SoftLimitDirection.kForward, true);
   }
 
-  public double getReverseSoftLimint(){
+  public double getReverseSoftLimit(){
     return m_motor.getSoftLimit(SoftLimitDirection.kReverse);
   }
   
-  public double getReverseSoftLimintDefault(){
+  public double getReverseSoftLimitDefault(){
     return MINPosition;
   }
 
   @Override
   public void periodic() {
+    
     // This method will be called once per scheduler run
   }
 

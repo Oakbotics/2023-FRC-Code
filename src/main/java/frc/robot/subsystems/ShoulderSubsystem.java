@@ -88,7 +88,7 @@ public class ShoulderSubsystem extends SubsystemBase {
     m_pidController.setSmartMotionMaxAccel(maxAcc, smartMotionSlot);
     m_pidController.setSmartMotionAllowedClosedLoopError(allowedErr, smartMotionSlot);
 
-    m_motor.setIdleMode(IdleMode.kBrake);
+    m_motor.setIdleMode(IdleMode.kCoast);
     m_motor.setSoftLimit(SoftLimitDirection.kForward, MAXPosition);
     m_motor.setSoftLimit(SoftLimitDirection.kReverse, MINPosition);
 

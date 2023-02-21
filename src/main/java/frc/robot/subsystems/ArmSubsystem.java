@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax.SoftLimitDirection;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.ShoulderSubsystem;
 import frc.robot.subsystems.WristSubsystem;
@@ -39,7 +40,7 @@ public class ArmSubsystem extends SubsystemBase {
   public void MoveShoulderDegrees(double degrees) {
     // This method will be called once per scheduler run during simulation
     m_shoulderSubsystem.MoveShoulderDegrees(degrees);
-    // AdjustWristSoftLimit();
+    //AdjustWristSoftLimit();
   }
 
   public void MoveShoulderSpeed(double speed){
@@ -57,10 +58,21 @@ public class ArmSubsystem extends SubsystemBase {
 
   private void AdjustWristSoftLimit(){
     if (m_shoulderSubsystem.GetShoulderPosition() <= shoulderWristBottomDegree){ 
-      Double limit = (m_wristSubsystem.getReverseSoftLimint() + (m_shoulderSubsystem.GetShoulderPosition() - shoulderWristBottomDegree)); 
+      Double limit = (m_wristSubsystem.getReverseSoftLimit() + (m_shoulderSubsystem.GetShoulderPosition() - shoulderWristBottomDegree)); 
       m_wristSubsystem.setReverseSoftLimit(limit.floatValue());
     }else{
-      if(m_wristSubsystem.getReverseSoftLimint() != m_wristSubsystem.getReverseSoftLimintDefault()){
+      if(m_wristSubsystem.getReverseSoftLimit() != m_wristSubsystem.getReverseSoftLimitDefault()){
+        m_wristSubsystem.setDefaultReverseSoftLimit();
+      }
+    }
+  }
+
+  private void AdjustWristSoftLimit(double shoulderDegrees){
+    if (shoulderDegrees <= shoulderWristBottomDegree){ 
+      Double limit = (m_wristSubsystem.getReverseSoftLimit() + (shoulderDegrees - shoulderWristBottomDegree)); 
+      m_wristSubsystem.setReverseSoftLimit(limit.floatValue());
+    }else{
+      if(m_wristSubsystem.getReverseSoftLimit() != m_wristSubsystem.getReverseSoftLimitDefault()){
         m_wristSubsystem.setDefaultReverseSoftLimit();
       }
     }

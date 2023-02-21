@@ -74,16 +74,7 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
     // Configure default commands
-    m_robotDrive.setDefaultCommand(
-        // The left stick controls translation of the robot.
-        // Turning is controlled by the X axis of the right stick.
-        new RunCommand(
-            () -> m_robotDrive.drive(
-                -MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
-                true, true),
-            m_robotDrive));
+    
   }
 
 
@@ -117,6 +108,18 @@ public class RobotContainer {
     //     m_candleSubsystem.stopLight(), m_candleSubsystem));
 
     m_candleSubsystem.setDefaultCommand(new AnimateCommand(m_candleSubsystem));
+    m_robotDrive.setDefaultCommand(
+        // The left stick controls translation of the robot.
+        // Turning is controlled by the X axis of the right stick.
+        new RunCommand(
+            () ->
+            
+              m_robotDrive.drive(
+                -MathUtil.applyDeadband(m_driverController.getLeftY() *  ((m_opController.getLeftTriggerAxis() > 0 )? DriveConstants.kSpeedLimiter : 1), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getLeftX() *  ((m_opController.getLeftTriggerAxis() > 0 )? DriveConstants.kSpeedLimiter : 1), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getRightX() *  ((m_opController.getLeftTriggerAxis() > 0 )? DriveConstants.kSpeedLimiter : 1), OIConstants.kDriveDeadband),
+                true, true),
+            m_robotDrive));
     
     new Trigger(
       () -> m_opController.getLeftY() != 0

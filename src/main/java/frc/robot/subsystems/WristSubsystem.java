@@ -4,9 +4,10 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
@@ -21,19 +22,18 @@ public class WristSubsystem extends SubsystemBase {
 
   public CANSparkMax m_motor;
   private SparkMaxPIDController m_pidController;
-  private RelativeEncoder m_encoder;
+  private AbsoluteEncoder m_encoder;
   public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM, maxVel, minVel, maxAcc, allowedErr;
   private final double encoderMultiplier = (1 / (ArmConstants.wristGearRatio)) * 360;   //Degrees
 
   private final float MAXPosition = 45;
-  private final float MINPosition = -180;
+  private final float MINPosition = -90;
 
 
   public WristSubsystem() {
     
     // initialize motor
     m_motor = new CANSparkMax(ArmConstants.WristID, MotorType.kBrushless);
-    //
 
     /**
      * The RestoreFactoryDefaults method can be used to reset the configuration parameters
@@ -44,9 +44,11 @@ public class WristSubsystem extends SubsystemBase {
 
     // initialze PID controller and encoder objects
     m_pidController = m_motor.getPIDController();
-    m_encoder = m_motor.getEncoder();
+    m_encoder = m_motor.getAbsoluteEncoder(Type.kDutyCycle);
 
+    m_pidController.setFeedbackDevice(m_encoder);
     m_encoder.setPositionConversionFactor(encoderMultiplier);
+
 
     // PID coefficients
     kP = 5e-5; 
@@ -139,6 +141,7 @@ public class WristSubsystem extends SubsystemBase {
   public void periodic() {
     
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("Wrist encord value", m_encoder.getPosition());
   }
 
   @Override

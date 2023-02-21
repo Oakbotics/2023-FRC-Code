@@ -40,12 +40,12 @@ public class ArmSubsystem extends SubsystemBase {
   public void MoveShoulderDegrees(double degrees) {
     // This method will be called once per scheduler run during simulation
     m_shoulderSubsystem.MoveShoulderDegrees(degrees);
-    //AdjustWristSoftLimit();
+    // AdjustWristSoftLimit();
   }
 
   public void MoveShoulderSpeed(double speed){
       m_shoulderSubsystem.MoveShoulderSpeed(speed);
-      // AdjustWristSoftLimit();
+      AdjustWristSoftLimit();
   }
 
   public void MoveWristDegrees(double degrees){
@@ -58,7 +58,7 @@ public class ArmSubsystem extends SubsystemBase {
 
   private void AdjustWristSoftLimit(){
     if (m_shoulderSubsystem.GetShoulderPosition() <= shoulderWristBottomDegree){ 
-      Double limit = (m_wristSubsystem.getReverseSoftLimit() + (m_shoulderSubsystem.GetShoulderPosition() - shoulderWristBottomDegree)); 
+      Double limit = (m_wristSubsystem.getReverseSoftLimit() + (m_shoulderSubsystem.GetShoulderPosition() - shoulderWristBottomDegree)); //Equation for wrist soft limit in porpotion to arm angle
       m_wristSubsystem.setReverseSoftLimit(limit.floatValue());
     }else{
       if(m_wristSubsystem.getReverseSoftLimit() != m_wristSubsystem.getReverseSoftLimitDefault()){

@@ -4,28 +4,30 @@
 
 package frc.robot.commands;
 
-import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ShoulderSubsystem;
+import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 
 /** An example command that uses an example subsystem. */
-public class ShoulderCommandLow extends InstantCommand {
+public class ArmCommandMid extends InstantCommand {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ArmSubsystem m_ArmSubsystem;
   private final XboxController m_opperatorController;
+
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ShoulderCommandLow(ArmSubsystem subsystem, XboxController oppController) {
+  public ArmCommandMid(ArmSubsystem subsystem, XboxController controller) {
     m_ArmSubsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
-    m_opperatorController = oppController;
+    m_opperatorController = controller;
   }
 
   // Called when the command is initially scheduled.
@@ -36,14 +38,15 @@ public class ShoulderCommandLow extends InstantCommand {
   @Override
   public void execute() {
 
-    m_ArmSubsystem.MoveShoulderDegrees(15);
-
+    m_ArmSubsystem.MoveShoulderDegrees(80);
+    m_ArmSubsystem.MoveWristDegrees(1);
+  
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    SmartDashboard.putString("End", "Low Ended");
+    SmartDashboard.putString("End", "Mid Ended");
   }
 
   // Returns true when the command should end.

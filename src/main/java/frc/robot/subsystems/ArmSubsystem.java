@@ -17,7 +17,7 @@ public class ArmSubsystem extends SubsystemBase {
   ShoulderSubsystem m_shoulderSubsystem;
   WristSubsystem m_wristSubsystem;
 
-  private final double shoulderWristBottomDegree = 45;
+  private final double shoulderWristBottomDegree = 35;
 
 
   /** Creates a new ExampleSubsystem. */
@@ -45,7 +45,7 @@ public class ArmSubsystem extends SubsystemBase {
 
   public void MoveShoulderSpeed(double speed){
       m_shoulderSubsystem.MoveShoulderSpeed(speed);
-      AdjustWristSoftLimit();
+      // AdjustWristSoftLimit();
   }
 
   public void MoveWristDegrees(double degrees){
@@ -58,7 +58,8 @@ public class ArmSubsystem extends SubsystemBase {
 
   private void AdjustWristSoftLimit(){
     if (m_shoulderSubsystem.GetShoulderPosition() <= shoulderWristBottomDegree){ 
-      Double limit = (m_wristSubsystem.getReverseSoftLimit() + (m_shoulderSubsystem.GetShoulderPosition() - shoulderWristBottomDegree)); //Equation for wrist soft limit in porpotion to arm angle
+      //For every degree below 35, make wrist limit go up by 156/33
+      Double limit = (shoulderWristBottomDegree - m_shoulderSubsystem.GetShoulderPosition())*(156/33);
       m_wristSubsystem.setReverseSoftLimit(limit.floatValue());
     }else{
       if(m_wristSubsystem.getReverseSoftLimit() != m_wristSubsystem.getReverseSoftLimitDefault()){

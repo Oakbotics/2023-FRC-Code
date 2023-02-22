@@ -13,6 +13,7 @@ import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMax.SoftLimitDirection;
 
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmConstants;
@@ -24,10 +25,10 @@ public class WristSubsystem extends SubsystemBase {
   private SparkMaxPIDController m_pidController;
   private AbsoluteEncoder m_encoder;
   public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM, maxVel, minVel, maxAcc, allowedErr;
-  private final double encoderMultiplier = (1 / (ArmConstants.wristGearRatio)) * 360;   //Degrees
+  private final double encoderMultiplier =   (Units.radiansToDegrees(Math.PI * 2));   //Degrees
 
-  private final float MAXPosition = 45;
-  private final float MINPosition = -90;
+  private final float MAXPosition = 160;
+  private final float MINPosition = 0;
 
 
   public WristSubsystem() {
@@ -42,6 +43,7 @@ public class WristSubsystem extends SubsystemBase {
      */
     m_motor.restoreFactoryDefaults();
 
+
     // initialze PID controller and encoder objects
     m_pidController = m_motor.getPIDController();
     m_encoder = m_motor.getAbsoluteEncoder(Type.kDutyCycle);
@@ -51,8 +53,8 @@ public class WristSubsystem extends SubsystemBase {
 
 
     // PID coefficients
-    kP = 5e-5; 
-    kI = 1e-6;
+    kP = 1e-4; 
+    kI = 0;
     kD = 0; 
     kIz = 0; 
     kFF = 0.000156; 
@@ -61,7 +63,7 @@ public class WristSubsystem extends SubsystemBase {
     maxRPM = 5700;
 
     // Smart Motion Coefficients
-    maxVel = 2000; // rpm
+    maxVel = 10; // rpm
     maxAcc = 1500;
 
     // set PID coefficients
@@ -104,7 +106,7 @@ public class WristSubsystem extends SubsystemBase {
   }
 
   public void MoveWristSpeed(double speed){
-      speed *= ArmConstants.ArmVelocityMultiplier;
+    speed *= ArmConstants.ArmVelocityMultiplier;
       m_pidController.setReference(speed, ControlType.kSmartVelocity);
   }
 
@@ -142,6 +144,8 @@ public class WristSubsystem extends SubsystemBase {
     
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Wrist encord value", m_encoder.getPosition());
+    SmartDashboard.putNumber("Wrist softlimit value", getReverseSoftLimit());
+    SmartDashboard.putNumber("Wrist Speed", m_encoder.getVelocity());
   }
 
   @Override

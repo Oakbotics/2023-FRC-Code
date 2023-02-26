@@ -39,7 +39,7 @@ public class ArmCommandHigh extends InstantCommand {
   public void execute() {
 
     m_ArmSubsystem.MoveShoulderDegrees(115);
-
+    m_ArmSubsystem.MoveWristDegrees(170);
   }
 
   // Called once the command ends or is interrupted.

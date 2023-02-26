@@ -38,8 +38,8 @@ public class ArmCommandMid extends InstantCommand {
   @Override
   public void execute() {
 
-    m_ArmSubsystem.MoveShoulderDegrees(80);
-    m_ArmSubsystem.MoveWristDegrees(1);
+    m_ArmSubsystem.MoveShoulderDegrees(98);
+    m_ArmSubsystem.MoveWristDegrees(180);
   
   }
 

@@ -27,8 +27,8 @@ public class WristSubsystem extends SubsystemBase {
   public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM, maxVel, minVel, maxAcc, allowedErr;
   private final double encoderMultiplier =   (Units.radiansToDegrees(Math.PI * 2));   //Degrees
 
-  private final float MAXPosition = 160;
-  private final float MINPosition = 0;
+  private final float MAXPosition = 210;
+  private final float MINPosition = 4;
 
 
   public WristSubsystem() {
@@ -51,13 +51,15 @@ public class WristSubsystem extends SubsystemBase {
     m_pidController.setFeedbackDevice(m_encoder);
     m_encoder.setPositionConversionFactor(encoderMultiplier);
 
+    m_encoder.setInverted(true);
+    m_motor.setInverted(false);
 
     // PID coefficients
-    kP = 1e-4; 
+    kP = 15e-3; 
     kI = 0;
     kD = 0; 
     kIz = 0; 
-    kFF = 0.000156; 
+    kFF = 0; 
     kMaxOutput = 1; 
     kMinOutput = -1;
     maxRPM = 5700;
@@ -92,7 +94,7 @@ public class WristSubsystem extends SubsystemBase {
     m_pidController.setSmartMotionMaxAccel(maxAcc, smartMotionSlot);
     m_pidController.setSmartMotionAllowedClosedLoopError(allowedErr, smartMotionSlot);
 
-    m_motor.setIdleMode(IdleMode.kBrake);
+    m_motor.setIdleMode(IdleMode.kCoast);
     m_motor.setSoftLimit(SoftLimitDirection.kForward, MAXPosition);
     m_motor.setSoftLimit(SoftLimitDirection.kReverse, MINPosition);
 
@@ -102,12 +104,12 @@ public class WristSubsystem extends SubsystemBase {
   }
 
   public void MoveWristDegrees (double degrees) {
-      m_pidController.setReference(degrees, CANSparkMax.ControlType.kSmartMotion);
+      m_pidController.setReference(degrees, CANSparkMax.ControlType.kPosition);
   }
 
   public void MoveWristSpeed(double speed){
     speed *= ArmConstants.ArmVelocityMultiplier;
-      m_pidController.setReference(speed, ControlType.kSmartVelocity);
+      m_pidController.setReference(speed, ControlType.kVelocity);
   }
 
   public void setForwardSoftLimit(Float degrees){

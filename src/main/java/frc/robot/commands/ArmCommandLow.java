@@ -36,8 +36,8 @@ public class ArmCommandLow extends InstantCommand {
   @Override
   public void execute() {
 
-    m_ArmSubsystem.MoveShoulderDegrees(15);
-
+    m_ArmSubsystem.MoveShoulderDegrees(2);
+    m_ArmSubsystem.MoveWristDegrees(5);
 
   }
 

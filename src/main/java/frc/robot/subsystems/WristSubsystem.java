@@ -84,7 +84,7 @@ public class WristSubsystem extends SubsystemBase {
     
   }
 
-  public void MoveArm (double degrees) {
+  public void MoveArm(double degrees) {
 
       /**
        * As with other PID modes, Smart Motion is set by calling the
@@ -92,6 +92,9 @@ public class WristSubsystem extends SubsystemBase {
        * the control type to kSmartMotion
        */
       m_pidController.setReference(degrees, CANSparkMax.ControlType.kSmartMotion);
+
+
+
   }
   
   @Override

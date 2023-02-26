@@ -26,6 +26,8 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import java.util.List;
 
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.LimelightSubsystem;
+
 import org.ejml.dense.block.MatrixOps_DDRB;
 
 import edu.wpi.first.wpilibj.GenericHID;
@@ -34,7 +36,8 @@ import edu.wpi.first.wpilibj.simulation.JoystickSim;
 import frc.robot.subsystems.CandleSubsystem;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.commands.*;
-import frc.robot.commands.AutoCommands.SwerveExampleAuto;
+import frc.robot.commands.AutoCommands.ChargeStation;
+import frc.robot.commands.AutoCommands.commandGroups.BlueCommandGroups.AutoScorePreloadMid;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
@@ -58,7 +61,7 @@ public class RobotContainer {
 
   private final ArmSubsystem m_armSubsystem = new ArmSubsystem();
   private final CandleSubsystem m_candleSubsystem = new CandleSubsystem(m_opController, Constants.LightConstants.CANdleID);
-  
+  private final LimelightSubsystem m_limelightSubsystem = new LimelightSubsystem();
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -128,8 +131,16 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
+  // public Command getAutonomousCommand() {
+  //   AutoScorePreloadMid command = new AutoScorePreloadMid(m_armSubsystem, m_robotDrive, m_intakeSubsystem, m_limelightSubsystem);
+  //   return command.andThen(() -> m_robotDrive.drive(0, 0, 0, true, true));
+  // }
+
+
+
   public Command getAutonomousCommand() {
-    SwerveExampleAuto command = new SwerveExampleAuto(m_robotDrive);
-    return command.getAutonomousCommand().andThen(() -> m_robotDrive.drive(0, 0, 0, true, true));
+    m_robotDrive.zeroHeading();
+    SwerveControllerCommand command = new ChargeStation(m_robotDrive).getAutonomousCommand();
+    return command.andThen(() -> m_robotDrive.drive(0, 0, 0, true, true));
   }
 }

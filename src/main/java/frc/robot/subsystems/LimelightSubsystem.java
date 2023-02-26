@@ -66,8 +66,9 @@ public class LimelightSubsystem extends SubsystemBase {
     double[] botPose = m_limelightTable.getEntry("botpose").getDoubleArray(new double[6]); 
     double id = m_limelightTable.getEntry("tid").getDouble(4);
 
-    robotPose = new Pose2d(new Translation2d(Math.abs(botPose[0]), Math.abs(botPose[1])), Rotation2d.fromDegrees(Math.abs(botPose[5])));
-    
+    // robotPose = new Pose2d(new Translation2d(Math.abs(botPose[0]), Math.abs(botPose[1])), Rotation2d.fromDegrees(Math.abs(botPose[5])));
+    robotPose = new Pose2d(new Translation2d((botPose[0]),(botPose[1])), Rotation2d.fromDegrees((botPose[5])));
+
     m_field.setRobotPose(robotPose);
     SmartDashboard.putString("Field Pose", m_field.getRobotPose().getTranslation().toString());
     
@@ -80,6 +81,8 @@ public class LimelightSubsystem extends SubsystemBase {
     
     SmartDashboard.putNumber("Bot Rotation", botPose[5]);
     SmartDashboard.putNumber  ("LimelightID", id);  
+    SmartDashboard.putNumber("BotPoseX", robotPose.getX());
+    SmartDashboard.putNumber("BotPoseY", robotPose.getY());
     // SmartDashboard.putNumber("LimelightY", ty);
     // SmartDashboard.putNumber("LimelightArea", ta);
     // // This method will be called once per scheduler run

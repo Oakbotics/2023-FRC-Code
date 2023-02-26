@@ -43,11 +43,11 @@ public class AutoScorePreloadMid extends SequentialCommandGroup {
     addRequirements(m_armSubsystem, m_driveSubsystem, m_intakeSubsystem);
 
     addCommands(
-        new GoToPositionSwerveCommand(m_driveSubsystem, m_limelightSubsystem, new Pose2d(BlueFieldConstants.communityFarLeftPole, Rotation2d.fromDegrees(0))).getAutonomousCommand(),
-        new ArmCommandMid(m_armSubsystem),
-        new OuttakeCommand(m_intakeSubsystem),
-        new GoToPositionSwerveCommand(m_driveSubsystem, m_limelightSubsystem, new Pose2d(BlueFieldConstants.chargeStationPosition, Rotation2d.fromDegrees(0))).getAutonomousCommand()
+        new GoToPositionSwerveCommand(m_driveSubsystem, m_limelightSubsystem, new Pose2d(BlueFieldConstants.communityFarLeftPole, Rotation2d.fromDegrees(0))).getAutonomousCommand()
+        //new GoToPositionSwerveCommand(m_driveSubsystem, m_limelightSubsystem, new Pose2d(BlueFieldConstants.chargeStationPosition, Rotation2d.fromDegrees(0))).getAutonomousCommand()
     );
+
+
     }
 
 

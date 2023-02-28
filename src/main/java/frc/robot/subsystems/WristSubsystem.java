@@ -30,7 +30,7 @@ public class WristSubsystem extends SubsystemBase {
 
   private final float MAXPosition = 210;
   private final float MINPosition = 4;
-
+  private final double WristMarginError = 4;
 
   public WristSubsystem() {
     
@@ -115,6 +115,10 @@ public class WristSubsystem extends SubsystemBase {
     speed *= ArmConstants.ArmVelocityMultiplier;
       if(m_encoder.getPosition() >= MAXPosition || m_encoder.getPosition() <= MINPosition ) m_pidController.setReference(0, ControlType.kVelocity);
       else m_pidController.setReference(speed, ControlType.kVelocity); 
+  }
+
+  public boolean isWristAtSetpoint(double setPoint){
+    return Math.abs(m_encoder.getPosition() - setPoint) <= WristMarginError;
   }
 
   public void setForwardSoftLimit(Float degrees){

@@ -56,6 +56,14 @@ public class ArmSubsystem extends SubsystemBase {
     m_wristSubsystem.MoveWristSpeed(speed);
   }
 
+  public boolean isWristAtSetpoint(double setPoint){
+    return m_wristSubsystem.isWristAtSetpoint(setPoint);
+  }
+
+  public boolean isShoulderAtSetpoint(double setPoint){
+    return m_shoulderSubsystem.isShoulderAtSetpoint(setPoint);
+  }
+
   private void AdjustWristSoftLimit(){
     if (m_shoulderSubsystem.GetShoulderPosition() <= shoulderWristBottomDegree){ 
       //For every degree below 35, make wrist limit go up by 156/33

@@ -5,6 +5,8 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.ShoulderSubsystem;
+import frc.robot.commands.ArmCommandGroup.ShoulderMoveDegreeCommand;
+import frc.robot.commands.ArmCommandGroup.WristMoveDegreeCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj.XboxController;
@@ -37,10 +39,7 @@ public class ArmCommandMid extends InstantCommand {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
-    m_ArmSubsystem.MoveShoulderDegrees(98);
-    m_ArmSubsystem.MoveWristDegrees(180);
-  
+    new ShoulderMoveDegreeCommand(m_ArmSubsystem, 98).andThen(new WristMoveDegreeCommand(m_ArmSubsystem, 180));
   }
 
   // Called once the command ends or is interrupted.

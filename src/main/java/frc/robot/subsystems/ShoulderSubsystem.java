@@ -27,7 +27,8 @@ public class ShoulderSubsystem extends SubsystemBase {
 
   private final float MAXPosition = 120;
   private final float MINPosition = 2;
-  
+  private final double ShoulderMarginError = 4;
+
   public ShoulderSubsystem() {
     
     // initialize motor
@@ -105,6 +106,10 @@ public class ShoulderSubsystem extends SubsystemBase {
     speed *= ArmConstants.ArmVelocityMultiplier;
     m_pidController.setReference(speed, ControlType.kSmartVelocity);
     
+  }
+
+  public boolean isShoulderAtSetpoint(double setPoint){
+    return Math.abs(m_encoder.getPosition() - setPoint) <= ShoulderMarginError;
   }
 
   public double GetShoulderPosition(){

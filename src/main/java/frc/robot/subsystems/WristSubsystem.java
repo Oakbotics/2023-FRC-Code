@@ -17,6 +17,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmConstants;
+import pabeles.concurrency.IntOperatorTask.Max;
 
 public class WristSubsystem extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
@@ -50,7 +51,7 @@ public class WristSubsystem extends SubsystemBase {
 
     m_pidController.setFeedbackDevice(m_encoder);
     m_encoder.setPositionConversionFactor(encoderMultiplier);
-
+    
     m_encoder.setInverted(true);
     m_motor.setInverted(false);
 
@@ -104,12 +105,16 @@ public class WristSubsystem extends SubsystemBase {
   }
 
   public void MoveWristDegrees (double degrees) {
-      m_pidController.setReference(degrees, CANSparkMax.ControlType.kPosition);
+      if(m_encoder.getPosition() >= MAXPosition) m_pidController.setReference(MAXPosition, CANSparkMax.ControlType.kPosition); 
+      else if(m_encoder.getPosition() <= MINPosition) m_pidController.setReference(MINPosition, CANSparkMax.ControlType.kPosition);  
+      else m_pidController.setReference(degrees, CANSparkMax.ControlType.kPosition); 
+
   }
 
   public void MoveWristSpeed(double speed){
     speed *= ArmConstants.ArmVelocityMultiplier;
-      m_pidController.setReference(speed, ControlType.kVelocity);
+      if(m_encoder.getPosition() >= MAXPosition || m_encoder.getPosition() <= MINPosition ) m_pidController.setReference(0, ControlType.kVelocity);
+      else m_pidController.setReference(speed, ControlType.kVelocity); 
   }
 
   public void setForwardSoftLimit(Float degrees){

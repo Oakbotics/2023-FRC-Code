@@ -8,6 +8,7 @@ import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
+import com.revrobotics.SparkMaxPIDController.AccelStrategy;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
@@ -29,7 +30,8 @@ public class WristSubsystem extends SubsystemBase {
   private final double encoderMultiplier =   (Units.radiansToDegrees(Math.PI * 2));   //Degrees
 
   private final float MAXPosition = 210;
-  private final float MINPosition = 4;
+  private final float MINPosition = 20;
+
   private final double WristMarginError = 4;
 
   public WristSubsystem() {
@@ -56,18 +58,30 @@ public class WristSubsystem extends SubsystemBase {
     m_motor.setInverted(false);
 
     // PID coefficients
-    kP = 15e-3; 
+    // kP = 0.006;
+    // kI = 0;
+    // kD = 0.003; 
+    // kIz = 0; 
+    // kFF = 0.003; 
+    // kMaxOutput = 1; 
+    // kMinOutput = -1;
+    // maxRPM = 5700;
+
+    kP = 0.04; 
     kI = 0;
-    kD = 0; 
+    kD = 0.003; 
     kIz = 0; 
     kFF = 0; 
-    kMaxOutput = 1; 
-    kMinOutput = -1;
-    maxRPM = 5700;
+    kMaxOutput = 0.5; 
+    kMinOutput = -0.5;
+    //maxRPM = 5700;
+    //allowedErr = 0.1;
+  
 
     // Smart Motion Coefficients
-    maxVel = 10; // rpm
-    maxAcc = 1500;
+
+    maxVel = 7; // rpm
+    maxAcc = 1;
 
     // set PID coefficients
     m_pidController.setP(kP);
@@ -94,10 +108,13 @@ public class WristSubsystem extends SubsystemBase {
     m_pidController.setSmartMotionMinOutputVelocity(minVel, smartMotionSlot);
     m_pidController.setSmartMotionMaxAccel(maxAcc, smartMotionSlot);
     m_pidController.setSmartMotionAllowedClosedLoopError(allowedErr, smartMotionSlot);
+    m_pidController.setSmartMotionAccelStrategy(AccelStrategy.kSCurve, smartMotionSlot);
 
     m_motor.setIdleMode(IdleMode.kCoast);
     m_motor.setSoftLimit(SoftLimitDirection.kForward, MAXPosition);
     m_motor.setSoftLimit(SoftLimitDirection.kReverse, MINPosition);
+
+    m_motor.setClosedLoopRampRate(0.2);
 
     m_motor.enableSoftLimit(SoftLimitDirection.kForward, true);
     m_motor.enableSoftLimit(SoftLimitDirection.kReverse, true);
@@ -157,6 +174,7 @@ public class WristSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Wrist encord value", m_encoder.getPosition());
     SmartDashboard.putNumber("Wrist softlimit value", getReverseSoftLimit());
     SmartDashboard.putNumber("Wrist Speed", m_encoder.getVelocity());
+    SmartDashboard.putNumber("WristOutput", m_motor.getAppliedOutput());
   }
 
   @Override

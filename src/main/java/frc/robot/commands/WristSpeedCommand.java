@@ -51,6 +51,8 @@ public class WristSpeedCommand extends CommandBase {
     m_ArmSubsystem.MoveWristSpeed(0);
   }
 
+  
+
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {

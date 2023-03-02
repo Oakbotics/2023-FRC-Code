@@ -29,8 +29,8 @@ public class WristSubsystem extends SubsystemBase {
   public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM, maxVel, minVel, maxAcc, allowedErr;
   private final double encoderMultiplier =   (Units.radiansToDegrees(Math.PI * 2));   //Degrees
 
-  private final float MAXPosition = 210;
-  private final float MINPosition = 20;
+  private  float MAXPosition = 210;
+  private float MINPosition = 5;
 
   private final double WristMarginError = 4;
 
@@ -122,6 +122,7 @@ public class WristSubsystem extends SubsystemBase {
   }
 
   public void MoveWristDegrees (double degrees) {
+
       if(m_encoder.getPosition() >= MAXPosition) m_pidController.setReference(MAXPosition, CANSparkMax.ControlType.kPosition); 
       else if(m_encoder.getPosition() <= MINPosition) m_pidController.setReference(MINPosition, CANSparkMax.ControlType.kPosition);  
       else m_pidController.setReference(degrees, CANSparkMax.ControlType.kPosition); 
@@ -129,8 +130,9 @@ public class WristSubsystem extends SubsystemBase {
   }
 
   public void MoveWristSpeed(double speed){
-    speed *= ArmConstants.ArmVelocityMultiplier;
-      if(m_encoder.getPosition() >= MAXPosition || m_encoder.getPosition() <= MINPosition ) m_pidController.setReference(0, ControlType.kVelocity);
+    speed *= ArmConstants.WristVelocityMultiplier;
+      if(m_encoder.getPosition() >= MAXPosition && speed > 0) m_pidController.setReference(0, ControlType.kVelocity);
+      else if (m_encoder.getPosition() <= MINPosition && speed < 0 ) m_pidController.setReference(0, ControlType.kVelocity);
       else m_pidController.setReference(speed, ControlType.kVelocity); 
   }
 
@@ -138,30 +140,25 @@ public class WristSubsystem extends SubsystemBase {
     return Math.abs(m_encoder.getPosition() - setPoint) <= WristMarginError;
   }
 
-  public void setForwardSoftLimit(Float degrees){
-    m_motor.setSoftLimit(SoftLimitDirection.kForward, degrees);
-    m_motor.enableSoftLimit(SoftLimitDirection.kForward, true);
-    m_motor.enableSoftLimit(SoftLimitDirection.kReverse, true);
-  }
 
-  public double getForwardSoftLimit(){
-    return m_motor.getSoftLimit(SoftLimitDirection.kForward);
+  public double getReverseSoftLimit(){
+    return MAXPosition;
   }
 
   public void setReverseSoftLimit(Float limit){
-    m_motor.setSoftLimit(SoftLimitDirection.kReverse, limit);
-    m_motor.enableSoftLimit(SoftLimitDirection.kForward, true);
 
+    MAXPosition = limit;
+    if(getReverseSoftLimit() > MAXPosition){
+      MoveWristDegrees(limit);
+    }
   }
 
   public void setDefaultReverseSoftLimit(){
-    m_motor.setSoftLimit(SoftLimitDirection.kReverse, MINPosition);
-    m_motor.enableSoftLimit(SoftLimitDirection.kForward, true);
+
+    MAXPosition = ArmConstants.WristDefaultMaxPosition;
   }
 
-  public double getReverseSoftLimit(){
-    return m_motor.getSoftLimit(SoftLimitDirection.kReverse);
-  }
+
   
   public double getReverseSoftLimitDefault(){
     return MINPosition;
@@ -175,6 +172,7 @@ public class WristSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Wrist softlimit value", getReverseSoftLimit());
     SmartDashboard.putNumber("Wrist Speed", m_encoder.getVelocity());
     SmartDashboard.putNumber("WristOutput", m_motor.getAppliedOutput());
+    SmartDashboard.putNumber("Wrist Limit", MAXPosition);
   }
 
   @Override

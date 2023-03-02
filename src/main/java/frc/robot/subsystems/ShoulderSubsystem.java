@@ -26,7 +26,7 @@ public class ShoulderSubsystem extends SubsystemBase {
   private final double encoderMultiplier = (1 / (ArmConstants.shoulderGearRatio)) * 360;   //Degrees
 
   private final float MAXPosition = 120;
-  private final float MINPosition = 2;
+  private final float MINPosition = 0;
   private final double ShoulderMarginError = 4;
 
   public ShoulderSubsystem() {
@@ -103,7 +103,7 @@ public class ShoulderSubsystem extends SubsystemBase {
   }
   
   public void MoveShoulderSpeed(double speed){
-    speed *= ArmConstants.ArmVelocityMultiplier;
+    speed *= ArmConstants.ShoulderVelocityMultiplier;
     m_pidController.setReference(speed, ControlType.kSmartVelocity);
     
   }

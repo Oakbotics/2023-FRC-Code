@@ -4,50 +4,34 @@
 
 package frc.robot.commands;
 
+import frc.robot.commands.ArmCommandGroup.ShoulderMoveDegreeCommand;
+import frc.robot.commands.ArmCommandGroup.WristMoveDegreeCommand;
 import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.ShoulderSubsystem;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 /** An example command that uses an example subsystem. */
-public class ArmCommandLow extends InstantCommand {
+public class ArmCommandLow extends SequentialCommandGroup {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ArmSubsystem m_ArmSubsystem;
-  private final XboxController m_opperatorController;
-  /**
+    /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ArmCommandLow(ArmSubsystem subsystem, XboxController oppController) {
+  public ArmCommandLow(ArmSubsystem subsystem) {
     m_ArmSubsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
-    m_opperatorController = oppController;
-  }
-
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {}
-
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-
-    m_ArmSubsystem.MoveArmDegrees(15);
+    addCommands(
+      new WristMoveDegreeCommand(m_ArmSubsystem, 12),
+      new ShoulderMoveDegreeCommand(m_ArmSubsystem, 0.5)
+    );
 
   }
 
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
-    SmartDashboard.putString("End", "Low Ended");
-  }
-
-  // Returns true when the command should end.
-  // @Override
-  // public boolean isFinished() {
-  //   return false;
-  // }
 }

@@ -26,8 +26,8 @@ import edu.wpi.first.math.util.Units;
  */
 public final class Constants {
   public static final class IntakeConstants {
-    public static final int IntakeTopID = 10;
-    public static final int IntakeBottomID = 20;
+    public static final int IntakeTopID = 20;
+    public static final int IntakeBottomID = 10;
     public static final double intakeSpeed = 0.5; 
   }
 
@@ -37,6 +37,9 @@ public final class Constants {
     public static final double kMaxSpeedFeetPerSecond = 2;
     public static final double kMaxAngularSpeed = 3 * Math.PI; // radians per second
 
+    public static final double kSpeedLimiter = 0.5;
+
+  
     public static final double kDirectionSlewRate = 1.2; // radians per second
     public static final double kMagnitudeSlewRate = 1.8; // percent per second (1 = 100%)
     public static final double kRotationalSlewRate = 2.0; // percent per second (1 = 100%)
@@ -158,12 +161,22 @@ public final class Constants {
 
 
   public final class ArmConstants{
-    public static final int ArmID = 14;
-    public static final int WristID = 2;
-    public static final double gearBoxRatio = 3 * 4 * 4;
-    public static final double armGearRatio = ( gearBoxRatio * 58 ) / 15;
-    public static final double ArmVelocityMultiplier = -1000;
+    public static final int ShoulderId = 14;
+    public static final int WristID = 1;
+
+
+    public static final double shoulderGearBoxRatio = 3 * 4 * 4;
+    public static final double wristGearBoxRatio = 3 * 3 * 3;
+    public static final double shoulderGearRatio = ( shoulderGearBoxRatio * 58 ) / 15;
+    public static final double wristGearRatio = ( wristGearBoxRatio * 40 ) / 16;
+
+
+    public static final double ShoulderVelocityMultiplier = -1000;
+    public static final double WristVelocityMultiplier = 50;
+
+    public static final float WristDefaultMaxPosition = 210;
 
   }
+  
 
 }

@@ -158,7 +158,9 @@ public class WristSubsystem extends SubsystemBase {
     MAXPosition = ArmConstants.WristDefaultMaxPosition;
   }
 
-
+  public double getWristPosition(){
+    return m_encoder.getPosition();
+  }
   
   public double getReverseSoftLimitDefault(){
     return MINPosition;

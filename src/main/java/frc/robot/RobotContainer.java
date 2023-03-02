@@ -22,6 +22,7 @@ import frc.robot.commands.AutonomousCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
@@ -29,6 +30,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import java.util.List;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.OuttakeCommand;
+import frc.robot.commands.ArmCommandGroup.IntakeCone;
 import frc.robot.subsystems.IntakeSubsystem;
 import org.ejml.dense.block.MatrixOps_DDRB;
 
@@ -89,11 +91,7 @@ public class RobotContainer {
    * {@link JoystickButton}.
    */
   private void configureButtonBindings() {
-    new JoystickButton(m_driverController, XboxController.Button.kX.value)
-        .toggleOnTrue(new RunCommand(
-            () -> m_robotDrive.setX(),
-                  m_robotDrive));
-                  
+    
     // new JoystickButton(m_opController, XboxController.Button.kA.value).onTrue(new ArmCommandLow(m_armSubsystem));
     new JoystickButton(m_opController, XboxController.Button.kA.value).onTrue(new ArmCommandLow(m_armSubsystem));
     new JoystickButton(m_opController, XboxController.Button.kY.value).onTrue(new ArmCommandHigh(m_armSubsystem));
@@ -104,6 +102,9 @@ public class RobotContainer {
     new JoystickButton(m_opController, XboxController.Button.kRightBumper.value).onTrue(new PurpleCandleCommand(m_candleSubsystem));
     new JoystickButton(m_opController, XboxController.Button.kLeftBumper.value).onTrue(new OrangeCandleCommand(m_candleSubsystem));
 
+    // new JoystickButton(m_opController, XboxController.Button.kB.value).whileTrue(new IntakeCone(m_intakeSubsystem, m_armSubsystem));
+
+  
     // new POVButton(m_opController, 0).toggleOnTrue(
     //   new RunCommand(
     //   () ->
@@ -136,6 +137,16 @@ public class RobotContainer {
       new WristSpeedCommand(m_armSubsystem, 
         () -> m_opController.getRightY()
     ));
+
+    new JoystickButton(m_driverController, XboxController.Button.kX.value)
+        .toggleOnTrue(new RunCommand(
+            () -> m_robotDrive.setX(),
+                  m_robotDrive));
+                  
+    new JoystickButton(m_driverController, XboxController.Button.kB.value)
+      .onTrue(new InstantCommand(
+        () -> m_robotDrive.zeroHeading()
+      ));
 
 
     new JoystickButton(m_driverController, XboxController.Button.kRightBumper.value).whileTrue(new IntakeCommand(m_intakeSubsystem));

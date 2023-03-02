@@ -26,8 +26,8 @@ import edu.wpi.first.math.util.Units;
  */
 public final class Constants {
   public static final class IntakeConstants {
-    public static final int IntakeTopID = 10;
-    public static final int IntakeBottomID = 20;
+    public static final int IntakeTopID = 20;
+    public static final int IntakeBottomID = 10;
     public static final double intakeSpeed = 0.5; 
   }
 

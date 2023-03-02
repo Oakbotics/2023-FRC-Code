@@ -22,7 +22,7 @@ public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
   public IntakeSubsystem() {
       m_intakeMotorTop = new CANSparkMax(IntakeConstants.IntakeTopID, MotorType.kBrushless);
-      m_intakeMotorTop.setInverted(false);
+      m_intakeMotorTop.setInverted(true);
       m_intakeMotorBottom = new CANSparkMax(IntakeConstants.IntakeBottomID, MotorType.kBrushless);
       m_intakeMotorBottom.setInverted(true);
 

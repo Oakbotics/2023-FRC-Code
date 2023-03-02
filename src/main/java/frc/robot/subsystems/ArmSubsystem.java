@@ -57,6 +57,15 @@ public class ArmSubsystem extends SubsystemBase {
     m_wristSubsystem.MoveWristSpeed(speed);
   }
 
+
+  public double getWristPosition(){
+    return m_wristSubsystem.getWristPosition();
+  }
+
+  public double getShoulderPosition(){
+    return m_shoulderSubsystem.GetShoulderPosition();
+  }
+
   public boolean isWristAtSetpoint(double setPoint){
     return m_wristSubsystem.isWristAtSetpoint(setPoint);
   }
@@ -76,6 +85,8 @@ public class ArmSubsystem extends SubsystemBase {
       }
     }
   }
+
+
 
   // private void AdjustWristSoftLimit(double shoulderDegrees){
   //   if (shoulderDegrees <= shoulderWristBottomDegree){ 

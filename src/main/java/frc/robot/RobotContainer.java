@@ -60,18 +60,17 @@ public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
   private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();  
+  private final ShoulderSubsystem m_shoulderSubsystem = new ShoulderSubsystem();
+  private final WristSubsystem m_wristSubsystem = new WristSubsystem();
+  private final ArmSubsystem m_armSubsystem = new ArmSubsystem(m_shoulderSubsystem, m_wristSubsystem);
+  private final CandleSubsystem m_candleSubsystem = new CandleSubsystem(Constants.LightConstants.CANdleID);
   private final LimelightSubsystem m_limelightSubsystem = new LimelightSubsystem();
-
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
   // The robot's subsystems and commands are defined here...
   private final XboxController m_opController = new XboxController(1);
 
-  private final ShoulderSubsystem m_shoulderSubsystem = new ShoulderSubsystem();
-  private final WristSubsystem m_wristSubsystem = new WristSubsystem();
-  private final ArmSubsystem m_armSubsystem = new ArmSubsystem(m_shoulderSubsystem, m_wristSubsystem);
-  private final CandleSubsystem m_candleSubsystem = new CandleSubsystem(m_opController, Constants.LightConstants.CANdleID);
-  private final LimelightSubsystem m_limelightSubsystem = new LimelightSubsystem();
+ 
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.

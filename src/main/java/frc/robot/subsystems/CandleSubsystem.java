@@ -20,10 +20,8 @@ import com.ctre.phoenix.led.TwinkleOffAnimation.TwinkleOffPercent;
 public class CandleSubsystem extends SubsystemBase {
     private final CANdle m_candle; //= new CANdle(Constants.CANdleID, "rio");
     private final int LedCount = 100;
-    private XboxController joystick;
 
-    public CandleSubsystem(XboxController joy, int CANdleID) {
-        this.joystick = joy;
+    public CandleSubsystem(int CANdleID) {
         CANdleConfiguration configAll = new CANdleConfiguration();
         configAll.statusLedOffWhenActive = false;
         configAll.disableWhenLOS = false;

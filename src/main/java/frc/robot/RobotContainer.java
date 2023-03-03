@@ -129,7 +129,8 @@ public class RobotContainer {
             () ->
             
               m_robotDrive.drive(
-                -MathUtil.applyDeadband(m_driverController.getLeftY() * (1 - m_driverController.getRightTriggerAxis()), OIConstants.kDriveDeadband),
+                //Gradual braking on trigger needs testing
+                -MathUtil.applyDeadband(m_driverController.getLeftY() * (1 - m_driverController.getRightTriggerAxis()), OIConstants.kDriveDeadband), 
                 -MathUtil.applyDeadband(m_driverController.getLeftX() * (1 - m_driverController.getRightTriggerAxis()), OIConstants.kDriveDeadband),
                 -MathUtil.applyDeadband(m_driverController.getRightX() * (1 - m_driverController.getRightTriggerAxis()), OIConstants.kDriveDeadband),
                 true, true),
@@ -149,10 +150,11 @@ public class RobotContainer {
         () -> m_opController.getRightY()
     ));
 
+     //Needs testing
     new Trigger(
       () -> m_driverController.getLeftTriggerAxis() != 0
     ).whileTrue(
-      new ConeIntakeWristCommand(m_armSubsystem, m_intakeSubsystem)
+      new ConeIntakeWristCommand(m_armSubsystem, m_intakeSubsystem) 
     );
 
 
@@ -163,9 +165,10 @@ public class RobotContainer {
                   
     new JoystickButton(m_driverController, XboxController.Button.kB.value)
       .onTrue(new InstantCommand(
-        () -> m_robotDrive.zeroHeading()
+        () -> m_robotDrive.zeroHeading()  //Add limelight, and then test
       ));
 
+    
 
     new JoystickButton(m_driverController, XboxController.Button.kRightBumper.value).whileTrue(new IntakeCommand(m_intakeSubsystem));
     new JoystickButton(m_driverController, XboxController.Button.kLeftBumper.value).whileTrue(new OuttakeCommand(m_intakeSubsystem));

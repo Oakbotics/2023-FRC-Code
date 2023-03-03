@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.ShoulderSubsystem;
+import frc.robot.Constants.ArmConstants;
 import frc.robot.commands.ArmCommandGroup.ShoulderMoveDegreeCommand;
 import frc.robot.commands.ArmCommandGroup.WristMoveDegreeCommand;
 import frc.robot.subsystems.ArmSubsystem;
@@ -42,21 +43,13 @@ public class ConeIntakeWristCommand extends SequentialCommandGroup  {
     startingDegrees = m_armSubsystem.getWristPosition();
 
     addCommands(
+      new WristMoveDegreeCommand(m_armSubsystem, ArmConstants.WristRestPosition),        
+      new ShoulderMoveDegreeCommand(m_armSubsystem, 0.5),
+      new WristMoveDegreeCommand(armSubsystem, 24),
       new IntakeCommand(m_intakeSubsystem).repeatedly()
-      .beforeStarting(new WristMoveDegreeCommand(m_armSubsystem, 24))
-      .andThen(new WristMoveDegreeCommand(m_armSubsystem, startingDegrees))
+      .andThen(new WristMoveDegreeCommand(m_armSubsystem, ArmConstants.WristRestPosition))
     );
 
   }
-
-
-//   @Override 
-//   public void execute()   {
-//     new WristMoveDegreeCommand(m_ArmSubsystem, 3);
-//   }
-  
-
-
-
 
 }

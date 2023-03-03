@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.AutoCommands;
 
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
@@ -22,7 +22,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 
 /** An example command that uses an example subsystem. */
-public class AutonomousCommand {
+public class SwerveExampleAuto {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
     
     private final DriveSubsystem m_driveSubsystem; 
@@ -52,7 +52,7 @@ public class AutonomousCommand {
    *
    * @param driveSubsytem The subsystem used by this command.
    */
-   public AutonomousCommand(DriveSubsystem driveSubsytem) {
+   public SwerveExampleAuto(DriveSubsystem driveSubsytem) {
     m_driveSubsystem = driveSubsytem;
     // Use addRequirements() here to declare subsystem dependencies.
     

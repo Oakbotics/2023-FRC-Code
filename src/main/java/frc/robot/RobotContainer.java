@@ -43,6 +43,8 @@ import frc.robot.subsystems.CandleSubsystem;
 import frc.robot.subsystems.ShoulderSubsystem;
 import frc.robot.subsystems.WristSubsystem;
 import frc.robot.commands.*;
+import frc.robot.commands.AutoCommands.ChargeStation;
+import frc.robot.commands.AutoCommands.commandGroups.BlueCommandGroups.AutoScorePreloadMid;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
@@ -69,7 +71,7 @@ public class RobotContainer {
   private final WristSubsystem m_wristSubsystem = new WristSubsystem();
   private final ArmSubsystem m_armSubsystem = new ArmSubsystem(m_shoulderSubsystem, m_wristSubsystem);
   private final CandleSubsystem m_candleSubsystem = new CandleSubsystem(m_opController, Constants.LightConstants.CANdleID);
-  
+  private final LimelightSubsystem m_limelightSubsystem = new LimelightSubsystem();
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -93,6 +95,13 @@ public class RobotContainer {
    * {@link JoystickButton}.
    */
   private void configureButtonBindings() {
+    new JoystickButton(m_driverController, XboxController.Button.kX.value)
+        .toggleOnTrue(new RunCommand(
+            () -> m_robotDrive.setX(),
+                  m_robotDrive));
+                  
+     new JoystickButton(m_opController, XboxController.Button.kY.value).onTrue(new ArmCommandLow(m_armSubsystem));
+    new JoystickButton(m_opController, XboxController.Button.kX.value).onTrue(new ArmCommandMid(m_armSubsystem));
     
     // new JoystickButton(m_opController, XboxController.Button.kA.value).onTrue(new ArmCommandLow(m_armSubsystem));
     new JoystickButton(m_opController, XboxController.Button.kA.value).onTrue(new ArmCommandLow(m_armSubsystem));
@@ -191,8 +200,16 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
+  // public Command getAutonomousCommand() {
+  //   AutoScorePreloadMid command = new AutoScorePreloadMid(m_armSubsystem, m_robotDrive, m_intakeSubsystem, m_limelightSubsystem);
+  //   return command.andThen(() -> m_robotDrive.drive(0, 0, 0, true, true));
+  // }
+
+
+
   public Command getAutonomousCommand() {
-    AutonomousCommand command = new AutonomousCommand(m_robotDrive);
-    return command.getAutonomousCommand().andThen(() -> m_robotDrive.drive(0, 0, 0, true, true));
+    m_robotDrive.zeroHeading();
+    SwerveControllerCommand command = new ChargeStation(m_robotDrive).getAutonomousCommand();
+    return command.andThen(() -> m_robotDrive.drive(0, 0, 0, true, true));
   }
 }

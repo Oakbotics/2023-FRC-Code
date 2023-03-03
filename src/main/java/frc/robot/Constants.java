@@ -12,6 +12,7 @@ import org.ejml.dense.row.linsol.InvertUsingSolve_ZDRM;
 import com.ctre.phoenixpro.signals.IsPROLicensedValue;
 import com.revrobotics.CANSparkMax.IdleMode;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -152,12 +153,21 @@ public final class Constants {
 
     public static final double kPXController = 1;
     public static final double kPYController = 1;
-    public static final double kPThetaController = 1;
+    public static final double kPThetaController = 0.1;
 
     // Constraint for the motion profiled robot angle controller
     public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(
         kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
   }
+
+  public static final class BlueFieldConstants{
+    
+    public static final Translation2d chargeStationPosition = new Translation2d(3.8, 3);
+    public static final Translation2d communityFarLeftPole = new Translation2d(2, 4.8);
+
+  }
+
+  
 
   public static final class NeoMotorConstants {
     public static final double kFreeSpeedRpm = 5676;

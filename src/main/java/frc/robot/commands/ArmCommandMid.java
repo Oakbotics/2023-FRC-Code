@@ -27,6 +27,7 @@ public class ArmCommandMid extends SequentialCommandGroup {
    * @param subsystem The subsystem used by this command.
    */
   public ArmCommandMid(ArmSubsystem subsystem) {
+  public ArmCommandMid(ArmSubsystem subsystem) {
     m_ArmSubsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);

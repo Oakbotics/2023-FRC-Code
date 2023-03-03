@@ -4,23 +4,35 @@
 
 package frc.robot.commands;
 
-import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.ShoulderSubsystem;
+import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.ExampleSubsystem;
+
+import java.util.function.DoubleSupplier;
+
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
-public class OuttakeCommand extends CommandBase {
+public class ShoulderSpeedCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final IntakeSubsystem m_OuttakeSubsystem;
+  private final ArmSubsystem m_ArmSubsystem;
+  public DoubleSupplier speed;
+  XboxController controller;
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public OuttakeCommand(IntakeSubsystem subsystem) {
-    m_OuttakeSubsystem = subsystem;
+  public ShoulderSpeedCommand(ArmSubsystem subsystem, DoubleSupplier m_speed) {
+    m_ArmSubsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
+    
+    //speed = speedParam;
+    speed = m_speed;
   }
 
   // Called when the command is initially scheduled.
@@ -30,13 +42,17 @@ public class OuttakeCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-      m_OuttakeSubsystem.reverseIntake(0.75);
+
+    
+    m_ArmSubsystem.MoveShoulderSpeed(speed.getAsDouble());
+    SmartDashboard.putNumber("Arm Speed", speed.getAsDouble());
+
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-      m_OuttakeSubsystem.stopIntake(0);
+    m_ArmSubsystem.MoveShoulderSpeed(0);
   }
 
   // Returns true when the command should end.

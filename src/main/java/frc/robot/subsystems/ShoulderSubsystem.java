@@ -4,42 +4,36 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
-import com.revrobotics.SparkMaxPIDController.AccelStrategy;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMax.SoftLimitDirection;
 
-
-
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmConstants;
-import pabeles.concurrency.IntOperatorTask.Max;
 
-public class WristSubsystem extends SubsystemBase {
+public class ShoulderSubsystem extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
 
   public CANSparkMax m_motor;
   private SparkMaxPIDController m_pidController;
-  private AbsoluteEncoder m_encoder;
+  public RelativeEncoder m_encoder;
   public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM, maxVel, minVel, maxAcc, allowedErr;
-  private final double encoderMultiplier =   (Units.radiansToDegrees(Math.PI * 2));   //Degrees
+  private final double encoderMultiplier = (1 / (ArmConstants.shoulderGearRatio)) * 360;   //Degrees
 
-  private  float MAXPosition = 210;
-  private float MINPosition = 5;
+  private final float MAXPosition = 120;
+  private final float MINPosition = 0;
+  private final double ShoulderMarginError = 4;
 
-  private final double WristMarginError = 4;
-
-  public WristSubsystem() {
+  public ShoulderSubsystem() {
     
     // initialize motor
-    m_motor = new CANSparkMax(ArmConstants.WristID, MotorType.kBrushless);
+    m_motor = new CANSparkMax(ArmConstants.ShoulderId, MotorType.kBrushless);
+    //
 
     /**
      * The RestoreFactoryDefaults method can be used to reset the configuration parameters
@@ -48,42 +42,26 @@ public class WristSubsystem extends SubsystemBase {
      */
     m_motor.restoreFactoryDefaults();
 
-
     // initialze PID controller and encoder objects
     m_pidController = m_motor.getPIDController();
-    m_encoder = m_motor.getAbsoluteEncoder(Type.kDutyCycle);
+    m_encoder = m_motor.getEncoder();
 
-    m_pidController.setFeedbackDevice(m_encoder);
     m_encoder.setPositionConversionFactor(encoderMultiplier);
-    
-    m_encoder.setInverted(true);
-    m_motor.setInverted(false);
+    //m_encoder.setVelocityConversionFactor(ArmConstants.gearBoxRatio);
 
     // PID coefficients
-    // kP = 0.006;
-    // kI = 0;
-    // kD = 0.003; 
-    // kIz = 0; 
-    // kFF = 0.003; 
-    // kMaxOutput = 1; 
-    // kMinOutput = -1;
-    // maxRPM = 5700;
-
-    kP = 0.04; 
-    kI = 0;
-    kD = 0.003; 
+    kP = 5e-5; 
+    kI = 1e-6;
+    kD = 0; 
     kIz = 0; 
-    kFF = 0; 
-    kMaxOutput = 0.5; 
-    kMinOutput = -0.5;
-    //maxRPM = 5700;
-    //allowedErr = 0.1;
-  
+    kFF = 0.000156; 
+    kMaxOutput = 1; 
+    kMinOutput = -1;
+    maxRPM = 5700;
 
     // Smart Motion Coefficients
-
-    maxVel = 7; // rpm
-    maxAcc = 1;
+    maxVel = 2000; // rpm
+    maxAcc = 1500;
 
     // set PID coefficients
     m_pidController.setP(kP);
@@ -110,73 +88,38 @@ public class WristSubsystem extends SubsystemBase {
     m_pidController.setSmartMotionMinOutputVelocity(minVel, smartMotionSlot);
     m_pidController.setSmartMotionMaxAccel(maxAcc, smartMotionSlot);
     m_pidController.setSmartMotionAllowedClosedLoopError(allowedErr, smartMotionSlot);
-    m_pidController.setSmartMotionAccelStrategy(AccelStrategy.kSCurve, smartMotionSlot);
 
-    m_motor.setIdleMode(IdleMode.kCoast);
+    m_motor.setIdleMode(IdleMode.kBrake);
     m_motor.setSoftLimit(SoftLimitDirection.kForward, MAXPosition);
     m_motor.setSoftLimit(SoftLimitDirection.kReverse, MINPosition);
-
-    m_motor.setClosedLoopRampRate(0.2);
 
     m_motor.enableSoftLimit(SoftLimitDirection.kForward, true);
     m_motor.enableSoftLimit(SoftLimitDirection.kReverse, true);
     
   }
 
-  public void MoveWristDegrees (double degrees) {
-
-      if(m_encoder.getPosition() >= MAXPosition) m_pidController.setReference(MAXPosition, CANSparkMax.ControlType.kPosition); 
-      else if(m_encoder.getPosition() <= MINPosition) m_pidController.setReference(MINPosition, CANSparkMax.ControlType.kPosition);  
-      else m_pidController.setReference(degrees, CANSparkMax.ControlType.kPosition); 
-
-  }
-
-  public void MoveWristSpeed(double speed){
-    speed *= ArmConstants.WristVelocityMultiplier;
-      if(m_encoder.getPosition() >= MAXPosition && speed > 0) m_pidController.setReference(0, ControlType.kVelocity);
-      else if (m_encoder.getPosition() <= MINPosition && speed < 0 ) m_pidController.setReference(0, ControlType.kVelocity);
-      else m_pidController.setReference(speed, ControlType.kVelocity); 
-  }
-
-  public boolean isWristAtSetpoint(double setPoint){
-    return Math.abs(m_encoder.getPosition() - setPoint) <= WristMarginError;
-  }
-
-
-  public double getReverseSoftLimit(){
-    return MAXPosition;
-  }
-
-  public void setReverseSoftLimit(Float limit){
-
-    MAXPosition = limit;
-    if(getReverseSoftLimit() > MAXPosition){
-      MoveWristDegrees(limit);
-    }
-  }
-
-  public void setDefaultReverseSoftLimit(){
-
-    MAXPosition = ArmConstants.WristDefaultMaxPosition;
-  }
-
-  public double getWristPosition(){
-    return m_encoder.getPosition();
+  public void MoveShoulderDegrees(double degrees) {
+        m_pidController.setReference(degrees, CANSparkMax.ControlType.kSmartMotion);
   }
   
-  public double getReverseSoftLimitDefault(){
-    return MINPosition;
+  public void MoveShoulderSpeed(double speed){
+    speed *= ArmConstants.ShoulderVelocityMultiplier;
+    m_pidController.setReference(speed, ControlType.kSmartVelocity);
+    
+  }
+
+  public boolean isShoulderAtSetpoint(double setPoint){
+    return Math.abs(m_encoder.getPosition() - setPoint) <= ShoulderMarginError;
+  }
+
+  public double GetShoulderPosition(){
+    return m_encoder.getPosition();
   }
 
   @Override
   public void periodic() {
-    
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Wrist encord value", m_encoder.getPosition());
-    SmartDashboard.putNumber("Wrist softlimit value", getReverseSoftLimit());
-    SmartDashboard.putNumber("Wrist Speed", m_encoder.getVelocity());
-    SmartDashboard.putNumber("WristOutput", m_motor.getAppliedOutput());
-    SmartDashboard.putNumber("Wrist Limit", MAXPosition);
+    SmartDashboard.putNumber("Shoulder encord value", m_encoder.getPosition());
   }
 
   @Override

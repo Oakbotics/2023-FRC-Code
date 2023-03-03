@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.IntakeConstants;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
 
@@ -29,7 +30,11 @@ public class IntakeSubsystem extends SubsystemBase {
 
       m_encoderTop = m_intakeMotorTop.getEncoder();
       m_encoderBottom = m_intakeMotorBottom.getEncoder();
+
+      m_intakeMotorBottom.setIdleMode(IdleMode.kBrake);
+      m_intakeMotorTop.setIdleMode(IdleMode.kBrake);
   }
+
 
   public void runIntake(double intakeSpeed){
       m_intakeMotorTop.set(intakeSpeed);

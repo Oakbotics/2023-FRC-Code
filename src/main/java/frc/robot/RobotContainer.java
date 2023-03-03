@@ -145,7 +145,7 @@ public class RobotContainer {
                   
     new JoystickButton(m_driverController, XboxController.Button.kB.value)
       .onTrue(new InstantCommand(
-        () -> m_robotDrive.zeroHeading()
+        () -> m_robotDrive.zeroHeading(180)
       ));
 
 

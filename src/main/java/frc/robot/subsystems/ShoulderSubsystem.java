@@ -60,8 +60,8 @@ public class ShoulderSubsystem extends SubsystemBase {
     maxRPM = 5700;
 
     // Smart Motion Coefficients
-    maxVel = 2000; // rpm
-    maxAcc = 1500;
+    maxVel = 4500; // rpm
+    maxAcc = 4500;
 
     // set PID coefficients
     m_pidController.setP(kP);

@@ -3,8 +3,13 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
+import org.ejml.dense.row.linsol.InvertUsingSolve_ZDRM;
+
+import com.ctre.phoenixpro.signals.IsPROLicensedValue;
 import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.math.geometry.Translation2d;
@@ -25,12 +30,17 @@ import edu.wpi.first.math.util.Units;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+
+
+
   public static final class IntakeConstants {
     public static final int IntakeTopID = 20;
     public static final int IntakeBottomID = 10;
     public static final double intakeSpeed = 0.5; 
   }
 
+ 
+ 
   public static final class DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
@@ -132,6 +142,9 @@ public final class Constants {
   }
 
   public static final class AutoConstants {
+
+    public static final boolean isBlue = DriverStation.getAlliance() == Alliance.Blue;
+
     public static final double kMaxSpeedFeetPerSecond = 3;
     public static final double kMaxAccelerationMetersPerSecondSquared = 3;
     public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;

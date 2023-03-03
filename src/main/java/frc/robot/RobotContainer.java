@@ -30,6 +30,8 @@ import java.util.Map;
 
 import frc.robot.commands.ArmCommandGroup.IntakeCone;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.LimelightSubsystem;
+
 import org.ejml.dense.block.MatrixOps_DDRB;
 
 import edu.wpi.first.wpilibj.GenericHID;
@@ -56,6 +58,7 @@ public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
   private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();  
+  private final LimelightSubsystem m_limelightSubsystem = new LimelightSubsystem();
 
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
@@ -95,6 +98,8 @@ public class RobotContainer {
     new JoystickButton(m_opController, XboxController.Button.kA.value).onTrue(new ArmCommandLow(m_armSubsystem));
     new JoystickButton(m_opController, XboxController.Button.kY.value).onTrue(new ArmCommandHigh(m_armSubsystem));
     new JoystickButton(m_opController, XboxController.Button.kX.value).onTrue(new ArmCommandMid(m_armSubsystem));
+    new JoystickButton(m_opController, XboxController.Button.kB.value).onTrue(new ArmCommandStandingCone(m_armSubsystem));
+
 
     new JoystickButton(m_driverController, XboxController.Button.kY.value).onTrue(new ArmCommandLowCone(m_armSubsystem));
     new JoystickButton(m_driverController, XboxController.Button.kA.value).onTrue(new ArmCommandLow(m_armSubsystem));
@@ -168,6 +173,12 @@ public class RobotContainer {
         () -> m_robotDrive.zeroHeading()  //Add limelight, and then test
       ));
 
+    new JoystickButton(m_driverController, XboxController.Button.kA.value)
+      .onTrue(new InstantCommand(
+        () -> m_robotDrive.zeroHeading(
+          m_limelightSubsystem.getRobotAngle()
+        )  //Add limelight, and then test
+      ));
     
 
     new JoystickButton(m_driverController, XboxController.Button.kRightBumper.value).whileTrue(new IntakeCommand(m_intakeSubsystem));

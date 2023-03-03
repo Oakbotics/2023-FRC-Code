@@ -26,12 +26,14 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import java.util.List;
+import java.util.Map;
 
 import frc.robot.commands.ArmCommandGroup.IntakeCone;
 import frc.robot.subsystems.IntakeSubsystem;
 import org.ejml.dense.block.MatrixOps_DDRB;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.simulation.JoystickSim;
 import frc.robot.subsystems.ArmSubsystem;
@@ -113,13 +115,23 @@ public class RobotContainer {
     m_robotDrive.setDefaultCommand(
         // The left stick controls translation of the robot.
         // Turning is controlled by the X axis of the right stick.
+        // new RunCommand(
+        //     () ->
+            
+        //       m_robotDrive.drive(
+        //         -MathUtil.applyDeadband(m_driverController.getLeftY() * ((m_driverController.getLeftTriggerAxis() > 0 )? DriveConstants.kSpeedLimiter : 1), OIConstants.kDriveDeadband),
+        //         -MathUtil.applyDeadband(m_driverController.getLeftX() * ((m_driverController.getLeftTriggerAxis() > 0 )? DriveConstants.kSpeedLimiter : 1), OIConstants.kDriveDeadband),
+        //         -MathUtil.applyDeadband(m_driverController.getRightX() * ((m_driverController.getLeftTriggerAxis() > 0 )? DriveConstants.kSpeedLimiter : 1), OIConstants.kDriveDeadband),
+        //         true, true),
+        //     m_robotDrive));
+
         new RunCommand(
             () ->
             
               m_robotDrive.drive(
-                -MathUtil.applyDeadband(m_driverController.getLeftY() * ((m_opController.getLeftTriggerAxis() > 0 )? DriveConstants.kSpeedLimiter : 1), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_driverController.getLeftX() * ((m_opController.getLeftTriggerAxis() > 0 )? DriveConstants.kSpeedLimiter : 1), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_driverController.getRightX() * ((m_opController.getLeftTriggerAxis() > 0 )? DriveConstants.kSpeedLimiter : 1), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getLeftY() * (1 - m_driverController.getRightTriggerAxis()), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getLeftX() * (1 - m_driverController.getRightTriggerAxis()), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getRightX() * (1 - m_driverController.getRightTriggerAxis()), OIConstants.kDriveDeadband),
                 true, true),
             m_robotDrive));
     
@@ -136,6 +148,13 @@ public class RobotContainer {
       new WristSpeedCommand(m_armSubsystem, 
         () -> m_opController.getRightY()
     ));
+
+    new Trigger(
+      () -> m_driverController.getLeftTriggerAxis() != 0
+    ).whileTrue(
+      new ConeIntakeWristCommand(m_armSubsystem, m_intakeSubsystem)
+    );
+
 
     new JoystickButton(m_driverController, XboxController.Button.kX.value)
         .toggleOnTrue(new RunCommand(

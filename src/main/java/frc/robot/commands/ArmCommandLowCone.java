@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 /** An example command that uses an example subsystem. */
-public class ArmCommandLow extends SequentialCommandGroup {
+public class ArmCommandLowCone extends SequentialCommandGroup {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ArmSubsystem m_ArmSubsystem;
     /**
@@ -23,12 +23,12 @@ public class ArmCommandLow extends SequentialCommandGroup {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ArmCommandLow(ArmSubsystem subsystem) {
+  public ArmCommandLowCone(ArmSubsystem subsystem) {
     m_ArmSubsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
     addCommands(
-      new WristMoveDegreeCommand(m_ArmSubsystem, 11),
+      new WristMoveDegreeCommand(m_ArmSubsystem, 24),
       new ShoulderMoveDegreeCommand(m_ArmSubsystem, 0.5)
     );
 

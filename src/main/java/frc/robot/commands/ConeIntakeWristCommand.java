@@ -47,8 +47,10 @@ public class ConeIntakeWristCommand extends SequentialCommandGroup  {
       new ShoulderMoveDegreeCommand(m_armSubsystem, 0.5),
       new WristMoveDegreeCommand(armSubsystem, 24),
       new IntakeCommand(m_intakeSubsystem).repeatedly()
-      .andThen(new WristMoveDegreeCommand(m_armSubsystem, ArmConstants.WristRestPosition))
     );
+
+    
+
 
   }
 

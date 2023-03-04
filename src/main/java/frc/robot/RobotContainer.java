@@ -15,6 +15,7 @@ import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.PS4Controller.Button;
+import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
@@ -29,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 import frc.robot.commands.ArmCommandGroup.IntakeCone;
+import frc.robot.commands.ArmCommandGroup.WristMoveDegreeCommand;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 
@@ -94,28 +96,52 @@ public class RobotContainer {
    * {@link JoystickButton}.
    */
   private void configureButtonBindings() {
+        
+    // new JoystickButton(m_opController, XboxController.Button.kA.value).onTrue(new ArmCommandLow(m_armSubsystem));
+    new JoystickButton(m_opController, XboxController.Button.kA.value).onTrue(new ArmCommandLow(m_armSubsystem));
+    new JoystickButton(m_opController, XboxController.Button.kY.value).onTrue(new ArmCommandHigh(m_armSubsystem));
+    new JoystickButton(m_opController, XboxController.Button.kX.value).onTrue(new ArmCommandMid(m_armSubsystem));
+
+    new JoystickButton(m_opController, XboxController.Button.kRightBumper.value).onTrue(new PurpleCandleCommand(m_candleSubsystem));
+    new JoystickButton(m_opController, XboxController.Button.kLeftBumper.value).onTrue(new OrangeCandleCommand(m_candleSubsystem));
+    
+    new JoystickButton(m_driverController, XboxController.Button.kY.value).onTrue(new ArmCommandLowCone(m_armSubsystem));
+    new JoystickButton(m_driverController, XboxController.Button.kA.value).onTrue(new ArmCommandLow(m_armSubsystem));
+    new JoystickButton(m_driverController, XboxController.Button.kB.value).onTrue(new ArmCommandStandingCone(m_armSubsystem));
+
+    new JoystickButton(m_driverController, XboxController.Button.kRightBumper.value).whileTrue(new IntakeCommand(m_intakeSubsystem));
+    new JoystickButton(m_driverController, XboxController.Button.kLeftBumper.value).whileTrue(new OuttakeCommand(m_intakeSubsystem));
+
+
     new JoystickButton(m_driverController, XboxController.Button.kX.value)
         .toggleOnTrue(new RunCommand(
             () -> m_robotDrive.setX(),
                   m_robotDrive));
                   
-     new JoystickButton(m_opController, XboxController.Button.kY.value).onTrue(new ArmCommandLow(m_armSubsystem));
-    new JoystickButton(m_opController, XboxController.Button.kX.value).onTrue(new ArmCommandMid(m_armSubsystem));
-    
-    // new JoystickButton(m_opController, XboxController.Button.kA.value).onTrue(new ArmCommandLow(m_armSubsystem));
-    new JoystickButton(m_opController, XboxController.Button.kA.value).onTrue(new ArmCommandLow(m_armSubsystem));
-    new JoystickButton(m_opController, XboxController.Button.kY.value).onTrue(new ArmCommandHigh(m_armSubsystem));
-    new JoystickButton(m_opController, XboxController.Button.kX.value).onTrue(new ArmCommandMid(m_armSubsystem));
-    new JoystickButton(m_opController, XboxController.Button.kB.value).onTrue(new ArmCommandStandingCone(m_armSubsystem));
+    new POVButton(m_driverController, 90)
+      .onTrue(new InstantCommand(
+        () -> m_robotDrive.zeroHeading()  //Add limelight, and then test
+      ));
 
+    new POVButton(m_driverController, 0)
+      .onTrue(new InstantCommand(
+        () -> m_robotDrive.zeroHeading(
+          m_limelightSubsystem.getRobotAngle()
+        )  //Add limelight, and then test
+      ));
 
-    new JoystickButton(m_driverController, XboxController.Button.kY.value).onTrue(new ArmCommandLowCone(m_armSubsystem));
-    new JoystickButton(m_driverController, XboxController.Button.kA.value).onTrue(new ArmCommandLow(m_armSubsystem));
+    //Needs testing
+    new Trigger(
+      () -> m_driverController.getLeftTriggerAxis() != 0
+    ).whileTrue(
+      new ConeIntakeWristCommand(m_armSubsystem, m_intakeSubsystem)
+    ).onFalse(
+      new WristMoveDegreeCommand(m_armSubsystem, ArmConstants.WristRestPosition)
+    );
+
     // new JoystickButton(m_opController, XboxController.Axis.kLeftY).onTrue(new ArmSpeedCommand(m_armSubsystem, m_opController))
 
-    new JoystickButton(m_opController, XboxController.Button.kRightBumper.value).onTrue(new PurpleCandleCommand(m_candleSubsystem));
-    new JoystickButton(m_opController, XboxController.Button.kLeftBumper.value).onTrue(new OrangeCandleCommand(m_candleSubsystem));
-
+   
     // new JoystickButton(m_opController, XboxController.Button.kB.value).whileTrue(new IntakeCone(m_intakeSubsystem, m_armSubsystem));
 
   
@@ -124,7 +150,7 @@ public class RobotContainer {
     //   () ->
     //     m_candleSubsystem.stopLight(), m_candleSubsystem));
 
-    m_candleSubsystem.setDefaultCommand(new AnimateCommand(m_candleSubsystem));
+    m_candleSubsystem.setDefaultCommand(new CandleAnimateCommand(m_candleSubsystem));
     m_robotDrive.setDefaultCommand(
         // The left stick controls translation of the robot.
         // Turning is controlled by the X axis of the right stick.
@@ -163,35 +189,7 @@ public class RobotContainer {
         () -> m_opController.getRightY()
     ));
 
-     //Needs testing
-    new Trigger(
-      () -> m_driverController.getLeftTriggerAxis() != 0
-    ).whileTrue(
-      new ConeIntakeWristCommand(m_armSubsystem, m_intakeSubsystem) 
-    );
-
-
-    new JoystickButton(m_driverController, XboxController.Button.kX.value)
-        .toggleOnTrue(new RunCommand(
-            () -> m_robotDrive.setX(),
-                  m_robotDrive));
-                  
-    new JoystickButton(m_driverController, XboxController.Button.kB.value)
-      .onTrue(new InstantCommand(
-        () -> m_robotDrive.zeroHeading()  //Add limelight, and then test
-      ));
-
-    new JoystickButton(m_driverController, XboxController.Button.kA.value)
-      .onTrue(new InstantCommand(
-        () -> m_robotDrive.zeroHeading(
-          m_limelightSubsystem.getRobotAngle()
-        )  //Add limelight, and then test
-      ));
-    
-
-    new JoystickButton(m_driverController, XboxController.Button.kRightBumper.value).whileTrue(new IntakeCommand(m_intakeSubsystem));
-    new JoystickButton(m_driverController, XboxController.Button.kLeftBumper.value).whileTrue(new OuttakeCommand(m_intakeSubsystem));
-
+   
   }
 
   /**

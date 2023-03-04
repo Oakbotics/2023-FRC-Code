@@ -65,7 +65,7 @@ public class GoToPositionSwerveCommand {
 
     swerveControllerCommand = new SwerveControllerCommand(
         exampleTrajectory,
-        m_driveSubsystem::getPose, // Functional interface to feed supplier
+        m_limelightSubsystem::getRobotPose, // Functional interface to feed supplier
         DriveConstants.kDriveKinematics,
 
         // Position controllers

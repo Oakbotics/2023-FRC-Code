@@ -167,6 +167,12 @@ public final class Constants {
 
   }
 
+  public static final class RedFieldConstants{
+    public static final Translation2d chargeStationPosition = new Translation2d(3.8, 3);
+    public static final Translation2d communityFarLeftPole = new Translation2d(2, 4.8);
+
+  }
+
   
 
   public static final class NeoMotorConstants {

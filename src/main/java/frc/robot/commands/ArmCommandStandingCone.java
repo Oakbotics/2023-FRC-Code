@@ -28,8 +28,8 @@ public class ArmCommandStandingCone extends SequentialCommandGroup {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
     addCommands(
-      new WristMoveDegreeCommand(m_ArmSubsystem, 24),
-      new ShoulderMoveDegreeCommand(m_ArmSubsystem, 0.5)
+      new ShoulderMoveDegreeCommand(m_ArmSubsystem, 52),
+      new WristMoveDegreeCommand(m_ArmSubsystem, 160)
     );
 
   }

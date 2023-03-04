@@ -110,7 +110,7 @@ public class RobotContainer {
 
 
     new JoystickButton(m_driverController, XboxController.Button.kY.value).onTrue(new ArmCommandLowCone(m_armSubsystem));
-    new JoystickButton(m_driverController, XboxController.Button.kA.value).onTrue(new ArmCommandLow(m_armSubsystem));
+    // new JoystickButton(m_driverController, XboxController.Button.kA.value).onTrue(new ArmCommandLow(m_armSubsystem));
     // new JoystickButton(m_opController, XboxController.Axis.kLeftY).onTrue(new ArmSpeedCommand(m_armSubsystem, m_opController))
 
     new JoystickButton(m_opController, XboxController.Button.kRightBumper.value).onTrue(new PurpleCandleCommand(m_candleSubsystem));
@@ -143,9 +143,9 @@ public class RobotContainer {
             
               m_robotDrive.drive(
                 //Gradual braking on trigger needs testing
-                -MathUtil.applyDeadband(m_driverController.getLeftY() * (1 - m_driverController.getRightTriggerAxis()), OIConstants.kDriveDeadband), 
-                -MathUtil.applyDeadband(m_driverController.getLeftX() * (1 - m_driverController.getRightTriggerAxis()), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_driverController.getRightX() * (1 - m_driverController.getRightTriggerAxis()), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getLeftY() * (1.1 - m_driverController.getRightTriggerAxis()), OIConstants.kDriveDeadband), 
+                -MathUtil.applyDeadband(m_driverController.getLeftX() * (1.1 - m_driverController.getRightTriggerAxis()), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getRightX() * (1.1 - m_driverController.getRightTriggerAxis()), OIConstants.kDriveDeadband),
                 true, true),
             m_robotDrive));
     

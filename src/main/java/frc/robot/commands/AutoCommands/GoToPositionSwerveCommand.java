@@ -28,7 +28,8 @@ public class GoToPositionSwerveCommand {
         AutoConstants.kMaxSpeedFeetPerSecond,
         AutoConstants.kMaxAccelerationMetersPerSecondSquared)
         // Add kinematics to ensure max speed is actually obeyed
-        .setKinematics(DriveConstants.kDriveKinematics);
+        .setKinematics(DriveConstants.kDriveKinematics)
+        .setReversed(false );
 
     private Trajectory exampleTrajectory; 
         
@@ -49,8 +50,9 @@ public class GoToPositionSwerveCommand {
 
     exampleTrajectory= TrajectoryGenerator.generateTrajectory(
         // Start at the origin facing the +X direction
-        m_limelightSubsystem.getRobotPose(),
-        // Pass through these two interior waypoints, making an 's' curve path
+        //m_limelightSubsystem.getRobotPose(),
+        new Pose2d(2,0, new Rotation2d(01)),
+        // Pass through these two interior waypoints, making ans  's' curve path
         List.of(),
         // End 3 meters straight ahead of where we started, facing forward
         destination,
@@ -65,7 +67,7 @@ public class GoToPositionSwerveCommand {
 
     swerveControllerCommand = new SwerveControllerCommand(
         exampleTrajectory,
-        m_limelightSubsystem::getRobotPose, // Functional interface to feed supplier
+        m_driveSubsystem::getPose, // Functional interface to feed supplier
         DriveConstants.kDriveKinematics,
 
         // Position controllers

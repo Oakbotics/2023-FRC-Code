@@ -22,17 +22,22 @@ public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
   public IntakeSubsystem() {
       m_intakeMotorTop = new CANSparkMax(IntakeConstants.IntakeTopID, MotorType.kBrushless);
-      m_intakeMotorTop.setInverted(true);
       m_intakeMotorBottom = new CANSparkMax(IntakeConstants.IntakeBottomID, MotorType.kBrushless);
-      m_intakeMotorBottom.setInverted(true);
 
       m_intakeMotorTop.restoreFactoryDefaults();
+      m_intakeMotorTop.setInverted(false);
+      m_intakeMotorBottom.setInverted(true);
 
       m_encoderTop = m_intakeMotorTop.getEncoder();
       m_encoderBottom = m_intakeMotorBottom.getEncoder();
 
       m_intakeMotorBottom.setIdleMode(IdleMode.kBrake);
       m_intakeMotorTop.setIdleMode(IdleMode.kBrake);
+
+      m_intakeMotorBottom.setSmartCurrentLimit(15);
+      m_intakeMotorBottom.setSmartCurrentLimit(15);
+
+
   }
 
 

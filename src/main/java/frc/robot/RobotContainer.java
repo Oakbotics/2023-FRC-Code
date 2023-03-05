@@ -26,6 +26,8 @@ import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 
@@ -46,7 +48,8 @@ import frc.robot.subsystems.ShoulderSubsystem;
 import frc.robot.subsystems.WristSubsystem;
 import frc.robot.commands.*;
 import frc.robot.commands.AutoCommands.ChargeStation;
-import frc.robot.commands.AutoCommands.commandGroups.BlueCommandGroups.AutoScorePreloadMid;
+import frc.robot.commands.AutoCommands.commandGroups.BlueCommandGroups.AutoGoForward;
+import frc.robot.commands.AutoCommands.commandGroups.BlueCommandGroups.AutoOuttakeReverse;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
@@ -101,29 +104,31 @@ public class RobotContainer {
     new JoystickButton(m_opController, XboxController.Button.kA.value).onTrue(new ArmCommandLow(m_armSubsystem));
     new JoystickButton(m_opController, XboxController.Button.kY.value).onTrue(new ArmCommandHigh(m_armSubsystem));
     new JoystickButton(m_opController, XboxController.Button.kX.value).onTrue(new ArmCommandMid(m_armSubsystem));
+    new JoystickButton(m_opController, XboxController.Button.kB.value).onTrue(new ArmCommandSubstation(m_armSubsystem));
+    
 
     new JoystickButton(m_opController, XboxController.Button.kRightBumper.value).onTrue(new PurpleCandleCommand(m_candleSubsystem));
     new JoystickButton(m_opController, XboxController.Button.kLeftBumper.value).onTrue(new OrangeCandleCommand(m_candleSubsystem));
     
     new JoystickButton(m_driverController, XboxController.Button.kY.value).onTrue(new ArmCommandLowCone(m_armSubsystem));
     new JoystickButton(m_driverController, XboxController.Button.kA.value).onTrue(new ArmCommandLow(m_armSubsystem));
-    new JoystickButton(m_driverController, XboxController.Button.kB.value).onTrue(new ArmCommandStandingCone(m_armSubsystem));
 
-    new JoystickButton(m_driverController, XboxController.Button.kRightBumper.value).whileTrue(new IntakeCommand(m_intakeSubsystem));
-    new JoystickButton(m_driverController, XboxController.Button.kLeftBumper.value).whileTrue(new OuttakeCommand(m_intakeSubsystem));
-
+    new JoystickButton(m_driverController, XboxController.Button.kLeftBumper.value).whileTrue(new IntakeCommand(m_intakeSubsystem));
+    new JoystickButton(m_driverController, XboxController.Button.kRightBumper.value).whileTrue(new OuttakeCommand(m_intakeSubsystem));
+    
+    new JoystickButton(m_driverController, XboxController.Button.kB.value).onTrue(new InstantCommand(()-> m_robotDrive.toggleFieldRelative()));
 
     new JoystickButton(m_driverController, XboxController.Button.kX.value)
         .toggleOnTrue(new RunCommand(
             () -> m_robotDrive.setX(),
                   m_robotDrive));
                   
-    new POVButton(m_driverController, 90)
+    new POVButton(m_driverController, 0)
       .onTrue(new InstantCommand(
         () -> m_robotDrive.zeroHeading()  //Add limelight, and then test
       ));
 
-    new POVButton(m_driverController, 0)
+    new POVButton(m_driverController, 90)
       .onTrue(new InstantCommand(
         () -> m_robotDrive.zeroHeading(
           m_limelightSubsystem.getRobotAngle()
@@ -172,22 +177,22 @@ public class RobotContainer {
                 -MathUtil.applyDeadband(m_driverController.getLeftY() * (1.1 - m_driverController.getRightTriggerAxis()), OIConstants.kDriveDeadband), 
                 -MathUtil.applyDeadband(m_driverController.getLeftX() * (1.1 - m_driverController.getRightTriggerAxis()), OIConstants.kDriveDeadband),
                 -MathUtil.applyDeadband(m_driverController.getRightX() * (1.1 - m_driverController.getRightTriggerAxis()), OIConstants.kDriveDeadband),
-                true, true),
+                true),
             m_robotDrive));
     
     new Trigger(
       () -> m_opController.getLeftY() != 0
     ).whileTrue(
       new ShoulderSpeedCommand(m_armSubsystem, 
-        () -> m_opController.getLeftY()
+        () -> m_opController.getLeftY() * 0.5
     ));
 
-    new Trigger(
-      () -> m_opController.getRightY() != 0
-    ).whileTrue(
-      new WristSpeedCommand(m_armSubsystem, 
-        () -> m_opController.getRightY()
-    ));
+    // new Trigger(
+    //   () -> m_opController.getRightY() != 0
+    // ).whileTrue(
+    //   new WristSpeedCommand(m_armSubsystem, 
+    //     () -> m_opController.getRightY()
+    // ));
 
    
   }
@@ -201,12 +206,9 @@ public class RobotContainer {
   //   AutoScorePreloadMid command = new AutoScorePreloadMid(m_armSubsystem, m_robotDrive, m_intakeSubsystem, m_limelightSubsystem);
   //   return command.andThen(() -> m_robotDrive.drive(0, 0, 0, true, true));
   // }
-
-
-
   public Command getAutonomousCommand() {
     m_robotDrive.zeroHeading();
-    SwerveControllerCommand command = new ChargeStation(m_robotDrive).getAutonomousCommand();
-    return command.andThen(() -> m_robotDrive.drive(0, 0, 0, true, true));
+    // SwerveControllerCommand command = new AutoScorePreloadMid(m_armSubsystem,m_robotDrive, m_intakeSubsystem, m_limelightSubsystem );
+    return new AutoGoForward(m_armSubsystem,m_robotDrive, m_intakeSubsystem, m_limelightSubsystem ).andThen(() -> m_robotDrive.drive(0, 0, 0, true));
   }
 }

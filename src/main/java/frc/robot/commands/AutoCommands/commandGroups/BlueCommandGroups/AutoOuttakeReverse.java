@@ -14,14 +14,19 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
+
+import java.rmi.server.RemoteObjectInvocationHandler;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 /** An example command that uses an example subsystem. */
-public class AutoScorePreloadMid extends SequentialCommandGroup {
+public class AutoOuttakeReverse extends SequentialCommandGroup {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ArmSubsystem m_armSubsystem;
   private final DriveSubsystem m_driveSubsystem;
@@ -34,7 +39,7 @@ public class AutoScorePreloadMid extends SequentialCommandGroup {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public AutoScorePreloadMid(ArmSubsystem armSubsystem, DriveSubsystem driveSubsystem, IntakeSubsystem intakeSubsystem, LimelightSubsystem limelightSubsystem) {
+  public AutoOuttakeReverse(ArmSubsystem armSubsystem, DriveSubsystem driveSubsystem, IntakeSubsystem intakeSubsystem, LimelightSubsystem limelightSubsystem) {
     m_armSubsystem = armSubsystem;
     m_driveSubsystem = driveSubsystem;
     m_intakeSubsystem = intakeSubsystem;
@@ -43,16 +48,19 @@ public class AutoScorePreloadMid extends SequentialCommandGroup {
     addRequirements(m_armSubsystem, m_driveSubsystem, m_intakeSubsystem);
 
     addCommands(
-        new GoToPositionSwerveCommand(m_driveSubsystem, m_limelightSubsystem, new Pose2d(BlueFieldConstants.communityFarLeftPole, Rotation2d.fromDegrees(0))).getAutonomousCommand()
+        new InstantCommand(()-> m_driveSubsystem.zeroHeading(), m_driveSubsystem),
+        new OuttakeCommand(m_intakeSubsystem).repeatedly().withTimeout(2),
+        new GoToPositionSwerveCommand(m_driveSubsystem, m_limelightSubsystem, new Pose2d(new Translation2d(3.5,0), Rotation2d.fromDegrees(90))).getAutonomousCommand()
+        
         //new GoToPositionSwerveCommand(m_driveSubsystem, m_limelightSubsystem, new Pose2d(BlueFieldConstants.chargeStationPosition, Rotation2d.fromDegrees(0))).getAutonomousCommand()
     );
-
+    
 
     }
 
 
 
-  // Called when the command is initially scheduled.
+  // Called when the command is initially schePduled.
 
   
 }

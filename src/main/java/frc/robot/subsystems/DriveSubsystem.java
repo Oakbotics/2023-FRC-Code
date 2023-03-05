@@ -23,6 +23,9 @@ import frc.utils.SwerveUtils;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveSubsystem extends SubsystemBase {
+
+  private boolean isFieldRelative = true;
+
   // Create MAXSwerveModules
   private final MAXSwerveModule m_frontLeft = new MAXSwerveModule(
       DriveConstants.kFrontLeftDrivingCanId,
@@ -92,6 +95,11 @@ public class DriveSubsystem extends SubsystemBase {
 
   }
 
+  public void toggleFieldRelative(){
+    isFieldRelative=(!isFieldRelative);
+  }
+
+
   /**
    * Returns the currently-estimated pose of the robot.
    *
@@ -128,7 +136,7 @@ public class DriveSubsystem extends SubsystemBase {
    *                      field.
    * @param rateLimit     Whether to enable rate limiting for smoother control.
    */
-  public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative, boolean rateLimit) {
+  public void drive(double xSpeed, double ySpeed, double rot, boolean rateLimit) {
     
     double xSpeedCommanded;
     double ySpeedCommanded;
@@ -187,7 +195,7 @@ public class DriveSubsystem extends SubsystemBase {
     double rotDelivered = m_currentRotation * DriveConstants.kMaxAngularSpeed;
 
     var swerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(
-        fieldRelative
+        isFieldRelative
             ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered, Rotation2d.fromDegrees(-m_gyro.getAngle()))
             : new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered));
     SwerveDriveKinematics.desaturateWheelSpeeds(

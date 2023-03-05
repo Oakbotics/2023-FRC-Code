@@ -35,8 +35,8 @@ public final class Constants {
 
 
   public static final class IntakeConstants {
-    public static final int IntakeTopID = 20;
-    public static final int IntakeBottomID = 10;
+    public static final int IntakeTopID = 10;
+    public static final int IntakeBottomID = 20;
     public static final double intakeSpeed = 0.5; 
   }
 
@@ -146,7 +146,7 @@ public final class Constants {
 
     public static final boolean isBlue = DriverStation.getAlliance() == Alliance.Blue;
 
-    public static final double kMaxSpeedFeetPerSecond = 3;
+    public static final double kMaxSpeedFeetPerSecond = 2;
     public static final double kMaxAccelerationMetersPerSecondSquared = 3;
     public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
     public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;

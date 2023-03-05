@@ -27,7 +27,7 @@ public class SwerveExampleAuto {
     
     private final DriveSubsystem m_driveSubsystem; 
     private final TrajectoryConfig config = new TrajectoryConfig(
-        AutoConstants.kMaxSpeedFeetPerSecond,
+        AutoConstants.kMaxSpeedMetresPerSecond,
         AutoConstants.kMaxAccelerationMetersPerSecondSquared)
         // Add kinematics to ensure max speed is actually obeyed
         .setKinematics(DriveConstants.kDriveKinematics);

@@ -49,7 +49,7 @@ public class AutoGoForward extends SequentialCommandGroup {
         new InstantCommand(()-> m_driveSubsystem.zeroHeading()),
         new DriveCommand(m_driveSubsystem, 0, 0, 0).withTimeout(1),
         new InstantCommand(()-> m_driveSubsystem.zeroHeading(), m_driveSubsystem),
-        new GoToPositionSwerveCommand(m_driveSubsystem, m_limelightSubsystem, new Pose2d(new Translation2d(3.5,0), Rotation2d.fromDegrees(0))).getAutonomousCommand()
+        new GoToPositionSwerveCommand(m_driveSubsystem, m_limelightSubsystem, new Pose2d(new Translation2d(2,0), Rotation2d.fromDegrees(0))).getAutonomousCommand()
         //new RunCommand(()-> m_driveSubsystem.setX(), m_driveSubsystem)
         //new GoToPositionSwerveCommand(m_driveSubsystem, m_limelightSubsystem, new Pose2d(BlueFieldConstants.chargeStationPosition, Rotation2d.fromDegrees(0))).getAutonomousCommand()
     );

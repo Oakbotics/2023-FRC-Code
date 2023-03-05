@@ -146,7 +146,7 @@ public final class Constants {
 
     public static final boolean isBlue = DriverStation.getAlliance() == Alliance.Blue;
 
-    public static final double kMaxSpeedFeetPerSecond = 2;
+    public static final double kMaxSpeedMetresPerSecond = 0.5;
     public static final double kMaxAccelerationMetersPerSecondSquared = 3;
     public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
     public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;

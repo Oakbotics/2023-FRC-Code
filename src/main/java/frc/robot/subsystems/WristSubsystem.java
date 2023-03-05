@@ -121,6 +121,8 @@ public class WristSubsystem extends SubsystemBase {
     m_motor.enableSoftLimit(SoftLimitDirection.kForward, true);
     m_motor.enableSoftLimit(SoftLimitDirection.kReverse, true);
 
+    m_motor.setSmartCurrentLimit(40);
+
     
   }
 

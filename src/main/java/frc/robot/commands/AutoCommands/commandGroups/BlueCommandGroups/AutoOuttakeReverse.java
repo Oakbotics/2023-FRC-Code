@@ -9,6 +9,7 @@ import frc.robot.commands.ArmCommandLow;
 import frc.robot.commands.ArmCommandMid;
 import frc.robot.commands.OuttakeCommand;
 import frc.robot.commands.AutoCommands.GoToPositionSwerveCommand;
+import frc.robot.commands.AutoCommands.GoToPositionSwerveCommandReverse;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
@@ -49,9 +50,9 @@ public class AutoOuttakeReverse extends SequentialCommandGroup {
 
     addCommands(
         new InstantCommand(()-> m_driveSubsystem.zeroHeading(), m_driveSubsystem),
-        new OuttakeCommand(m_intakeSubsystem).repeatedly().withTimeout(2),
-        new GoToPositionSwerveCommand(m_driveSubsystem, m_limelightSubsystem, new Pose2d(new Translation2d(3.5,0), Rotation2d.fromDegrees(90))).getAutonomousCommand()
-        
+        new OuttakeCommand(m_intakeSubsystem).repeatedly().withTimeout(1),
+        new GoToPositionSwerveCommandReverse(m_driveSubsystem, m_limelightSubsystem, new Pose2d(new Translation2d(4,0), Rotation2d.fromDegrees(0))).getAutonomousCommand().withTimeout(1.5),
+        new InstantCommand(()-> m_driveSubsystem.zeroHeading(180), m_driveSubsystem)
         //new GoToPositionSwerveCommand(m_driveSubsystem, m_limelightSubsystem, new Pose2d(BlueFieldConstants.chargeStationPosition, Rotation2d.fromDegrees(0))).getAutonomousCommand()
     );
     

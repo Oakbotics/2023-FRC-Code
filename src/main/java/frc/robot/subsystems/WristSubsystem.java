@@ -128,17 +128,17 @@ public class WristSubsystem extends SubsystemBase {
 
   public void MoveWristDegrees (double degrees) {
 
-      if(m_encoder.getPosition() >= MAXPosition) m_pidController.setReference(MAXPosition, CANSparkMax.ControlType.kPosition); 
-      else if(m_encoder.getPosition() <= MINPosition) m_pidController.setReference(MINPosition, CANSparkMax.ControlType.kPosition);  
-      else m_pidController.setReference(degrees, CANSparkMax.ControlType.kPosition); 
+      // if(m_encoder.getPosition() >= MAXPosition) m_pidController.setReference(MAXPosition, CANSparkMax.ControlType.kPosition); 
+      // else if(m_encoder.getPosition() <= MINPosition) m_pidController.setReference(MINPosition, CANSparkMax.ControlType.kPosition);  
+      m_pidController.setReference(degrees, CANSparkMax.ControlType.kPosition); 
 
   }
 
   public void MoveWristSpeed(double speed){
     speed *= ArmConstants.WristVelocityMultiplier;
-      if(m_encoder.getPosition() >= MAXPosition && speed > 0) m_pidController.setReference(0, ControlType.kVelocity);
-      else if (m_encoder.getPosition() <= MINPosition && speed < 0 ) m_pidController.setReference(0, ControlType.kVelocity);
-      else m_pidController.setReference(speed, ControlType.kVelocity); 
+      // if(m_encoder.getPosition() >= MAXPosition && speed > 0) m_pidController.setReference(0, ControlType.kVelocity);
+      // else if (m_encoder.getPosition() <= MINPosition && speed < 0 ) m_pidController.setReference(0, ControlType.kVelocity);
+      m_pidController.setReference(speed, ControlType.kVelocity); 
   }
 
   public boolean isWristAtSetpoint(double setPoint){

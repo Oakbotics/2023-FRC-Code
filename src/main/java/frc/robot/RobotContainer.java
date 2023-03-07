@@ -48,6 +48,8 @@ import frc.robot.subsystems.ShoulderSubsystem;
 import frc.robot.subsystems.WristSubsystem;
 import frc.robot.commands.*;
 import frc.robot.commands.AutoCommands.ChargeStation;
+import frc.robot.commands.AutoCommands.ExperimentalGoToPositionSwerveCommand;
+import frc.robot.commands.AutoCommands.commandGroups.BlueCommandGroups.AutoExperimentalSwerveCommand;
 import frc.robot.commands.AutoCommands.commandGroups.BlueCommandGroups.AutoGoForward;
 import frc.robot.commands.AutoCommands.commandGroups.BlueCommandGroups.AutoOuttakeReverse;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -180,12 +182,12 @@ public class RobotContainer {
                 true),
             m_robotDrive));
     
-    new Trigger(
-      () -> m_opController.getLeftY() != 0
-    ).whileTrue(
-      new ShoulderSpeedCommand(m_armSubsystem, 
-        () -> m_opController.getLeftY() * 0.5
-    ));
+    // new Trigger(
+    //   () -> m_opController.getLeftY() != 0
+    // ).whileTrue(
+    //   new ShoulderSpeedCommand(m_armSubsystem, 
+    //     () -> m_opController.getLeftY() * 0.5
+    // ));
 
     // new Trigger(
     //   () -> m_opController.getRightY() != 0
@@ -209,6 +211,6 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     m_robotDrive.zeroHeading();
     // SwerveControllerCommand command = new AutoScorePreloadMid(m_armSubsystem,m_robotDrive, m_intakeSubsystem, m_limelightSubsystem );
-    return new AutoOuttakeReverse(m_armSubsystem,m_robotDrive, m_intakeSubsystem, m_limelightSubsystem );//.andThen(() -> m_robotDrive.drive(0, 0, 0, true));
+    return new AutoExperimentalSwerveCommand(m_armSubsystem,m_robotDrive, m_intakeSubsystem, m_limelightSubsystem ).andThen(() -> m_robotDrive.drive(0, 0, 0, true));
   }
 }

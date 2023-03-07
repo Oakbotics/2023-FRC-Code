@@ -8,7 +8,7 @@ import frc.robot.subsystems.CandleSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
-public class AnimateCommand extends CommandBase {
+public class CandleAnimateCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final CandleSubsystem m_candleSubsystem;
 
@@ -17,7 +17,7 @@ public class AnimateCommand extends CommandBase {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public AnimateCommand(CandleSubsystem subsystem) {
+  public CandleAnimateCommand(CandleSubsystem subsystem) {
     m_candleSubsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
@@ -30,7 +30,7 @@ public class AnimateCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_candleSubsystem.setRainbowAnimation();
+    m_candleSubsystem.setAllianceColor();
   }
 
   // Called once the command ends or is interrupted.

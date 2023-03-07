@@ -15,6 +15,9 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+
+
 
 public class LimelightSubsystem extends SubsystemBase {
 
@@ -23,6 +26,10 @@ public class LimelightSubsystem extends SubsystemBase {
   private final Field2d m_field = new Field2d();
 
   private Pose2d robotPose;
+  private double id;
+  
+  private String networkTable;
+  
 
   /** Creates a new ExampleSubsystem. */
   public LimelightSubsystem() {
@@ -53,7 +60,6 @@ public class LimelightSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("LimelightArea", area);
     SmartDashboard.putNumber("Target Available", targetAvailable);
 
-    SmartDashboard.putString("Alex", "rocks");
 
 
   }
@@ -62,9 +68,9 @@ public class LimelightSubsystem extends SubsystemBase {
   public void periodic() {
 
 
-
-    double[] botPose = m_limelightTable.getEntry("botpose_wpiblue").getDoubleArray(new double[6]); 
-    double id = m_limelightTable.getEntry("tid").getDouble(4);
+    networkTable = Constants.AutoConstants.isBlue? "botpose_wpiblue" : "botpose_wpired";
+    double[] botPose = m_limelightTable.getEntry(networkTable).getDoubleArray(new double[6]); 
+    id = m_limelightTable.getEntry("tid").getDouble(-1);
 
     // robotPose = new Pose2d(new Translation2d(Math.abs(botPose[0]), Math.abs(botPose[1])), Rotation2d.fromDegrees(Math.abs(botPose[5])));
     robotPose = new Pose2d(new Translation2d((botPose[0]),(botPose[1])), Rotation2d.fromDegrees((botPose[5])));
@@ -92,7 +98,20 @@ public class LimelightSubsystem extends SubsystemBase {
     public Pose2d getRobotPose(){
         return robotPose; 
     }
+    
+    public double getRobotAngle(){
+        if(id != -1){
+            return robotPose.getRotation().getDegrees();
+        }
+
+        return -1;
+        
+    }
   
+
+
+
+
   @Override
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation

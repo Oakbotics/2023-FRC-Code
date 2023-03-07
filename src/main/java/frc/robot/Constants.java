@@ -3,10 +3,16 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
+import org.ejml.dense.row.linsol.InvertUsingSolve_ZDRM;
+
+import com.ctre.phoenixpro.signals.IsPROLicensedValue;
 import com.revrobotics.CANSparkMax.IdleMode;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -25,16 +31,21 @@ import edu.wpi.first.math.util.Units;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+
+
+
   public static final class IntakeConstants {
-    public static final int IntakeTopID = 20;
-    public static final int IntakeBottomID = 10;
+    public static final int IntakeTopID = 10;
+    public static final int IntakeBottomID = 20;
     public static final double intakeSpeed = 0.5; 
   }
 
+ 
+ 
   public static final class DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
-    public static final double kMaxSpeedFeetPerSecond = 6.5;
+    public static final double kMaxSpeedFeetPerSecond = 5.5;
     public static final double kMaxAngularSpeed = 3 * Math.PI; // radians per second
 
     public static final double kSpeedLimiter = 0.5;
@@ -133,19 +144,37 @@ public final class Constants {
   }
 
   public static final class AutoConstants {
-    public static final double kMaxSpeedFeetPerSecond = 3;
+
+    public static final boolean isBlue = DriverStation.getAlliance() == Alliance.Blue;
+
+    public static final double kMaxSpeedMetresPerSecond = 0.5;
     public static final double kMaxAccelerationMetersPerSecondSquared = 3;
     public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
     public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
 
     public static final double kPXController = 1;
     public static final double kPYController = 1;
-    public static final double kPThetaController = 1;
+    public static final double kPThetaController = 0.1;
 
     // Constraint for the motion profiled robot angle controller
     public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(
         kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
   }
+
+  public static final class BlueFieldConstants{
+    
+    public static final Translation2d chargeStationPosition = new Translation2d(3.8, 3);
+    public static final Translation2d communityFarLeftPole = new Translation2d(2, 4.8);
+
+  }
+
+  public static final class RedFieldConstants{
+    public static final Translation2d chargeStationPosition = new Translation2d(3.8, 3);
+    public static final Translation2d communityFarLeftPole = new Translation2d(2, 4.8);
+
+  }
+
+  
 
   public static final class NeoMotorConstants {
     public static final double kFreeSpeedRpm = 5676;
@@ -176,6 +205,7 @@ public final class Constants {
     public static final double WristVelocityMultiplier = 50;
 
     public static final float WristDefaultMaxPosition = 210;
+    public static final double WristRestPosition = 11;
 
   }
   

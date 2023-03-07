@@ -25,12 +25,11 @@ public class DriveCommand extends CommandBase {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public DriveCommand(DriveSubsystem driveTrain, Double forwardSpeed, Double leftSpeed, Double angularSpeed, Boolean fieldCentric) {
+  public DriveCommand(DriveSubsystem driveTrain, double forwardSpeed, double leftSpeed, double angularSpeed) {
     m_driveTrain = driveTrain;
     m_forward = forwardSpeed;
     m_leftSpeed = leftSpeed;
     m_angularSpeed = angularSpeed;
-    isFieldCentric = fieldCentric;
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_driveTrain);
@@ -43,7 +42,7 @@ public class DriveCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_driveTrain.drive(m_forward, m_leftSpeed, m_angularSpeed, isFieldCentric, true );
+    m_driveTrain.drive(m_forward, m_leftSpeed, m_angularSpeed, true);
 
   }
 

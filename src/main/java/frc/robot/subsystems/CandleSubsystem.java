@@ -7,6 +7,9 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.AutoConstants;
+
+import org.w3c.dom.css.RGBColor;
 
 import com.ctre.phoenix.led.*;
 import com.ctre.phoenix.led.CANdle.LEDStripType;
@@ -20,10 +23,8 @@ import com.ctre.phoenix.led.TwinkleOffAnimation.TwinkleOffPercent;
 public class CandleSubsystem extends SubsystemBase {
     private final CANdle m_candle; //= new CANdle(Constants.CANdleID, "rio");
     private final int LedCount = 100;
-    private XboxController joystick;
 
-    public CandleSubsystem(XboxController joy, int CANdleID) {
-        this.joystick = joy;
+    public CandleSubsystem(int CANdleID) {
         CANdleConfiguration configAll = new CANdleConfiguration();
         configAll.statusLedOffWhenActive = false;
         configAll.disableWhenLOS = false;
@@ -32,7 +33,7 @@ public class CandleSubsystem extends SubsystemBase {
         configAll.vBatOutputMode = VBatOutputMode.On;
         m_candle = new CANdle(Constants.LightConstants.CANdleID, "rio");
         m_candle.configAllSettings(configAll, 100);
-        m_candle.animate(new ColorFlowAnimation(255, 0, 0, 0, 0.7, 120, Direction.Forward, 8));
+        m_candle.animate(new ColorFlowAnimation(255, 0, 0, 0, 0.2, 120, Direction.Forward, 8));
         stopLight();
     }
 
@@ -49,7 +50,13 @@ public class CandleSubsystem extends SubsystemBase {
     }
 
     public void setRainbowAnimation(){
-        m_candle.animate(new RainbowAnimation(1, 1, LedCount, true, 8));
+        m_candle.animate(new RainbowAnimation(1, 0.3, LedCount, true, 8));
+    }
+
+    public void setAllianceColor(){
+
+        if(AutoConstants.isBlue) m_candle.animate(new ColorFlowAnimation(0, 0, 255, 0, 0.5, LedCount, Direction.Forward, 8));
+        else m_candle.animate(new ColorFlowAnimation(255, 0, 0, 0, 0.5, LedCount, Direction.Forward, 8));
     }
 
     public void stopLight(){

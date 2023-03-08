@@ -32,7 +32,7 @@ public class WristSubsystem extends SubsystemBase {
   private final double encoderMultiplier =   (Units.radiansToDegrees(Math.PI * 2));   //Degrees
 
   private  float MAXPosition = 210;
-  private float MINPosition = 5;
+  private float MINPosition = 11;
 
   private final double WristMarginError = 4;
 

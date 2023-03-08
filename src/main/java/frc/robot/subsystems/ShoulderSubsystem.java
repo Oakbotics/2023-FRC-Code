@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.SparkMaxPIDController.AccelStrategy;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
@@ -25,7 +26,7 @@ public class ShoulderSubsystem extends SubsystemBase {
   public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM, maxVel, minVel, maxAcc, allowedErr;
   private final double encoderMultiplier = (1 / (ArmConstants.shoulderGearRatio)) * 360;   //Degrees
 
-  private final float MAXPosition = 120;
+  private final float MAXPosition = 130;
   private final float MINPosition = 0;
   private final double ShoulderMarginError = 4;
 
@@ -90,14 +91,18 @@ public class ShoulderSubsystem extends SubsystemBase {
     m_pidController.setSmartMotionAllowedClosedLoopError(allowedErr, smartMotionSlot);
 
     m_motor.setIdleMode(IdleMode.kBrake);
-    // m_motor.setSoftLimit(SoftLimitDirection.kForward, MAXPosition);
-    // m_motor.setSoftLimit(SoftLimitDirection.kReverse, MINPosition);
+    m_motor.setSoftLimit(SoftLimitDirection.kForward, MAXPosition);
+    m_motor.setSoftLimit(SoftLimitDirection.kReverse, MINPosition);
 
-    // m_motor.enableSoftLimit(SoftLimitDirection.kForward, true);
-    // m_motor.enableSoftLimit(SoftLimitDirection.kReverse, true);
+
+    m_motor.enableSoftLimit(SoftLimitDirection.kForward, true);
+    m_motor.enableSoftLimit(SoftLimitDirection.kReverse, true);
     
-  }
 
+    m_pidController.setSmartMotionAccelStrategy(AccelStrategy.kSCurve,0);
+    m_motor.setSmartCurrentLimit(20);
+
+  }
   public void MoveShoulderDegrees(double degrees) {
         m_pidController.setReference(degrees, CANSparkMax.ControlType.kSmartMotion);
   }

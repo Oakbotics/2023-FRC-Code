@@ -28,6 +28,7 @@ public class ArmCommandLow extends SequentialCommandGroup {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
     addCommands(
+      //new ShoulderMoveDegreeCommand(m_ArmSubsystem, m_ArmSubsystem.getShoulderPosition()),
       new WristMoveDegreeCommand(m_ArmSubsystem, 11),
       new ShoulderMoveDegreeCommand(m_ArmSubsystem, 0.5)
     );

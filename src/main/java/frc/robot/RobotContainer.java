@@ -52,6 +52,7 @@ import frc.robot.commands.AutoCommands.ExperimentalGoToPositionSwerveCommand;
 import frc.robot.commands.AutoCommands.commandGroups.BlueCommandGroups.AutoExperimentalSwerveCommand;
 import frc.robot.commands.AutoCommands.commandGroups.BlueCommandGroups.AutoGoForward;
 import frc.robot.commands.AutoCommands.commandGroups.BlueCommandGroups.AutoOuttakeReverse;
+import frc.robot.commands.AutoCommands.commandGroups.BlueCommandGroups.AutoSwerveCommandMid;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
@@ -211,6 +212,6 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     m_robotDrive.zeroHeading();
     // SwerveControllerCommand command = new AutoScorePreloadMid(m_armSubsystem,m_robotDrive, m_intakeSubsystem, m_limelightSubsystem );
-    return new AutoExperimentalSwerveCommand(m_armSubsystem,m_robotDrive, m_intakeSubsystem, m_limelightSubsystem ).andThen(() -> m_robotDrive.drive(0, 0, 0, true));
+    return new AutoSwerveCommandMid(m_armSubsystem,m_robotDrive, m_intakeSubsystem, m_limelightSubsystem ).andThen(() -> m_robotDrive.drive(0, 0, 0, true));
   }
 }

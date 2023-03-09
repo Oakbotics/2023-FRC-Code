@@ -61,8 +61,8 @@ public class ShoulderSubsystem extends SubsystemBase {
     maxRPM = 1000;
 
     // Smart Motion Coefficients
-    maxVel = 1000; // rpm
-    maxAcc = 1000;
+    maxVel = 4000; // rpm
+    maxAcc = 4000;
 
     // set PID coefficients
     m_pidController.setP(kP);
@@ -100,9 +100,11 @@ public class ShoulderSubsystem extends SubsystemBase {
     
 
     m_pidController.setSmartMotionAccelStrategy(AccelStrategy.kSCurve,0);
-    m_motor.setSmartCurrentLimit(20);
+    m_motor.setSmartCurrentLimit(32);
+  
 
   }
+
   public void MoveShoulderDegrees(double degrees) {
         m_pidController.setReference(degrees, CANSparkMax.ControlType.kSmartMotion);
   }

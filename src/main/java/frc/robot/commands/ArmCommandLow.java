@@ -29,7 +29,7 @@ public class ArmCommandLow extends SequentialCommandGroup {
     addRequirements(subsystem);
     addCommands(
       //new ShoulderMoveDegreeCommand(m_ArmSubsystem, m_ArmSubsystem.getShoulderPosition()),
-      new WristMoveDegreeCommand(m_ArmSubsystem, 11),
+      new WristMoveDegreeCommand(m_ArmSubsystem, 15),
       new ShoulderMoveDegreeCommand(m_ArmSubsystem, 0.5)
     );
 

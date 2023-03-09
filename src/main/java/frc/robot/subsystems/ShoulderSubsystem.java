@@ -58,11 +58,11 @@ public class ShoulderSubsystem extends SubsystemBase {
     kFF = 0.000156; 
     kMaxOutput = 1; 
     kMinOutput = -1;
-    maxRPM = 5700;
+    maxRPM = 1000;
 
     // Smart Motion Coefficients
-    maxVel = 4500; // rpm
-    maxAcc = 4500;
+    maxVel = 1000; // rpm
+    maxAcc = 1000;
 
     // set PID coefficients
     m_pidController.setP(kP);
@@ -125,6 +125,7 @@ public class ShoulderSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Shoulder encord value", m_encoder.getPosition());
+    SmartDashboard.putNumber("Shoulder Output", m_motor.getAppliedOutput());
   }
 
   @Override

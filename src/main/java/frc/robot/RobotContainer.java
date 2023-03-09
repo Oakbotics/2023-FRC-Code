@@ -183,12 +183,12 @@ public class RobotContainer {
                 true),
             m_robotDrive));
     
-    // new Trigger(
-    //   () -> m_opController.getLeftY() != 0
-    // ).whileTrue(
-    //   new ShoulderSpeedCommand(m_armSubsystem, 
-    //     () -> m_opController.getLeftY() * 0.5
-    // ));
+    new Trigger(
+      () -> m_opController.getLeftY() != 0
+    ).whileTrue(
+      new ShoulderSpeedCommand(m_armSubsystem, 
+        () -> m_opController.getLeftY() * 0.5
+    ));
 
     // new Trigger(
     //   () -> m_opController.getRightY() != 0

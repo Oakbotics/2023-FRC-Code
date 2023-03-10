@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 
 import frc.robot.commands.ArmCommandGroup.IntakeCone;
+import frc.robot.commands.ArmCommandGroup.ShoulderMoveDegreeCommand;
 import frc.robot.commands.ArmCommandGroup.WristMoveDegreeCommand;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
@@ -189,6 +190,14 @@ public class RobotContainer {
       new ShoulderSpeedCommand(m_armSubsystem, 
         () -> m_opController.getLeftY() * 0.5
     ));
+
+    new Trigger(
+      () -> m_driverController.getLeftTriggerAxis() != 0
+    ).whileTrue(
+      new ShoulderDropCommand(m_armSubsystem, m_intakeSubsystem)
+    ).onFalse(
+      new ShoulderMoveDegreeCommand(m_armSubsystem, m_armSubsystem.getShoulderPosition()+10)
+    );
 
     // new Trigger(
     //   () -> m_opController.getRightY() != 0

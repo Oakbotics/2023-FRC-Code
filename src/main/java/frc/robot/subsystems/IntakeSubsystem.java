@@ -59,7 +59,7 @@ public void stopIntake(double intakeSpeed){
 
 
 public void setIdleModeBrake(boolean brake){
-  if(brake ){
+  if(brake){
     m_intakeMotorBottom.setIdleMode(IdleMode.kBrake);
     m_intakeMotorTop.setIdleMode(IdleMode.kBrake);
   }

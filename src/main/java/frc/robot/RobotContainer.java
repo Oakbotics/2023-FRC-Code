@@ -66,6 +66,9 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * (including subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+
+
+  
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
   private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();  
@@ -78,6 +81,8 @@ public class RobotContainer {
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
   // The robot's subsystems and commands are defined here...
   private final XboxController m_opController = new XboxController(1);
+
+  private double ShoulderStartingPosition = 50;
 
  
 
@@ -191,12 +196,16 @@ public class RobotContainer {
         () -> m_opController.getLeftY() * 0.5
     ));
 
-    new Trigger(
-      () -> m_driverController.getLeftTriggerAxis() != 0
-    ).whileTrue(
-      new ShoulderDropCommand(m_armSubsystem, m_intakeSubsystem)
+    //NOT TESTED
+    new Trigger( 
+      () -> m_opController.getLeftTriggerAxis() != 0
+    ).onTrue(
+      new InstantCommand(()-> ShoulderStartingPosition = m_armSubsystem.getShoulderPosition()).andThen(
+      new ShoulderDropCommand(m_armSubsystem, m_intakeSubsystem))
     ).onFalse(
-      new ShoulderMoveDegreeCommand(m_armSubsystem, m_armSubsystem.getShoulderPosition()+10)
+      new ShoulderMoveDegreeCommand(m_armSubsystem, ShoulderStartingPosition)
+      .andThen(
+        new InstantCommand(()-> m_intakeSubsystem.setIdleModeBrake(true)))
     );
 
     // new Trigger(

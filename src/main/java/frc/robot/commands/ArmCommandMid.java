@@ -33,8 +33,8 @@ public class ArmCommandMid extends SequentialCommandGroup {
 
     addCommands(
       //new ShoulderMoveDegreeCommand(m_ArmSubsystem, m_ArmSubsystem.getShoulderPosition()),
-      new ShoulderMoveDegreeCommand(m_ArmSubsystem, 98),
-      new WristMoveDegreeCommand(m_ArmSubsystem, 180)
+      new ShoulderMoveDegreeCommand(m_ArmSubsystem, 82),
+      new WristMoveDegreeCommand(m_ArmSubsystem, 108)
       //new WristMoveDegreeCommand(m_ArmSubsystem, 120)
 
     );

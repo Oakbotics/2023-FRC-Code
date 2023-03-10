@@ -46,6 +46,7 @@ public class IntakeSubsystem extends SubsystemBase {
       m_intakeMotorBottom.set(intakeSpeed);
   }
 
+
   public void reverseIntake(double intakeSpeed){
     m_intakeMotorTop.set(-(intakeSpeed));
     m_intakeMotorBottom.set(-(intakeSpeed));
@@ -56,6 +57,19 @@ public void stopIntake(double intakeSpeed){
     m_intakeMotorBottom.set(0);
 }
 
+
+public void setIdleModeBrake(boolean brake){
+  if(brake ){
+    m_intakeMotorBottom.setIdleMode(IdleMode.kBrake);
+    m_intakeMotorTop.setIdleMode(IdleMode.kBrake);
+  }
+  else{
+    m_intakeMotorBottom.setIdleMode(IdleMode.kCoast);
+    m_intakeMotorTop.setIdleMode(IdleMode.kCoast);
+  }
+
+
+}
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

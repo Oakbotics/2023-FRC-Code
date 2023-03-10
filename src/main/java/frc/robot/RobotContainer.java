@@ -210,7 +210,7 @@ public class RobotContainer {
   //   return command.andThen(() -> m_robotDrive.drive(0, 0, 0, true, true));
   // }
   public Command getAutonomousCommand() {
-    m_robotDrive.zeroHeading();
+    // m_robotDrive.zeroHeading();
     // SwerveControllerCommand command = new AutoScorePreloadMid(m_armSubsystem,m_robotDrive, m_intakeSubsystem, m_limelightSubsystem );
     return new AutoSwerveCommandMid(m_armSubsystem,m_robotDrive, m_intakeSubsystem, m_limelightSubsystem ).andThen(() -> m_robotDrive.drive(0, 0, 0, true));
   }

@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -55,7 +57,7 @@ public class CandleSubsystem extends SubsystemBase {
 
     public void setAllianceColor(){
 
-        if(AutoConstants.isBlue) m_candle.animate(new ColorFlowAnimation(0, 0, 255, 0, 0.5, LedCount, Direction.Forward, 8));
+        if(DriverStation.getAlliance() == Alliance.Blue) m_candle.animate(new ColorFlowAnimation(0, 0, 255, 0, 0.5, LedCount, Direction.Forward, 8));
         else m_candle.animate(new ColorFlowAnimation(255, 0, 0, 0, 0.5, LedCount, Direction.Forward, 8));
     }
 

@@ -43,6 +43,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.simulation.JoystickSim;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.CandleSubsystem;
 import frc.robot.subsystems.ShoulderSubsystem;
@@ -50,6 +51,7 @@ import frc.robot.subsystems.WristSubsystem;
 import frc.robot.commands.*;
 import frc.robot.commands.AutoCommands.ChargeStation;
 import frc.robot.commands.AutoCommands.ExperimentalGoToPositionSwerveCommand;
+import frc.robot.commands.AutoCommands.GoToPositionSwerveCommand;
 import frc.robot.commands.AutoCommands.commandGroups.BlueCommandGroups.AutoExperimentalSwerveCommand;
 import frc.robot.commands.AutoCommands.commandGroups.BlueCommandGroups.AutoGoForward;
 import frc.robot.commands.AutoCommands.commandGroups.BlueCommandGroups.AutoOuttakeReverse;
@@ -93,6 +95,9 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
     // Configure default commands
+
+
+    SmartDashboard.putNumber("Auto Distance", 1);
     
   }
 
@@ -143,6 +148,11 @@ public class RobotContainer {
           m_limelightSubsystem.getRobotAngle()
         )  //Add limelight, and then test
       ));
+
+    new POVButton(m_driverController, 180)
+      .onTrue(new GoToPositionSwerveCommand(m_robotDrive, m_limelightSubsystem, new Pose2d(new Translation2d(SmartDashboard.getNumber("Auto Distance", 1),0), Rotation2d.fromDegrees(0))).getAutonomousCommand()
+      );
+    
 
     //Needs testing
     new Trigger(
@@ -202,12 +212,12 @@ public class RobotContainer {
     ).onTrue(
       new InstantCommand(()-> ShoulderStartingPosition = m_armSubsystem.getShoulderPosition()).andThen(
       new ShoulderDropCommand(m_armSubsystem, m_intakeSubsystem))
-    ).onFalse(
-      new ShoulderMoveDegreeCommand(m_armSubsystem, ShoulderStartingPosition)
-      .andThen(
-        new InstantCommand(()-> m_intakeSubsystem.setIdleModeBrake(true)))
+    // ).onFalse(
+    //   // new ShoulderMoveDegreeCommand(m_armSubsystem, ShoulderStartingPosition)
+    //   // .andThen(
+    //     new InstantCommand(()-> m_intakeSubsystem.setIdleModeBrake(true))
+    // );
     );
-
     // new Trigger(
     //   () -> m_opController.getRightY() != 0
     // ).whileTrue(

@@ -27,7 +27,7 @@ public class ShoulderDropCommand extends SequentialCommandGroup  {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ArmSubsystem m_armSubsystem;
   private final IntakeSubsystem m_intakeSubsystem;
-  private final double startingDegrees;
+  private  double startingDegrees;
 
   /**
    * Creates a new ExampleCommand.
@@ -41,6 +41,7 @@ public class ShoulderDropCommand extends SequentialCommandGroup  {
     addRequirements(m_armSubsystem, m_intakeSubsystem);
 
     startingDegrees = m_armSubsystem.getShoulderPosition();
+    startingDegrees = SmartDashboard.getNumber("End", 77);
 
     addCommands(
       new InstantCommand(()-> m_intakeSubsystem.setIdleModeBrake(false)),

@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 public class ShoulderMoveDegreeCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ArmSubsystem m_ArmSubsystem;
-    private double m_degrees;
+    public double m_degrees;
   /**
    * Creates a new ExampleCommand.
    *
@@ -45,7 +45,7 @@ public class ShoulderMoveDegreeCommand extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    SmartDashboard.putString("End", "Mid Ended");
+    SmartDashboard.putNumber("End", m_degrees);
   }
 
 //   Returns true when the command should end.

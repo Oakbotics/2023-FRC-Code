@@ -21,7 +21,7 @@ public class ShoulderSubsystem extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
 
   public CANSparkMax m_motor;
-  private SparkMaxPIDController m_pidController;
+  public SparkMaxPIDController m_pidController;
   public RelativeEncoder m_encoder;
   public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM, maxVel, minVel, maxAcc, allowedErr;
   private final double encoderMultiplier = (1 / (ArmConstants.shoulderGearRatio)) * 360;   //Degrees

@@ -7,6 +7,8 @@ package frc.robot;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.filter.Debouncer;
+import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -43,6 +45,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.simulation.JoystickSim;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.CandleSubsystem;
 import frc.robot.subsystems.ShoulderSubsystem;
@@ -183,9 +186,9 @@ public class RobotContainer {
             
               m_robotDrive.drive(
                 //Gradual braking on trigger needs testing
-                -MathUtil.applyDeadband(m_driverController.getLeftY() * (1.1 - m_driverController.getRightTriggerAxis()), OIConstants.kDriveDeadband), 
-                -MathUtil.applyDeadband(m_driverController.getLeftX() * (1.1 - m_driverController.getRightTriggerAxis()), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_driverController.getRightX() * (1.1 - m_driverController.getRightTriggerAxis()), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getLeftY() * (1.25 - m_driverController.getRightTriggerAxis()), OIConstants.kDriveDeadband), 
+                -MathUtil.applyDeadband(m_driverController.getLeftX() * (1.25 - m_driverController.getRightTriggerAxis()), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getRightX() * (1.25 - m_driverController.getRightTriggerAxis()), OIConstants.kDriveDeadband),
                 true),
             m_robotDrive));
     
@@ -196,17 +199,39 @@ public class RobotContainer {
         () -> m_opController.getLeftY() * 0.5
     ));
 
+    //m_debouncer = new Debouncer(1, DebounceType.kBoth);
     //NOT TESTED
-    new Trigger( 
-      () -> m_opController.getLeftTriggerAxis() != 0
-    ).onTrue(
-      new InstantCommand(()-> ShoulderStartingPosition = m_armSubsystem.getShoulderPosition()).andThen(
-      new ShoulderDropCommand(m_armSubsystem, m_intakeSubsystem))
-    ).onFalse(
-      new ShoulderMoveDegreeCommand(m_armSubsystem, ShoulderStartingPosition)
-      .andThen(
-        new InstantCommand(()-> m_intakeSubsystem.setIdleModeBrake(true)))
+    // new Trigger(
+    //   () -> (m_debouncer.calculate(m_opController.getLeftTriggerAxis() != 0))
+    // .onTrue(
+    //   //new InstantCommand(()-> ShoulderStartingPosition = m_armSubsystem.getShoulderPosition()).andThen(
+    //   new ShoulderDropCommand(m_armSubsystem, m_intakeSubsystem)
+    // ).onFalse(
+    //   //new ShoulderMoveDegreeCommand(m_armSubsystem, ShoulderStartingPosition)
+    //   //.andThen(
+    //     new InstantCommand(()-> m_intakeSubsystem.setIdleModeBrake(true
+    // );
+
+    new Trigger(
+      () -> (m_opController.getLeftTriggerAxis() != 0))
+    .onTrue(
+      // if(SmartDashboard.getNumber("End")==82){
+      //   new ShoulderMoveDegreeCommand(m_armSubsystem, 82-5);
+      // }
+      // else{
+      //   new ShoulderMoveDegreeCommand(m_armSubsystem, m_armSubsystem.getShoulderPosition());
+      // }
+      new ShoulderMoveDegreeCommand(m_armSubsystem, 72)
+      // new ShoulderDropCommand(m_armSubsystem, m_intakeSubsystem)
+    )
+      //new InstantCommand(()-> ShoulderStartingPosition = m_armSubsystem.getShoulderPosition()).andThen(
+      //new ShoulderMoveDegreeCommand(m_armSubsystem, SmartDashboard.getNumber("End"))
+      .onFalse(
+      //new ShoulderMoveDegreeCommand(m_armSubsystem, ShoulderStartingPosition)
+      //.andThen(
+        new InstantCommand(()-> m_intakeSubsystem.setIdleModeBrake(true))
     );
+
 
     // new Trigger(
     //   () -> m_opController.getRightY() != 0

@@ -29,8 +29,10 @@ public class ArmCommandSubstation extends SequentialCommandGroup {
     addRequirements(subsystem);
     addCommands(
       //new ShoulderMoveDegreeCommand(m_ArmSubsystem, m_ArmSubsystem.getShoulderPosition()),
-      new WristMoveDegreeCommand(m_ArmSubsystem, 11),
-      new ShoulderMoveDegreeCommand(m_ArmSubsystem, 36)
+      // new WristMoveDegreeCommand(m_ArmSubsystem, 11),
+      // new ShoulderMoveDegreeCommand(m_ArmSubsystem, 36)    
+      new ShoulderMoveDegreeCommand(m_ArmSubsystem, 55),
+      new WristMoveDegreeCommand(m_ArmSubsystem, 40)
     );
 
   }

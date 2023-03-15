@@ -25,8 +25,8 @@ public class IntakeSubsystem extends SubsystemBase {
       m_intakeMotorBottom = new CANSparkMax(IntakeConstants.IntakeBottomID, MotorType.kBrushless);
 
       m_intakeMotorTop.restoreFactoryDefaults();
-      m_intakeMotorTop.setInverted(false);
-      m_intakeMotorBottom.setInverted(true);
+      m_intakeMotorTop.setInverted(true);
+      m_intakeMotorBottom.setInverted(false);
 
       m_encoderTop = m_intakeMotorTop.getEncoder();
       m_encoderBottom = m_intakeMotorBottom.getEncoder();
@@ -35,7 +35,7 @@ public class IntakeSubsystem extends SubsystemBase {
       m_intakeMotorTop.setIdleMode(IdleMode.kBrake);
 
       m_intakeMotorBottom.setSmartCurrentLimit(15);
-      m_intakeMotorBottom.setSmartCurrentLimit(15);
+      m_intakeMotorTop.setSmartCurrentLimit(15);
 
 
   }

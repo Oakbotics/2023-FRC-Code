@@ -44,7 +44,7 @@ public class ShoulderDropCommand extends SequentialCommandGroup  {
 
     addCommands(
       new InstantCommand(()-> m_intakeSubsystem.setIdleModeBrake(false)),
-      new ShoulderMoveDegreeCommand(m_armSubsystem, startingDegrees - 10)        
+      new ShoulderMoveDegreeCommand(m_armSubsystem, 72)        
       //new IntakeCommand(m_intakeSubsystem).repeatedly()
     );
   }

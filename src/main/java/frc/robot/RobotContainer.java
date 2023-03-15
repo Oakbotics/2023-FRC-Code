@@ -50,11 +50,12 @@ import frc.robot.subsystems.ShoulderSubsystem;
 import frc.robot.subsystems.WristSubsystem;
 import frc.robot.commands.*;
 import frc.robot.commands.AutoCommands.ChargeStation;
-import frc.robot.commands.AutoCommands.ExperimentalGoToPositionSwerveCommand;
 import frc.robot.commands.AutoCommands.GoToPositionSwerveCommand;
 import frc.robot.commands.AutoCommands.commandGroups.BlueCommandGroups.AutoExperimentalSwerveCommand;
 import frc.robot.commands.AutoCommands.commandGroups.BlueCommandGroups.AutoGoForward;
 import frc.robot.commands.AutoCommands.commandGroups.BlueCommandGroups.AutoOuttakeReverse;
+import frc.robot.commands.AutoCommands.commandGroups.BlueCommandGroups.AutoSwerveCommandHighCone;
+import frc.robot.commands.AutoCommands.commandGroups.BlueCommandGroups.AutoSwerveCommandHighCube;
 import frc.robot.commands.AutoCommands.commandGroups.BlueCommandGroups.AutoSwerveCommandMid;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -124,7 +125,9 @@ public class RobotContainer {
     new JoystickButton(m_opController, XboxController.Button.kRightBumper.value).onTrue(new PurpleCandleCommand(m_candleSubsystem));
     new JoystickButton(m_opController, XboxController.Button.kLeftBumper.value).onTrue(new OrangeCandleCommand(m_candleSubsystem));
     
-    new JoystickButton(m_driverController, XboxController.Button.kY.value).onTrue(new ArmCommandLowCone(m_armSubsystem));
+    // new JoystickButton(m_driverController, XboxController.Button.kY.value).onTrue(new ArmCommandLowCone(m_armSubsystem));
+
+    //new JoystickButton(m_driverController, XboxController.Button.kY.value).onTrue(new AutoSwerveCommandMid(m_armSubsystem, m_robotDrive, m_intakeSubsystem, m_limelightSubsystem));
     new JoystickButton(m_driverController, XboxController.Button.kA.value).onTrue(new ArmCommandLow(m_armSubsystem));
 
     new JoystickButton(m_driverController, XboxController.Button.kLeftBumper.value).whileTrue(new IntakeCommand(m_intakeSubsystem));
@@ -149,9 +152,9 @@ public class RobotContainer {
         )  //Add limelight, and then test
       ));
 
-    new POVButton(m_driverController, 180)
-      .onTrue(new GoToPositionSwerveCommand(m_robotDrive, m_limelightSubsystem, new Pose2d(new Translation2d(SmartDashboard.getNumber("Auto Distance", 1),0), Rotation2d.fromDegrees(0))).getAutonomousCommand()
-      );
+    // new POVButton(m_driverController, 180)
+    //   .onTrue(new GoToPositionSwerveCommand(m_robotDrive, m_limelightSubsystem, new Pose2d(new Translation2d(SmartDashboard.getNumber("Auto Distance", 1),0), Rotation2d.fromDegrees(0))).getAutonomousCommand()
+    //   );
     
 
     //Needs testing
@@ -240,6 +243,6 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     m_robotDrive.zeroHeading();
     // SwerveControllerCommand command = new AutoScorePreloadMid(m_armSubsystem,m_robotDrive, m_intakeSubsystem, m_limelightSubsystem );
-    return new AutoSwerveCommandMid(m_armSubsystem,m_robotDrive, m_intakeSubsystem, m_limelightSubsystem ).andThen(() -> m_robotDrive.drive(0, 0, 0, true));
+    return new AutoSwerveCommandHighCone(m_armSubsystem,m_robotDrive, m_intakeSubsystem, m_limelightSubsystem ).andThen(() -> m_robotDrive.drive(0, 0, 0, true));
   }
 }

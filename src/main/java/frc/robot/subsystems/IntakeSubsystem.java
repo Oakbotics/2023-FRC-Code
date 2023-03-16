@@ -25,8 +25,8 @@ public class IntakeSubsystem extends SubsystemBase {
       m_intakeMotorBottom = new CANSparkMax(IntakeConstants.IntakeBottomID, MotorType.kBrushless);
 
       m_intakeMotorTop.restoreFactoryDefaults();
-      m_intakeMotorTop.setInverted(false);
-      m_intakeMotorBottom.setInverted(true);
+      m_intakeMotorTop.setInverted(true);
+      m_intakeMotorBottom.setInverted(false);
 
       m_encoderTop = m_intakeMotorTop.getEncoder();
       m_encoderBottom = m_intakeMotorBottom.getEncoder();
@@ -35,7 +35,7 @@ public class IntakeSubsystem extends SubsystemBase {
       m_intakeMotorTop.setIdleMode(IdleMode.kBrake);
 
       m_intakeMotorBottom.setSmartCurrentLimit(15);
-      m_intakeMotorBottom.setSmartCurrentLimit(15);
+      m_intakeMotorTop.setSmartCurrentLimit(15);
 
 
   }
@@ -45,6 +45,7 @@ public class IntakeSubsystem extends SubsystemBase {
       m_intakeMotorTop.set(intakeSpeed);
       m_intakeMotorBottom.set(intakeSpeed);
   }
+
 
   public void reverseIntake(double intakeSpeed){
     m_intakeMotorTop.set(-(intakeSpeed));
@@ -56,6 +57,19 @@ public void stopIntake(double intakeSpeed){
     m_intakeMotorBottom.set(0);
 }
 
+
+public void setIdleModeBrake(boolean brake){
+  if(brake){
+    m_intakeMotorBottom.setIdleMode(IdleMode.kBrake);
+    m_intakeMotorTop.setIdleMode(IdleMode.kBrake);
+  }
+  else{
+    m_intakeMotorBottom.setIdleMode(IdleMode.kCoast);
+    m_intakeMotorTop.setIdleMode(IdleMode.kCoast);
+  }
+
+
+}
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

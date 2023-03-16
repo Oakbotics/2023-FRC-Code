@@ -5,37 +5,52 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.ShoulderSubsystem;
+import frc.robot.Constants.ArmConstants;
 import frc.robot.commands.ArmCommandGroup.ShoulderMoveDegreeCommand;
 import frc.robot.commands.ArmCommandGroup.WristMoveDegreeCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
+
+import javax.sql.RowSet;
+
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
 
 /** An example command that uses an example subsystem. */
-public class ArmCommandHigh extends SequentialCommandGroup {
+public class ShoulderDropCommand extends SequentialCommandGroup  {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final ArmSubsystem m_ArmSubsystem;
+  private final ArmSubsystem m_armSubsystem;
+  private final IntakeSubsystem m_intakeSubsystem;
+  private final double startingDegrees;
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ArmCommandHigh(ArmSubsystem subsystem) {
-    m_ArmSubsystem = subsystem;
+  public ShoulderDropCommand(ArmSubsystem armSubsystem, IntakeSubsystem intakeSubsystem) {
+    m_armSubsystem = armSubsystem;
+    m_intakeSubsystem = intakeSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(subsystem);
+    addRequirements(m_armSubsystem, m_intakeSubsystem);
+
+    startingDegrees = m_armSubsystem.getShoulderPosition();
 
     addCommands(
-      //new ShoulderMoveDegreeCommand(m_ArmSubsystem, m_ArmSubsystem.getShoulderPosition()),
-      new ShoulderMoveDegreeCommand(m_ArmSubsystem, 92),
-      new WristMoveDegreeCommand(m_ArmSubsystem, 80
-      
-      )
+      new InstantCommand(()-> m_intakeSubsystem.setIdleModeBrake(false)),
+      new ShoulderMoveDegreeCommand(m_armSubsystem, 72)        
+      //new IntakeCommand(m_intakeSubsystem).repeatedly()
     );
   }
+
+  public double startingDegrees(){
+    return startingDegrees;
+  }
+
 }

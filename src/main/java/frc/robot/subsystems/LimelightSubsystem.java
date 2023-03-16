@@ -12,6 +12,8 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -68,7 +70,7 @@ public class LimelightSubsystem extends SubsystemBase {
   public void periodic() {
 
 
-    networkTable = Constants.AutoConstants.isBlue? "botpose_wpiblue" : "botpose_wpired";
+    networkTable = DriverStation.getAlliance() == Alliance.Blue? "botpose_wpiblue" : "botpose_wpired";
     double[] botPose = m_limelightTable.getEntry(networkTable).getDoubleArray(new double[6]); 
     id = m_limelightTable.getEntry("tid").getDouble(-1);
 

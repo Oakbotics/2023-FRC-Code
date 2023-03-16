@@ -145,7 +145,6 @@ public final class Constants {
 
   public static final class AutoConstants {
 
-    public static final boolean isBlue = DriverStation.getAlliance() == Alliance.Blue;
 
     public static final double kMaxSpeedMetresPerSecond = 0.5;
     public static final double kMaxAccelerationMetersPerSecondSquared = 3;

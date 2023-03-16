@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 
 import frc.robot.commands.ArmCommandGroup.IntakeCone;
+import frc.robot.commands.ArmCommandGroup.ShoulderMoveDegreeCommand;
 import frc.robot.commands.ArmCommandGroup.WristMoveDegreeCommand;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
@@ -42,16 +43,19 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.simulation.JoystickSim;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.CandleSubsystem;
 import frc.robot.subsystems.ShoulderSubsystem;
 import frc.robot.subsystems.WristSubsystem;
 import frc.robot.commands.*;
 import frc.robot.commands.AutoCommands.ChargeStation;
-import frc.robot.commands.AutoCommands.ExperimentalGoToPositionSwerveCommand;
+import frc.robot.commands.AutoCommands.GoToPositionSwerveCommand;
 import frc.robot.commands.AutoCommands.commandGroups.BlueCommandGroups.AutoExperimentalSwerveCommand;
 import frc.robot.commands.AutoCommands.commandGroups.BlueCommandGroups.AutoGoForward;
 import frc.robot.commands.AutoCommands.commandGroups.BlueCommandGroups.AutoOuttakeReverse;
+import frc.robot.commands.AutoCommands.commandGroups.BlueCommandGroups.AutoSwerveCommandHighCone;
+import frc.robot.commands.AutoCommands.commandGroups.BlueCommandGroups.AutoSwerveCommandHighCube;
 import frc.robot.commands.AutoCommands.commandGroups.BlueCommandGroups.AutoSwerveCommandMid;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -65,6 +69,9 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * (including subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+
+
+  
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
   private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();  
@@ -78,6 +85,8 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final XboxController m_opController = new XboxController(1);
 
+  private double ShoulderStartingPosition = 50;
+
  
 
   /**
@@ -87,6 +96,9 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
     // Configure default commands
+
+
+    SmartDashboard.putNumber("Auto Distance", 1);
     
   }
 
@@ -113,7 +125,9 @@ public class RobotContainer {
     new JoystickButton(m_opController, XboxController.Button.kRightBumper.value).onTrue(new PurpleCandleCommand(m_candleSubsystem));
     new JoystickButton(m_opController, XboxController.Button.kLeftBumper.value).onTrue(new OrangeCandleCommand(m_candleSubsystem));
     
-    new JoystickButton(m_driverController, XboxController.Button.kY.value).onTrue(new ArmCommandLowCone(m_armSubsystem));
+    // new JoystickButton(m_driverController, XboxController.Button.kY.value).onTrue(new ArmCommandLowCone(m_armSubsystem));
+
+    //new JoystickButton(m_driverController, XboxController.Button.kY.value).onTrue(new AutoSwerveCommandMid(m_armSubsystem, m_robotDrive, m_intakeSubsystem, m_limelightSubsystem));
     new JoystickButton(m_driverController, XboxController.Button.kA.value).onTrue(new ArmCommandLow(m_armSubsystem));
 
     new JoystickButton(m_driverController, XboxController.Button.kLeftBumper.value).whileTrue(new IntakeCommand(m_intakeSubsystem));
@@ -137,6 +151,11 @@ public class RobotContainer {
           m_limelightSubsystem.getRobotAngle()
         )  //Add limelight, and then test
       ));
+
+    // new POVButton(m_driverController, 180)
+    //   .onTrue(new GoToPositionSwerveCommand(m_robotDrive, m_limelightSubsystem, new Pose2d(new Translation2d(SmartDashboard.getNumber("Auto Distance", 1),0), Rotation2d.fromDegrees(0))).getAutonomousCommand()
+    //   );
+    
 
     //Needs testing
     new Trigger(
@@ -177,9 +196,9 @@ public class RobotContainer {
             
               m_robotDrive.drive(
                 //Gradual braking on trigger needs testing
-                -MathUtil.applyDeadband(m_driverController.getLeftY() * (1.1 - m_driverController.getRightTriggerAxis()), OIConstants.kDriveDeadband), 
-                -MathUtil.applyDeadband(m_driverController.getLeftX() * (1.1 - m_driverController.getRightTriggerAxis()), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_driverController.getRightX() * (1.1 - m_driverController.getRightTriggerAxis()), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getLeftY() * (1.25 - m_driverController.getRightTriggerAxis()), OIConstants.kDriveDeadband), 
+                -MathUtil.applyDeadband(m_driverController.getLeftX() * (1.25 - m_driverController.getRightTriggerAxis()), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getRightX() * (1.25 - m_driverController.getRightTriggerAxis()), OIConstants.kDriveDeadband),
                 true),
             m_robotDrive));
     
@@ -190,6 +209,18 @@ public class RobotContainer {
         () -> m_opController.getLeftY() * 0.5
     ));
 
+    //NOT TESTED
+    new Trigger( 
+      () -> m_opController.getLeftTriggerAxis() != 0
+    ).onTrue(
+      new InstantCommand(()-> ShoulderStartingPosition = m_armSubsystem.getShoulderPosition()).andThen(
+      new ShoulderDropCommand(m_armSubsystem, m_intakeSubsystem))
+    // ).onFalse(
+    //   // new ShoulderMoveDegreeCommand(m_armSubsystem, ShoulderStartingPosition)
+    //   // .andThen(
+    //     new InstantCommand(()-> m_intakeSubsystem.setIdleModeBrake(true))
+    // );
+    );
     // new Trigger(
     //   () -> m_opController.getRightY() != 0
     // ).whileTrue(
@@ -212,6 +243,6 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     m_robotDrive.zeroHeading();
     // SwerveControllerCommand command = new AutoScorePreloadMid(m_armSubsystem,m_robotDrive, m_intakeSubsystem, m_limelightSubsystem );
-    return new AutoSwerveCommandMid(m_armSubsystem,m_robotDrive, m_intakeSubsystem, m_limelightSubsystem ).andThen(() -> m_robotDrive.drive(0, 0, 0, true));
+    return new AutoSwerveCommandHighCone(m_armSubsystem,m_robotDrive, m_intakeSubsystem, m_limelightSubsystem ).andThen(() -> m_robotDrive.drive(0, 0, 0, true));
   }
 }

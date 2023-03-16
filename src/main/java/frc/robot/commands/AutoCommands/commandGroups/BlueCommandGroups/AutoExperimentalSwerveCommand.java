@@ -9,7 +9,6 @@ import frc.robot.commands.ArmCommandLow;
 import frc.robot.commands.ArmCommandMid;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.OuttakeCommand;
-import frc.robot.commands.AutoCommands.ExperimentalGoToPositionSwerveCommand;
 import frc.robot.commands.AutoCommands.GoToPositionSwerveCommand;
 import frc.robot.commands.AutoCommands.GoToPositionSwerveCommandReverse;
 import frc.robot.subsystems.ArmSubsystem;
@@ -52,21 +51,13 @@ public class AutoExperimentalSwerveCommand extends SequentialCommandGroup {
 
     addCommands(
         
-        new InstantCommand(()-> m_driveSubsystem.zeroHeading(0), m_driveSubsystem),
-        new DriveCommand(m_driveSubsystem, 0, 0, 0).withTimeout(1),
-        new ArmCommandLow(m_armSubsystem),
-        new OuttakeCommand(m_intakeSubsystem).repeatedly().withTimeout(2),
-        new ExperimentalGoToPositionSwerveCommand(m_driveSubsystem, m_limelightSubsystem, new Pose2d(new Translation2d(0,0), Rotation2d.fromDegrees(0))).getAutonomousCommand(),
-        new InstantCommand(()-> m_driveSubsystem.zeroHeading(180), m_driveSubsystem)
-        //new GoToPositionSwerveCommand(m_driveSubsystem, m_limelightSubsystem, new Pose2d(BlueFieldConstants.chargeStationPosition, Rotation2d.fromDegrees(0))).getAutonomousCommand()
+        // new InstantCommand(()-> m_driveSubsystem.zeroHeading(0), m_driveSubsystem),
+        // new DriveCommand(m_driveSubsystem, 0, 0, 0).withTimeout(1),
+        // new ArmCommandLow(m_armSubsystem),
+        // new OuttakeCommand(m_intakeSubsystem).repeatedly().withTimeout(2),
+        // new ExperimentalGoToPositionSwerveCommand(m_driveSubsystem, m_limelightSubsystem, new Pose2d(new Translation2d(0,0), Rotation2d.fromDegrees(0))).getAutonomousCommand(),
+        // new InstantCommand(()-> m_driveSubsystem.zeroHeading(180), m_driveSubsystem)
+        // //new GoToPositionSwerveCommand(m_driveSubsystem, m_limelightSubsystem, new Pose2d(BlueFieldConstants.chargeStationPosition, Rotation2d.fromDegrees(0))).getAutonomousCommand()
     );
-    
-
-    }
-
-
-
-  // Called when the command is initially schePduled.
-
-  
+  }  
 }

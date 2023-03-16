@@ -257,6 +257,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void zeroHeading(double offset){
+
     if(offset != -1){
       m_gyro.reset();
       m_gyro.setAngleAdjustment(offset);     

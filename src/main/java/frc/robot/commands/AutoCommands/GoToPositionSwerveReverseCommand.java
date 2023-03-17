@@ -6,7 +6,6 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
@@ -14,16 +13,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 
 
-public class PositionToDestinationSwerveCommand  {
+public class GoToPositionSwerveReverseCommand  {
     @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
     
     private final DriveSubsystem m_driveSubsystem; 
-    private final LimelightSubsystem m_limelightSubsystem;
+    // private final LimelightSubsystem m_limelightSubsystem;
     private final TrajectoryConfig config = new TrajectoryConfig(
         AutoConstants.kMaxSpeedMetresPerSecond,
         AutoConstants.kMaxAccelerationMetersPerSecondSquared)
@@ -43,15 +41,15 @@ public class PositionToDestinationSwerveCommand  {
    *
    * @param driveSubsytem The subsystem used by this command.
    */
-   public PositionToDestinationSwerveCommand(DriveSubsystem driveSubsytem, LimelightSubsystem limelightSubsystem, Pose2d destination) {
+   public GoToPositionSwerveReverseCommand(DriveSubsystem driveSubsytem, LimelightSubsystem limelightSubsystem, Pose2d destination) {
     m_driveSubsystem = driveSubsytem;
-    m_limelightSubsystem = limelightSubsystem;
+    // m_limelightSubsystem = limelightSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
 
     exampleTrajectory= TrajectoryGenerator.generateTrajectory(
         // Start at the origin facing the +X direction
         //m_limelightSubsystem.getRobotPose(),
-        m_driveSubsystem.getPose(),
+        new Pose2d(2.5,0, new Rotation2d(0)),
         // Pass through these two interior waypoints, making ans  's' curve path
         List.of(),
         // End 3 meters straight ahead of where we started, facing forward

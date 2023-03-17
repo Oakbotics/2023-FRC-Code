@@ -5,14 +5,12 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.CandleSubsystem;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 
 /** An example command that uses an example subsystem. */
 public class PurpleCandleCommand extends InstantCommand {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final CandleSubsystem m_candleSubsystem;
-  private int lightState = 0;
 
   /**
    * Creates a new ExampleCommand.

@@ -3,16 +3,8 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
-
-import org.ejml.dense.row.linsol.InvertUsingSolve_ZDRM;
-
-import com.ctre.phoenixpro.signals.IsPROLicensedValue;
 import com.revrobotics.CANSparkMax.IdleMode;
 
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -32,25 +24,18 @@ import edu.wpi.first.math.util.Units;
  */
 public final class Constants {
 
-
-
   public static final class IntakeConstants {
-    public static final int IntakeTopID = 10;
-    public static final int IntakeBottomID = 20;
+    public static final int intakeTopID = 10;
+    public static final int intakeBottomID = 20;
     public static final double intakeSpeed = 0.5; 
   }
 
- 
- 
   public static final class DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
     public static final double kMaxSpeedFeetPerSecond = 5.5;
     public static final double kMaxAngularSpeed = 2.2 * Math.PI; // radians per second
-
     public static final double kSpeedLimiter = 0.5;
-
-  
     public static final double kDirectionSlewRate = 1.2; // radians per second
     public static final double kMagnitudeSlewRate = 1.8; // percent per second (1 = 100%)
     public static final double kRotationalSlewRate = 2.0; // percent per second (1 = 100%)
@@ -84,7 +69,6 @@ public final class Constants {
     public static final int kRearRightTurningCanId = 6;
 
     public static final boolean kGyroReversed = false;
-
   }
 
   public static final class ModuleConstants {
@@ -145,7 +129,6 @@ public final class Constants {
 
   public static final class AutoConstants {
 
-
     public static final double kMaxSpeedMetresPerSecond = 0.5;
     public static final double kMaxAccelerationMetersPerSecondSquared = 3;
     public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
@@ -164,31 +147,26 @@ public final class Constants {
     
     public static final Translation2d chargeStationPosition = new Translation2d(3.8, 3);
     public static final Translation2d communityFarLeftPole = new Translation2d(2, 4.8);
-
   }
 
   public static final class RedFieldConstants{
     public static final Translation2d chargeStationPosition = new Translation2d(3.8, 3);
     public static final Translation2d communityFarLeftPole = new Translation2d(2, 4.8);
-
   }
-
-  
 
   public static final class NeoMotorConstants {
     public static final double kFreeSpeedRpm = 5676;
   }
   
-   public final class LightConstants{
-
-      public static final int CANdleID = 5;
-
+  public final class LightConstants{
+   public static final int CANdleID = 5;
    }
   
-   public static final int JoystickId = 0;
-
-
-
+  public final class ControllerConstants{
+     public static final int driverControllerId = 0;
+     public static final int operatorControllerId = 1;
+  }
+  
   public final class ArmConstants{
     public static final int ShoulderId = 14;
     public static final int WristID = 1;

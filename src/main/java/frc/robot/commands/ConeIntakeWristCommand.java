@@ -4,30 +4,20 @@
 
 package frc.robot.commands;
 
-import frc.robot.subsystems.ShoulderSubsystem;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.commands.ArmCommandGroup.ShoulderMoveDegreeCommand;
 import frc.robot.commands.ArmCommandGroup.WristMoveDegreeCommand;
 import frc.robot.subsystems.ArmSubsystem;
-import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 
-import javax.sql.RowSet;
-
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.StartEndCommand;
 
 /** An example command that uses an example subsystem. */
 public class ConeIntakeWristCommand extends SequentialCommandGroup  {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ArmSubsystem m_armSubsystem;
   private final IntakeSubsystem m_intakeSubsystem;
-  private final double startingDegrees;
+
 
   /**
    * Creates a new ExampleCommand.
@@ -39,8 +29,6 @@ public class ConeIntakeWristCommand extends SequentialCommandGroup  {
     m_intakeSubsystem = intakeSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_armSubsystem, m_intakeSubsystem);
-
-    startingDegrees = m_armSubsystem.getWristPosition();
 
     addCommands(
       new WristMoveDegreeCommand(m_armSubsystem, ArmConstants.WristRestPosition),        

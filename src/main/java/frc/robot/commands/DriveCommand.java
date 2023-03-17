@@ -17,7 +17,6 @@ public class DriveCommand extends CommandBase {
   private Double m_forward;
   private Double m_leftSpeed;
   private Double m_angularSpeed;
-  private Boolean isFieldCentric;
 
 
   /**

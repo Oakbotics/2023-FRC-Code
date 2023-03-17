@@ -4,21 +4,13 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkMax.SoftLimitDirection;
-
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.ArmConstants;
-import frc.robot.subsystems.ShoulderSubsystem;
-import frc.robot.subsystems.WristSubsystem;
 
 
 public class ArmSubsystem extends SubsystemBase {
 
   ShoulderSubsystem m_shoulderSubsystem;
   WristSubsystem m_wristSubsystem;
-
-  private final double shoulderWristBottomDegree = 40;
 
 
   /** Creates a new ExampleSubsystem. */
@@ -74,28 +66,15 @@ public class ArmSubsystem extends SubsystemBase {
     return m_shoulderSubsystem.isShoulderAtSetpoint(setPoint);
   }
 
-  private void AdjustWristSoftLimit(){
-    if (m_shoulderSubsystem.GetShoulderPosition() <= shoulderWristBottomDegree){ 
-      //For every degree below 35, make wrist limit go up by 156/33
-      Double limit = Math.abs(((shoulderWristBottomDegree - m_shoulderSubsystem.GetShoulderPosition()))*(134/40) - ArmConstants.WristDefaultMaxPosition);
-      m_wristSubsystem.setReverseSoftLimit(limit.floatValue());
-    }else{
-      if(m_wristSubsystem.getReverseSoftLimit() != m_wristSubsystem.getReverseSoftLimitDefault()){
-        m_wristSubsystem.setDefaultReverseSoftLimit();
-      }
-    }
-  }
-
-
-
-  // private void AdjustWristSoftLimit(double shoulderDegrees){
-  //   if (shoulderDegrees <= shoulderWristBottomDegree){ 
-  //     Double limit = (m_wristSubsystem.getReverseSoftLimit() + (shoulderDegrees - shoulderWristBottomDegree)); 
+  // private void AdjustWristSoftLimit(){
+  //   if (m_shoulderSubsystem.GetShoulderPosition() <= shoulderWristBottomDegree){ 
+  //     //For every degree below 35, make wrist limit go up by 156/33
+  //     Double limit = Math.abs(((shoulderWristBottomDegree - m_shoulderSubsystem.GetShoulderPosition()))*(134/40) - ArmConstants.WristDefaultMaxPosition);
   //     m_wristSubsystem.setReverseSoftLimit(limit.floatValue());
   //   }else{
   //     if(m_wristSubsystem.getReverseSoftLimit() != m_wristSubsystem.getReverseSoftLimitDefault()){
   //       m_wristSubsystem.setDefaultReverseSoftLimit();
   //     }
   //   }
-  // }
-}
+  }
+

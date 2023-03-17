@@ -2,27 +2,25 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.AutoCommands.commandGroups.BlueCommandGroups;
+package frc.robot.commands.AutoCommands.commandGroups;
 
-import frc.robot.Constants.BlueFieldConstants;
-import frc.robot.commands.ArmCommandLow;
-import frc.robot.commands.ArmCommandMid;
-import frc.robot.commands.OuttakeCommand;
-import frc.robot.commands.AutoCommands.GoToPositionSwerveCommand;
+
+import frc.robot.commands.DriveCommand;
+import frc.robot.commands.AutoCommands.GoToPositionSwerveReverseCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-
 /** An example command that uses an example subsystem. */
-public class RedAutoScorePreloadMid extends SequentialCommandGroup {
+public class AutoSwerveCommandNoOutake extends SequentialCommandGroup {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
+  
   private final ArmSubsystem m_armSubsystem;
   private final DriveSubsystem m_driveSubsystem;
   private final IntakeSubsystem m_intakeSubsystem;
@@ -34,7 +32,7 @@ public class RedAutoScorePreloadMid extends SequentialCommandGroup {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public RedAutoScorePreloadMid(ArmSubsystem armSubsystem, DriveSubsystem driveSubsystem, IntakeSubsystem intakeSubsystem, LimelightSubsystem limelightSubsystem) {
+  public AutoSwerveCommandNoOutake(ArmSubsystem armSubsystem, DriveSubsystem driveSubsystem, IntakeSubsystem intakeSubsystem, LimelightSubsystem limelightSubsystem) {
     m_armSubsystem = armSubsystem;
     m_driveSubsystem = driveSubsystem;
     m_intakeSubsystem = intakeSubsystem;
@@ -43,10 +41,11 @@ public class RedAutoScorePreloadMid extends SequentialCommandGroup {
     addRequirements(m_armSubsystem, m_driveSubsystem, m_intakeSubsystem);
 
     addCommands(
-        new GoToPositionSwerveCommand(m_driveSubsystem, m_limelightSubsystem, new Pose2d(BlueFieldConstants.communityFarLeftPole, Rotation2d.fromDegrees(0))).getAutonomousCommand()
-        //new GoToPositionSwerveCommand(m_driveSubsystem, m_limelightSubsystem, new Pose2d(BlueFieldConstants.chargeStationPosition, Rotation2d.fromDegrees(0))).getAutonomousCommand()
+        
+        new InstantCommand(()-> m_driveSubsystem.zeroHeading(0), m_driveSubsystem),
+        new DriveCommand(m_driveSubsystem, 0, 0, 0).withTimeout(0.5),
+        new GoToPositionSwerveReverseCommand(m_driveSubsystem, m_limelightSubsystem, new Pose2d(new Translation2d(0,0), Rotation2d.fromDegrees(0))).getAutonomousCommand(),
+        new InstantCommand(()-> m_driveSubsystem.zeroHeading(180), m_driveSubsystem)
     );
-
   }
-}   
-
+}

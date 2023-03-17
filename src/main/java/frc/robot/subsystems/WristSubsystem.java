@@ -21,7 +21,6 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmConstants;
-import pabeles.concurrency.IntOperatorTask.Max;
 
 public class WristSubsystem extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */

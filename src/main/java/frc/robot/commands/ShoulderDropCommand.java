@@ -4,23 +4,12 @@
 
 package frc.robot.commands;
 
-import frc.robot.subsystems.ShoulderSubsystem;
-import frc.robot.Constants.ArmConstants;
 import frc.robot.commands.ArmCommandGroup.ShoulderMoveDegreeCommand;
-import frc.robot.commands.ArmCommandGroup.WristMoveDegreeCommand;
 import frc.robot.subsystems.ArmSubsystem;
-import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 
-import javax.sql.RowSet;
-
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.StartEndCommand;
 
 /** An example command that uses an example subsystem. */
 public class ShoulderDropCommand extends SequentialCommandGroup  {

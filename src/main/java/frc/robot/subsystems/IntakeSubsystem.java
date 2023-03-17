@@ -5,31 +5,28 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.IntakeConstants;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.revrobotics.RelativeEncoder;
 
 
 public class IntakeSubsystem extends SubsystemBase {
 
     private CANSparkMax m_intakeMotorTop;
     private CANSparkMax m_intakeMotorBottom;
-    private RelativeEncoder m_encoderTop;
-    private RelativeEncoder m_encoderBottom;
+
   /** Creates a new ExampleSubsystem. */
   public IntakeSubsystem() {
-      m_intakeMotorTop = new CANSparkMax(IntakeConstants.IntakeTopID, MotorType.kBrushless);
-      m_intakeMotorBottom = new CANSparkMax(IntakeConstants.IntakeBottomID, MotorType.kBrushless);
+      m_intakeMotorTop = new CANSparkMax(IntakeConstants.intakeTopID, MotorType.kBrushless);
+      m_intakeMotorBottom = new CANSparkMax(IntakeConstants.intakeBottomID, MotorType.kBrushless);
 
       m_intakeMotorTop.restoreFactoryDefaults();
       m_intakeMotorTop.setInverted(true);
       m_intakeMotorBottom.setInverted(false);
 
-      m_encoderTop = m_intakeMotorTop.getEncoder();
-      m_encoderBottom = m_intakeMotorBottom.getEncoder();
+      // m_encoderTop = m_intakeMotorTop.getEncoder();
+      // m_encoderBottom = m_intakeMotorBottom.getEncoder();
 
       m_intakeMotorBottom.setIdleMode(IdleMode.kBrake);
       m_intakeMotorTop.setIdleMode(IdleMode.kBrake);

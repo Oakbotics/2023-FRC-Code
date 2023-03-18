@@ -27,6 +27,7 @@ import frc.robot.commands.*;
 import frc.robot.commands.AutoCommands.commandGroups.AutoSwerveCommandHighCone;
 import frc.robot.commands.AutoCommands.commandGroups.AutoSwerveCommandHighCube;
 import frc.robot.commands.AutoCommands.commandGroups.AutoSwerveCommandMid;
+import frc.robot.commands.AutoCommands.commandGroups.AutoSwerveCommandMidCube;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -50,6 +51,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final XboxController m_driverController = new XboxController(Constants.ControllerConstants.driverControllerId);
   private final XboxController m_opController = new XboxController(Constants.ControllerConstants.operatorControllerId);
+
   
 
   
@@ -78,9 +80,9 @@ public class RobotContainer {
         // Operator Controls
 
     new JoystickButton(m_opController, XboxController.Button.kA.value).onTrue(new ArmCommandLow(m_armSubsystem));
-    new JoystickButton(m_opController, XboxController.Button.kY.value).onTrue(new ArmCommandHigh(m_armSubsystem));
+    new JoystickButton(m_opController, XboxController.Button.kY.value).onTrue(new ArmCommandDoubleSubstation(m_armSubsystem));
     new JoystickButton(m_opController, XboxController.Button.kX.value).onTrue(new ArmCommandMid(m_armSubsystem));
-    new JoystickButton(m_opController, XboxController.Button.kB.value).onTrue(new ArmCommandSubstation(m_armSubsystem));
+    new JoystickButton(m_opController, XboxController.Button.kB.value).onTrue(new ArmCommandMidCube(m_armSubsystem));
     
     new JoystickButton(m_opController, XboxController.Button.kRightBumper.value).onTrue(new PurpleCandleCommand(m_candleSubsystem));
     new JoystickButton(m_opController, XboxController.Button.kLeftBumper.value).onTrue(new OrangeCandleCommand(m_candleSubsystem));
@@ -143,7 +145,7 @@ public class RobotContainer {
     //   );
     
     
-    m_candleSubsystem.setDefaultCommand(new CandleAnimateCommand(m_candleSubsystem));
+    // m_candleSubsystem.setDefaultCommand(new CandleAnimateCommand(m_candleSubsystem));
     
     
     m_robotDrive.setDefaultCommand(
@@ -177,7 +179,8 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     m_robotDrive.zeroHeading();
+    // new CandleAnimateCommand(m_candleSubsystem);
     // SwerveControllerCommand command = new AutoScorePreloadMid(m_armSubsystem,m_robotDrive, m_intakeSubsystem, m_limelightSubsystem );
-    return new AutoSwerveCommandMid(m_armSubsystem,m_robotDrive, m_intakeSubsystem, m_limelightSubsystem ).andThen(() -> m_robotDrive.drive(0, 0, 0, true));
+    return new AutoSwerveCommandMidCube(m_armSubsystem,m_robotDrive, m_intakeSubsystem, m_limelightSubsystem).andThen(() -> m_robotDrive.drive(0, 0, 0, true));
   }
 }

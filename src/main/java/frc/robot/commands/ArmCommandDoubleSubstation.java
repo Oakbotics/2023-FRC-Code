@@ -10,7 +10,7 @@ import frc.robot.subsystems.ArmSubsystem;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 /** An example command that uses an example subsystem. */
-public class ArmCommandMid extends SequentialCommandGroup {
+public class ArmCommandDoubleSubstation extends SequentialCommandGroup {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ArmSubsystem m_ArmSubsystem;
 
@@ -20,14 +20,14 @@ public class ArmCommandMid extends SequentialCommandGroup {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ArmCommandMid(ArmSubsystem subsystem) {
+  public ArmCommandDoubleSubstation(ArmSubsystem subsystem) {
     m_ArmSubsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
 
     addCommands(
       //new ShoulderMoveDegreeCommand(m_ArmSubsystem, m_ArmSubsystem.getShoulderPosition()),
-      new ShoulderMoveDegreeCommand(m_ArmSubsystem, 85),
+      new ShoulderMoveDegreeCommand(m_ArmSubsystem, 83),
       new WristMoveDegreeCommand(m_ArmSubsystem, 108)
       //new WristMoveDegreeCommand(m_ArmSubsystem, 120)
 

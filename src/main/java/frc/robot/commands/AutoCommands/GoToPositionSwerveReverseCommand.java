@@ -49,7 +49,7 @@ public class GoToPositionSwerveReverseCommand  {
     exampleTrajectory= TrajectoryGenerator.generateTrajectory(
         // Start at the origin facing the +X direction
         //m_limelightSubsystem.getRobotPose(),
-        new Pose2d(2.35,0, new Rotation2d(0)),
+        new Pose2d(2.40,0, new Rotation2d(0)),
         // Pass through these two interior waypoints, making ans  's' curve path
         List.of(),
         // End 3 meters straight ahead of where we started, facing forward

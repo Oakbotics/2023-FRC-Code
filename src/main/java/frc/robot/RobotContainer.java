@@ -181,6 +181,6 @@ public class RobotContainer {
     m_robotDrive.zeroHeading();
     // new CandleAnimateCommand(m_candleSubsystem);
     // SwerveControllerCommand command = new AutoScorePreloadMid(m_armSubsystem,m_robotDrive, m_intakeSubsystem, m_limelightSubsystem );
-    return new AutoSwerveCommandMidCube(m_armSubsystem,m_robotDrive, m_intakeSubsystem, m_limelightSubsystem).andThen(() -> m_robotDrive.drive(0, 0, 0, true));
+    return new AutoSwerveCommandHighCube(m_armSubsystem,m_robotDrive, m_intakeSubsystem, m_limelightSubsystem).andThen(() -> m_robotDrive.drive(0, 0, 0, true));
   }
 }

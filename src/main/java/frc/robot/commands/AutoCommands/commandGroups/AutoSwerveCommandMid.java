@@ -53,7 +53,7 @@ public class AutoSwerveCommandMid extends SequentialCommandGroup {
         new ShoulderDropCommand(armSubsystem, intakeSubsystem),
         new InstantCommand(()-> m_intakeSubsystem.setIdleModeBrake(false)),
         new OuttakeCommand(m_intakeSubsystem).repeatedly().withTimeout(1),
-        new GoToPositionSwerveReverseCommand(m_driveSubsystem, m_limelightSubsystem, new Pose2d(new Translation2d(2,0), Rotation2d.fromDegrees(0))).getAutonomousCommand(),
+        new GoToPositionSwerveReverseCommand(m_driveSubsystem, m_limelightSubsystem, new Pose2d(new Translation2d(2.15,0), Rotation2d.fromDegrees(0))).getAutonomousCommand(),
         new ArmCommandLow(m_armSubsystem),
         new InstantCommand(()-> m_intakeSubsystem.setIdleModeBrake(true)),
         new GoToPositionSwerveReverseCommand(m_driveSubsystem, m_limelightSubsystem, new Pose2d(new Translation2d(0,0), Rotation2d.fromDegrees(0))).getAutonomousCommand(),

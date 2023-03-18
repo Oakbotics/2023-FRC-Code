@@ -62,7 +62,7 @@ public class AutoSwerveCommandMidCube extends SequentialCommandGroup {
         new ArmCommandLow(m_armSubsystem),
         new InstantCommand(()-> m_intakeSubsystem.setIdleModeBrake(true)),
         new GoToPositionSwerveReverseCommand(m_driveSubsystem, m_limelightSubsystem, new Pose2d(new Translation2d(0,0), Rotation2d.fromDegrees(0))).getAutonomousCommand(),
-        new GoToPositionSwerveReverseCommand(m_driveSubsystem, m_limelightSubsystem, new Pose2d(new Translation2d(1.35,0), Rotation2d.fromDegrees(0))).getAutonomousCommand(),
+        // new GoToPositionSwerveCommand(m_driveSubsystem, m_limelightSubsystem, new Pose2d(new Translation2d(1,0), Rotation2d.fromDegrees(0))).getAutonomousCommand(),
         // new GoToPositionSwerveCommand(m_driveSubsystem, m_limelightSubsystem, new Pose2d(new Translation2d(1,0), Rotation2d.fromDegrees(0))).getAutonomousCommand(),
         new InstantCommand(()-> m_driveSubsystem.zeroHeading(180), m_driveSubsystem),
         new RunCommand(()-> m_driveSubsystem.setX(), m_driveSubsystem)

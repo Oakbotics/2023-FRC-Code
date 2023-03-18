@@ -9,6 +9,7 @@ import frc.robot.commands.ArmCommandLow;
 import frc.robot.commands.ArmCommandMid;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.OuttakeCommand;
+import frc.robot.commands.AutoCommands.GoToPositionSwerveCommand;
 import frc.robot.commands.AutoCommands.GoToPositionSwerveReverseCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -51,9 +52,10 @@ public class AutoSwerveCommandHighCube extends SequentialCommandGroup {
         new GoToPositionSwerveReverseCommand(m_driveSubsystem, m_limelightSubsystem, new Pose2d(new Translation2d(2.1,0), Rotation2d.fromDegrees(0))).getAutonomousCommand(),
         new ArmCommandLow(m_armSubsystem),
         new ArmCommandHigh(m_armSubsystem),
+        // new GoToPositionSwerveCommand(m_driveSubsystem, m_limelightSubsystem, new Pose2d(new Translation2d(2.1,0), Rotation2d.fromDegrees(0))).getAutonomousCommand(),
         new InstantCommand(()-> m_intakeSubsystem.setIdleModeBrake(false)),
         new OuttakeCommand(m_intakeSubsystem).repeatedly().withTimeout(1),
-        // new GoToPositionSwerveReverseCommand(m_driveSubsystem, m_limelightSubsystem, new Pose2d(new Translation2d(2,0), Rotation2d.fromDegrees(0))).getAutonomousCommand(),
+        new GoToPositionSwerveReverseCommand(m_driveSubsystem, m_limelightSubsystem, new Pose2d(new Translation2d(2,0), Rotation2d.fromDegrees(0))).getAutonomousCommand(),
         new ArmCommandLow(m_armSubsystem),
         new InstantCommand(()-> m_intakeSubsystem.setIdleModeBrake(true)),
         new GoToPositionSwerveReverseCommand(m_driveSubsystem, m_limelightSubsystem, new Pose2d(new Translation2d(0,0), Rotation2d.fromDegrees(0))).getAutonomousCommand(),

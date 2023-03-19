@@ -55,6 +55,7 @@ public class AutoSwerveCommandMidCube extends SequentialCommandGroup {
         new DriveCommand(m_driveSubsystem, 0, 0, 0).withTimeout(1),
         new ArmCommandLow(m_armSubsystem),
         new GoDistanceSwerveReverseCommand(m_driveSubsystem, m_limelightSubsystem, new Pose2d(new Translation2d(0.15,0), Rotation2d.fromDegrees(0))).getAutonomousCommand(),
+        new DriveCommand(m_driveSubsystem, 0, 0, 0).withTimeout(0.5),
         new ArmCommandMidCube(m_armSubsystem),
         // new ShoulderDropCommand(armSubsystem, intakeSubsystem),
         new InstantCommand(()-> m_intakeSubsystem.setIdleModeBrake(false)),

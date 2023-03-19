@@ -49,7 +49,7 @@ public class GoToPositionSwerveCommand {
     exampleTrajectory= TrajectoryGenerator.generateTrajectory(
         // Start at the origin facing the +X direction
         //m_limelightSubsystem.getRobotPose(),
-        new Pose2d(0,0, new Rotation2d(0)),
+        m_driveSubsystem.getPose(),
         // Pass through these two interior waypoints, making ans  's' curve path
         List.of(),
         // End 3 meters straight ahead of where we started, facing forward
@@ -80,7 +80,7 @@ public class GoToPositionSwerveCommand {
 
     public SwerveControllerCommand getAutonomousCommand(){
         thetaController.enableContinuousInput(-Math.PI, Math.PI);
-        m_driveSubsystem.resetOdometry(exampleTrajectory.getInitialPose());
+        // m_driveSubsystem.resetOdometry(exampleTrajectory.getInitialPose());
         return swerveControllerCommand;
     }
 

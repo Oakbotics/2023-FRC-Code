@@ -46,19 +46,21 @@ public class AutoSwerveCommandHighCube extends SequentialCommandGroup {
     addRequirements(m_armSubsystem, m_driveSubsystem, m_intakeSubsystem);
 
     addCommands(
-        
+
+        new InstantCommand(()-> m_driveSubsystem.resetOdometry(new Pose2d(4,0, Rotation2d.fromDegrees(0)))),  
         new InstantCommand(()-> m_driveSubsystem.zeroHeading(0), m_driveSubsystem),
         new DriveCommand(m_driveSubsystem, 0, 0, 0).withTimeout(1),
-        new GoToPositionSwerveReverseCommand(m_driveSubsystem, m_limelightSubsystem, new Pose2d(new Translation2d(2.1,0), Rotation2d.fromDegrees(0))).getAutonomousCommand(),
+        new GoToPositionSwerveReverseCommand(m_driveSubsystem, m_limelightSubsystem, new Pose2d(new Translation2d(3.75,0), Rotation2d.fromDegrees(0))).getAutonomousCommand(),
         new ArmCommandLow(m_armSubsystem),
         new ArmCommandHigh(m_armSubsystem),
-        // new GoToPositionSwerveCommand(m_driveSubsystem, m_limelightSubsystem, new Pose2d(new Translation2d(2.1,0), Rotation2d.fromDegrees(0))).getAutonomousCommand(),
+        // new GoToPositionSwerveCommand(m_driveSubsystem, m_limelightSubsystem, new Pose2d(new Translation2d(4,0), Rotation2d.fromDegrees(0))).getAutonomousCommand(),
         new InstantCommand(()-> m_intakeSubsystem.setIdleModeBrake(false)),
         new OuttakeCommand(m_intakeSubsystem).repeatedly().withTimeout(1),
-        new GoToPositionSwerveReverseCommand(m_driveSubsystem, m_limelightSubsystem, new Pose2d(new Translation2d(2,0), Rotation2d.fromDegrees(0))).getAutonomousCommand(),
+        // new GoToPositionSwerveReverseCommand(m_driveSubsystem, m_limelightSubsystem, new Pose2d(new Translation2d(2.35,0), Rotation2d.fromDegrees(0))).getAutonomousCommand(),
         new ArmCommandLow(m_armSubsystem),
         new InstantCommand(()-> m_intakeSubsystem.setIdleModeBrake(true)),
-        new GoToPositionSwerveReverseCommand(m_driveSubsystem, m_limelightSubsystem, new Pose2d(new Translation2d(0,0), Rotation2d.fromDegrees(0))).getAutonomousCommand(),
+        // new GoToPositionSwerveReverseCommand(m_driveSubsystem, m_limelightSubsystem, new Pose2d(new Translation2d(0,0), Rotation2d.fromDegrees(0))).getAutonomousCommand(),
+        // new GoToPositionSwerveCommand(m_driveSubsystem, m_limelightSubsystem, new Pose2d(new Translation2d(1.65,0), Rotation2d.fromDegrees(0))).getAutonomousCommand(),
         new InstantCommand(()-> m_driveSubsystem.zeroHeading(180), m_driveSubsystem),
         new RunCommand(()-> m_driveSubsystem.setX(), m_driveSubsystem)
        

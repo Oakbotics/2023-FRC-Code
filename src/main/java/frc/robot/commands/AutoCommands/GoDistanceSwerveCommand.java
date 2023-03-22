@@ -17,7 +17,7 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 
 
-public class GoDistanceSwerveReverseCommand  {
+public class GoDistanceSwerveCommand  {
     @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
     
     private final DriveSubsystem m_driveSubsystem; 
@@ -27,12 +27,12 @@ public class GoDistanceSwerveReverseCommand  {
         AutoConstants.kMaxAccelerationMetersPerSecondSquared)
         // Add kinematics to ensure max speed is actually obeyed
         .setKinematics(DriveConstants.kDriveKinematics)
-        .setReversed(true);
+        .setReversed(false);
 
     private Trajectory exampleTrajectory; 
         
     ProfiledPIDController thetaController = new ProfiledPIDController(
-        AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints);
+        AutoConstants.kPThetaController, 0, 0.0005, AutoConstants.kThetaControllerConstraints);
 
     SwerveControllerCommand swerveControllerCommand;
     
@@ -41,7 +41,7 @@ public class GoDistanceSwerveReverseCommand  {
    *
    * @param driveSubsytem The subsystem used by this command.
    */
-   public GoDistanceSwerveReverseCommand(DriveSubsystem driveSubsytem, LimelightSubsystem limelightSubsystem, Pose2d startingPose, Pose2d endingPose) {
+   public GoDistanceSwerveCommand(DriveSubsystem driveSubsytem, LimelightSubsystem limelightSubsystem, Pose2d startingPose, Pose2d endingPose) {
     m_driveSubsystem = driveSubsytem;
     // m_limelightSubsystem = limelightSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
@@ -68,8 +68,8 @@ public class GoDistanceSwerveReverseCommand  {
         DriveConstants.kDriveKinematics,
 
         // Position controllers
-        new PIDController(AutoConstants.kPXController, 0, 0),
-        new PIDController(AutoConstants.kPYController, 0, 0),
+        new PIDController(AutoConstants.kPXController, 0, AutoConstants.kDController),
+        new PIDController(AutoConstants.kPYController, 0, AutoConstants.kDController),
         thetaController,
         m_driveSubsystem::setModuleStates,
         m_driveSubsystem);

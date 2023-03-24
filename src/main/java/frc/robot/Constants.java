@@ -6,6 +6,7 @@ package frc.robot;
 import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
@@ -50,6 +51,8 @@ public final class Constants {
         new Translation2d(kWheelBase / 2, -kTrackWidth / 2),
         new Translation2d(-kWheelBase / 2, kTrackWidth / 2),
         new Translation2d(-kWheelBase / 2, -kTrackWidth / 2));
+
+    // public static final SwerveDriveKinematics kfieldRelative = kDriveKinematics.toSwerveModuleStates(ChassisSpeeds.fromFieldRelativeSpeeds(null, null))
 
     // Angular offsets of the modules relative to the chassis in radians
     public static final double kFrontLeftChassisAngularOffset = -Math.PI / 2;
@@ -129,15 +132,15 @@ public final class Constants {
 
   public static final class AutoConstants {
 
-    public static final double kMaxSpeedMetresPerSecond = 0.5;
+    public static final double kMaxSpeedMetresPerSecond = 2;
     public static final double kMaxAccelerationMetersPerSecondSquared = 0.5;
-    public static final double kMaxAngularSpeedRadiansPerSecond = 4*Math.PI;
-    public static final double kMaxAngularSpeedRadiansPerSecondSquared = 4*Math.PI;
+    public static final double kMaxAngularSpeedRadiansPerSecond = 2 * Math.PI;
+    public static final double kMaxAngularSpeedRadiansPerSecondSquared = 4 * Math.PI;
 
-    public static final double kPXController = 1;
-    public static final double kPYController = 1;
-    public static final double kDController = 0.005;
-    public static final double kPThetaController = 0.13;
+    public static final double kPXController = 5;
+    public static final double kPYController = 0.1;
+    public static final double kDController = 0.00;
+    public static final double kPThetaController = 0.1;
 
     // Constraint for the motion profiled robot angle controller
     public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(

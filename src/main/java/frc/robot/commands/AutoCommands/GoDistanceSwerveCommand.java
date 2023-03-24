@@ -1,11 +1,14 @@
 package frc.robot.commands.AutoCommands;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
@@ -13,6 +16,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
+// import frc.robot.commands.AutoCommands.commandGroups.SwerveControllerCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 
@@ -62,6 +66,8 @@ public class GoDistanceSwerveCommand  {
         SmartDashboard.putNumber("DestinationY", startingPose.getY());
         SmartDashboard.putString("Trajectory", exampleTrajectory.toString());
         SmartDashboard.putString("Theta Controller Setpoint", thetaController.getSetpoint().toString());
+
+        Supplier<Rotation2d> rSupplier = () -> (m_driveSubsystem.getPose().getRotation());
     swerveControllerCommand = new SwerveControllerCommand(
         exampleTrajectory,
         m_driveSubsystem::getPose, // Functional interface to feed supplier
@@ -71,6 +77,7 @@ public class GoDistanceSwerveCommand  {
         new PIDController(AutoConstants.kPXController, 0, AutoConstants.kDController),
         new PIDController(AutoConstants.kPYController, 0, AutoConstants.kDController),
         thetaController,
+        // rSupplier,
         m_driveSubsystem::setModuleStates,
         m_driveSubsystem);
 

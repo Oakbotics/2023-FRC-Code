@@ -46,10 +46,12 @@ public class AutoSwerveCommandNoOutake extends SequentialCommandGroup {
     addCommands(
         
         new InstantCommand(()-> m_driveSubsystem.zeroHeading(0), m_driveSubsystem),
-        new DriveCommand(m_driveSubsystem, 0, 0, 0).withTimeout(0.5),
-        new GoDistanceSwerveCommand(m_driveSubsystem, m_limelightSubsystem, new Pose2d(new Translation2d(0,0), Rotation2d.fromDegrees(0)), new Pose2d(new Translation2d(2, 0), Rotation2d.fromDegrees(0))).getAutonomousCommand(),
-        new InstantCommand(()-> m_driveSubsystem.zeroHeading(180), m_driveSubsystem),
-        new RunCommand(()-> m_driveSubsystem.setX(), m_driveSubsystem)
+        // new RunCommand(()-> m_driveSubsystem.setSide(), m_driveSubsystem),
+        // new DriveCommand(m_driveSubsystem, 0, 0, 0).withTimeout(0.5)
+        new GoDistanceSwerveReverseCommand(m_driveSubsystem, m_limelightSubsystem, new Pose2d(new Translation2d(0,0), Rotation2d.fromDegrees(0)), new Pose2d(new Translation2d(-2, 0), Rotation2d.fromDegrees(0))).getAutonomousCommand()
+        // new GoDistanceSwerveCommand(m_driveSubsystem, m_limelightSubsystem, new Pose2d(new Translation2d(0,0), Rotation2d.fromDegrees(0)), new Pose2d(new Translation2d(2, 0), Rotation2d.fromDegrees(0))).getAutonomousCommand()
+        // new InstantCommand(()-> m_driveSubsystem.zeroHeading(180), m_driveSubsystem)
+        // new RunCommand(()-> m_driveSubsystem.setX(), m_driveSubsystem)
     );
   }
 }

@@ -3,6 +3,9 @@ package frc.robot.commands.AutoCommands;
 import java.util.List;
 import java.util.function.Supplier;
 
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+
+import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -36,7 +39,7 @@ public class GoDistanceSwerveCommand  {
     private Trajectory exampleTrajectory; 
         
     ProfiledPIDController thetaController = new ProfiledPIDController(
-        AutoConstants.kPThetaController, 0, 0.0005, AutoConstants.kThetaControllerConstraints);
+        AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints);
 
     SwerveControllerCommand swerveControllerCommand;
     
@@ -67,16 +70,17 @@ public class GoDistanceSwerveCommand  {
         SmartDashboard.putString("Trajectory", exampleTrajectory.toString());
         SmartDashboard.putString("Theta Controller Setpoint", thetaController.getSetpoint().toString());
 
-        Supplier<Rotation2d> rSupplier = () -> (m_driveSubsystem.getPose().getRotation());
+        Supplier<Rotation2d> rSupplier = () -> (m_driveSubsystem.getRotation());
     swerveControllerCommand = new SwerveControllerCommand(
         exampleTrajectory,
         m_driveSubsystem::getPose, // Functional interface to feed supplier
         DriveConstants.kDriveKinematics,
 
         // Position controllers
+        new HolonomicDriveController(
         new PIDController(AutoConstants.kPXController, 0, AutoConstants.kDController),
         new PIDController(AutoConstants.kPYController, 0, AutoConstants.kDController),
-        thetaController,
+        thetaController),
         // rSupplier,
         m_driveSubsystem::setModuleStates,
         m_driveSubsystem);

@@ -67,13 +67,5 @@ public class AutoSwerveCommandMidCube extends SequentialCommandGroup {
         new RunCommand(()-> m_driveSubsystem.setX(), m_driveSubsystem)
        
         );
-    
-
     }
-
-
-
-  // Called when the command is initially schePduled.
-
-  
 }

@@ -6,6 +6,8 @@ package frc.robot.subsystems;
 
 import java.text.spi.DecimalFormatSymbolsProvider;
 
+import org.opencv.core.RotatedRect;
+
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
@@ -81,7 +83,7 @@ public class DriveSubsystem extends SubsystemBase {
     // Update the odometry in the periodic block
 
     m_odometry.update(
-        Rotation2d.fromDegrees(m_gyro.getAngle()),
+        Rotation2d.fromDegrees(-m_gyro.getAngle()),
         new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
             m_frontRight.getPosition(),
@@ -230,17 +232,26 @@ public class DriveSubsystem extends SubsystemBase {
    *
    * @param desiredStates The desired SwerveModule states.
    */
+  //public void setModuleStates(SwerveModuleState[] desiredStates) {
+  //   ChassisSpeeds chassisSpeeds = DriveConstants.kDriveKinematics.toChassisSpeeds(desiredStates);
+  //   var swerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(
+  //           ChassisSpeeds.fromFieldRelativeSpeeds(chassisSpeeds.vxMetersPerSecond, chassisSpeeds.vyMetersPerSecond, chassisSpeeds.omegaRadiansPerSecond, Rotation2d.fromDegrees(-m_gyro.getAngle())));
+  //   SwerveModuleState = DriveConstants.kDriveKinematics.toSwerveModuleStates(ChassisSpeeds, null)
+  //   SwerveDriveKinematics.desaturateWheelSpeeds(
+  //     swerveModuleStates, DriveConstants.kMaxSpeedFeetPerSecond);
+  //   m_frontLeft.setDesiredState(swerveModuleStates[0]);
+  //   m_frontRight.setDesiredState(swerveModuleStates[1]);
+  //   m_rearLeft.setDesiredState(swerveModuleStates[2]);
+  //   m_rearRight.setDesiredState(swerveModuleStates[3]);
+  // }
+
   public void setModuleStates(SwerveModuleState[] desiredStates) {
-    ChassisSpeeds chassisSpeeds = DriveConstants.kDriveKinematics.toChassisSpeeds(desiredStates);
-    var swerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(
-            ChassisSpeeds.fromFieldRelativeSpeeds(chassisSpeeds.vxMetersPerSecond, chassisSpeeds.vyMetersPerSecond, chassisSpeeds.omegaRadiansPerSecond, Rotation2d.fromDegrees(-m_gyro.getAngle())));
-    // SwerveModuleState = DriveConstants.kDriveKinematics.toSwerveModuleStates(ChassisSpeeds, null)
     SwerveDriveKinematics.desaturateWheelSpeeds(
-      swerveModuleStates, DriveConstants.kMaxSpeedFeetPerSecond);
-    m_frontLeft.setDesiredState(swerveModuleStates[0]);
-    m_frontRight.setDesiredState(swerveModuleStates[1]);
-    m_rearLeft.setDesiredState(swerveModuleStates[2]);
-    m_rearRight.setDesiredState(swerveModuleStates[3]);
+        desiredStates, DriveConstants.kMaxSpeedFeetPerSecond);
+    m_frontLeft.setDesiredState(new SwerveModuleState(desiredStates[0].speedMetersPerSecond, desiredStates[0].angle));
+    m_frontRight.setDesiredState(new SwerveModuleState(desiredStates[1].speedMetersPerSecond, desiredStates[1].angle));
+    m_rearLeft.setDesiredState(new SwerveModuleState(desiredStates[2].speedMetersPerSecond, desiredStates[2].angle));
+    m_rearRight.setDesiredState(new SwerveModuleState(desiredStates[3].speedMetersPerSecond, desiredStates[3].angle));
   }
 
   public void setModuleStatesReversed(SwerveModuleState[] desiredStates) {
@@ -272,6 +283,10 @@ public class DriveSubsystem extends SubsystemBase {
       m_gyro.setAngleAdjustment(offset);     
     }
       SmartDashboard.putNumber("Angle Ajustment", m_gyro.getAngleAdjustment());
+  }
+
+  public Rotation2d getRotation(){
+    return new Rotation2d(m_gyro.getAngle());
   }
 
   /**

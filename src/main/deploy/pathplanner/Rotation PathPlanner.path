@@ -1,0 +1,24 @@
+{
+  "waypoints": [
+    {
+      "anchorPoint": {
+        "x": 0.08271298593879249,
+        "y": -0.05709584068740751
+      },
+      "prevControl": null,
+      "nextControl": null,
+      "holonomicAngle": 0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    }
+  ],
+  "markers": []
+}

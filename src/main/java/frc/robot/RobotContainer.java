@@ -179,10 +179,25 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand() {
-    m_robotDrive.zeroHeading();
+   public Command getAutonomousCommand() {
+  //   m_robotDrive.zeroHeading();
     // new CandleAnimateCommand(m_candleSubsystem);
     // SwerveControllerCommand command = new AutoScorePreloadMid(m_armSubsystem,m_robotDrive, m_intakeSubsystem, m_limelightSubsystem );
-    return new SwerveExampleAuto(m_robotDrive).getAutonomousCommand().andThen(() -> m_robotDrive.drive(0, 0, 0, true));
+     return new AutoSwerveCommandNoOutake(m_armSubsystem, m_robotDrive, m_intakeSubsystem, m_limelightSubsystem).andThen(() -> m_robotDrive.drive(0, 0, 0, true));
+   }
+  //  }
+  // }
+
+  // }
+
+  public DriveSubsystem getDriveSubsystem(){
+   return m_robotDrive;
+  }
+  public ArmSubsystem getArmSubsystem(){
+    return m_armSubsystem;
+  }
+   public IntakeSubsystem getIntakeSubsystem(){
+    return m_intakeSubsystem;
   }
 }
+

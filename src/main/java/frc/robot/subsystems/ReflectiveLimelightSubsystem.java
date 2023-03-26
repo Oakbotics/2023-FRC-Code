@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
 
-public class LimelightSubsystem extends SubsystemBase {
+public class ReflectiveLimelightSubsystem extends SubsystemBase {
 
   private NetworkTable m_limelightTable;
 
@@ -31,11 +31,11 @@ public class LimelightSubsystem extends SubsystemBase {
   
 
   /** Creates a new ExampleSubsystem. */
-  public LimelightSubsystem() {
+  public ReflectiveLimelightSubsystem() {
 
     SmartDashboard.putData(m_field);
 
-    m_limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
+    m_limelightTable = NetworkTableInstance.getDefault().getTable("limelight-reflect");
   }
 
   public void getNetworkTableValues(){

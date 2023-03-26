@@ -144,6 +144,15 @@ public final class Constants {
         kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
   }
 
+  public static final class TurningConstants{
+    public static final double kP = 0.00025;
+    public static final double kI = 0.0;
+    public static final double kD = 0.001;
+    public static final double kTurnToleranceDeg = 5;
+    public static final double kTurnRateToleranceDegPerS = 5;
+    
+  }
+
   public static final class BlueFieldConstants{
     
     public static final Translation2d chargeStationPosition = new Translation2d(3.8, 3);

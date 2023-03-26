@@ -57,6 +57,7 @@ public class DriveSubsystem extends SubsystemBase {
   private SlewRateLimiter m_magLimiter = new SlewRateLimiter(DriveConstants.kMagnitudeSlewRate);
   private SlewRateLimiter m_rotLimiter = new SlewRateLimiter(DriveConstants.kRotationalSlewRate);
   private double m_prevTime = WPIUtilJNI.now() * 1e-6;
+  
 
   // Odometry class for tracking robot pose
   SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(
@@ -74,6 +75,8 @@ public class DriveSubsystem extends SubsystemBase {
     m_gyro.reset();
   }
 
+
+
   @Override
   public void periodic() {
     // Update the odometry in the periodic block
@@ -90,6 +93,7 @@ public class DriveSubsystem extends SubsystemBase {
       SmartDashboard.putNumber("Gyro Pitch", m_gyro.getPitch());
       SmartDashboard.putNumber("Gyro Roll", m_gyro.getRoll());
       SmartDashboard.putNumber("Gyro Yaw", m_gyro.getAngle());
+      SmartDashboard.putNumber("Gyro Fused Heading", m_gyro.getFusedHeading());
       SmartDashboard.putString("Odometry", m_odometry.getPoseMeters().toString());
       SmartDashboard.putString("Front Left Position", m_frontLeft.getPosition().toString());
       SmartDashboard.putString("Back Left Position", m_rearLeft.getPosition().toString());

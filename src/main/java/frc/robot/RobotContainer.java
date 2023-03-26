@@ -17,13 +17,14 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.ArmCommandGroup.WristMoveDegreeCommand;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
-
+import frc.robot.subsystems.ReflectiveLimelightSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.CandleSubsystem;
 import frc.robot.subsystems.ShoulderSubsystem;
 import frc.robot.subsystems.WristSubsystem;
 import frc.robot.commands.*;
+import frc.robot.commands.AutoCommands.RotateSwerveCommand;
 import frc.robot.commands.AutoCommands.SwerveExampleAuto;
 import frc.robot.commands.AutoCommands.commandGroups.AutoSwerveCommandHighCone;
 import frc.robot.commands.AutoCommands.commandGroups.AutoSwerveCommandHighCube;
@@ -49,6 +50,8 @@ public class RobotContainer {
   private final ArmSubsystem m_armSubsystem = new ArmSubsystem(m_shoulderSubsystem, m_wristSubsystem);
   private final CandleSubsystem m_candleSubsystem = new CandleSubsystem(Constants.LightConstants.CANdleID);
   private final LimelightSubsystem m_limelightSubsystem = new LimelightSubsystem();
+  private final ReflectiveLimelightSubsystem m_reflectiveLimelightSubsystem = new ReflectiveLimelightSubsystem();
+
   // The driver's controller
   // The robot's subsystems and commands are defined here...
   private final XboxController m_driverController = new XboxController(Constants.ControllerConstants.driverControllerId);
@@ -66,6 +69,7 @@ public class RobotContainer {
     // Configure default commands
 
     SmartDashboard.putNumber("Auto Distance", 1);
+    SmartDashboard.putString("Turning Finished", "No");
   }
 
   /**
@@ -131,6 +135,12 @@ public class RobotContainer {
         () -> m_robotDrive.zeroHeading(
           m_limelightSubsystem.getRobotAngle()
         )  //Add limelight, and then test
+      ));
+    
+    new POVButton(m_driverController, 180)
+      .onTrue(new RotateSwerveCommand(90, m_robotDrive) //Mr Smith changed to on true
+      .andThen(
+        new InstantCommand(()-> SmartDashboard.putString("Turning Finished", "Finished"))
       ));
 
 

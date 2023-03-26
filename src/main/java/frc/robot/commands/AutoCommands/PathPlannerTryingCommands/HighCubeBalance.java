@@ -6,6 +6,7 @@ import com.pathplanner.lib.PathConstraints;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.commands.ArmCommandHigh;
@@ -19,9 +20,9 @@ import frc.robot.commands.AutoCommands.PathPlannerTryingCommands.AutoPath;
 
 
 
-public class BealSteal extends SequentialCommandGroup {
+public class HighCubeBalance extends SequentialCommandGroup {
 
-    public BealSteal(DriveSubsystem driveSubsystem, ArmSubsystem armSubsystem, IntakeSubsystem intakeSubsystem) {
+    public HighCubeBalance(DriveSubsystem driveSubsystem, ArmSubsystem armSubsystem, IntakeSubsystem intakeSubsystem) {
 
         // Specify velocity limitations.
         PathConstraints velocity = new PathConstraints(0.5, 0.5);
@@ -35,9 +36,11 @@ public class BealSteal extends SequentialCommandGroup {
             new ArmCommandHigh(armSubsystem),
             new AutoPath("Front30cm", velocity, driveSubsystem),
             new OuttakeCommand(intakeSubsystem).repeatedly().withTimeout(1),
+            new AutoPath("Back30cm", velocity, driveSubsystem),
             new ArmCommandLow(armSubsystem),
-            new AutoPath("ToChargeStation", velocity, driveSubsystem)
-            
+            new AutoPath("ToChargeStation", velocity, driveSubsystem),
+            new InstantCommand(()-> driveSubsystem.zeroHeading(180), driveSubsystem),
+            new RunCommand(()-> driveSubsystem.setX(), driveSubsystem)
                 
         );
     }

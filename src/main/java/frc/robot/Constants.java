@@ -171,6 +171,19 @@ public final class Constants {
      public static final int operatorControllerId = 1;
   }
   
+
+
+  public final class ReflectiveTapeConstants{
+    public static final double limelightHeightmetres = 0.97155;
+    public static final double poleTapeTopHeightmetres = 0.66;
+
+
+
+
+
+  }
+
+
   public final class ArmConstants{
     public static final int ShoulderId = 14;
     public static final int WristID = 1;

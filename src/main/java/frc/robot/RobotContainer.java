@@ -23,6 +23,7 @@ import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.CandleSubsystem;
 import frc.robot.subsystems.ShoulderSubsystem;
 import frc.robot.subsystems.WristSubsystem;
+import frc.robot.subsystems.ReflectiveTapeLimelightSubsystem;
 import frc.robot.commands.*;
 import frc.robot.commands.AutoCommands.SwerveExampleAuto;
 import frc.robot.commands.AutoCommands.commandGroups.AutoSwerveCommandHighCone;
@@ -49,6 +50,7 @@ public class RobotContainer {
   private final ArmSubsystem m_armSubsystem = new ArmSubsystem(m_shoulderSubsystem, m_wristSubsystem);
   private final CandleSubsystem m_candleSubsystem = new CandleSubsystem(Constants.LightConstants.CANdleID);
   private final LimelightSubsystem m_limelightSubsystem = new LimelightSubsystem();
+  private final ReflectiveTapeLimelightSubsystem m_reflectiveLimelight = new ReflectiveTapeLimelightSubsystem();
   // The driver's controller
   // The robot's subsystems and commands are defined here...
   private final XboxController m_driverController = new XboxController(Constants.ControllerConstants.driverControllerId);

@@ -134,6 +134,18 @@ public class RobotContainer {
           m_limelightSubsystem.getRobotAngle()
         )  //Add limelight, and then test
       ));
+      
+    new POVButton(m_driverController, 180)
+      .onTrue(new RotateSwerveCommand(90, m_robotDrive) //Mr Smith changed to on true
+      .andThen(
+        new InstantCommand(()-> SmartDashboard.putString("Turning Finished", "Finished"))
+      ));
+    
+    new POVButton(m_driverController, 270)
+      .onTrue(new LimelightSwerveGoToConeCommand(m_robotDrive, m_reflectiveLimelight)
+      .andThen(new InstantCommand(()-> SmartDashboard.putString("Moved to Cone", "Finished"))
+
+      ));
 
 
     new Trigger(

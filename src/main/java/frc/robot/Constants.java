@@ -165,6 +165,15 @@ public final class Constants {
   public final class LightConstants{
    public static final int CANdleID = 5;
    }
+
+   public static final class TurningConstants{
+    public static final double kP = 0.00025;
+    public static final double kI = 0.0;
+    public static final double kD = 0.001;
+    public static final double kTurnToleranceDeg = 5;
+    public static final double kTurnRateToleranceDegPerS = 5;
+    
+  }  
   
   public final class ControllerConstants{
      public static final int driverControllerId = 0;

@@ -48,7 +48,7 @@ public class GoDistanceSwerveCommand  {
    *
    * @param driveSubsytem The subsystem used by this command.
    */
-   public GoDistanceSwerveCommand(DriveSubsystem driveSubsytem, LimelightSubsystem limelightSubsystem, Pose2d startingPose, Pose2d endingPose) {
+   public GoDistanceSwerveCommand(DriveSubsystem driveSubsytem, Pose2d startingPose, Pose2d endingPose) {
     m_driveSubsystem = driveSubsytem;
     // m_limelightSubsystem = limelightSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
@@ -63,8 +63,7 @@ public class GoDistanceSwerveCommand  {
 
         config);
 
-        SmartDashboard.putNumber("BotPoseX", limelightSubsystem.getRobotPose().getX());
-        SmartDashboard.putNumber("BotPoseY", limelightSubsystem.getRobotPose().getY());
+
         SmartDashboard.putNumber("DestinationX", startingPose.getX());
         SmartDashboard.putNumber("DestinationY", startingPose.getY());
         SmartDashboard.putString("Trajectory", exampleTrajectory.toString());

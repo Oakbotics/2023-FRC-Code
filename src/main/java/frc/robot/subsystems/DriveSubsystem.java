@@ -105,6 +105,10 @@ public class DriveSubsystem extends SubsystemBase {
     isFieldRelative=(!isFieldRelative);
   }
 
+  public void setFieldRelative(){
+    isFieldRelative = true;
+  }
+
   /**
    * Returns the currently-estimated pose of the robot.
    *
@@ -121,7 +125,7 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public void resetOdometry(Pose2d pose) {
     m_odometry.resetPosition(
-        Rotation2d.fromDegrees(m_gyro.getAngle()),
+        Rotation2d.fromDegrees(-m_gyro.getAngle()),
         new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
             m_frontRight.getPosition(),
@@ -286,7 +290,8 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public Rotation2d getRotation(){
-    return new Rotation2d(m_gyro.getAngle());
+    return Rotation2d.fromDegrees(m_gyro.getAngle());
+    
   }
 
   /**

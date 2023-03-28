@@ -105,20 +105,22 @@ public class ReflectiveTapeLimelightSubsystem extends SubsystemBase {
     
     double forwardDistance = (
         Math.abs((ReflectiveTapeConstants.limelightHeightmetres - ReflectiveTapeConstants.poleTapeTopHeightmetres))
-        /Math.tan(x)
+        /Math.tan(y)
     );
 
     double strafeDistance = (
         
-        forwardDistance * Math.tan(y)
+        forwardDistance * Math.tan(x)
     );
 
 
     SmartDashboard.putNumber("Distance from pole, metres", forwardDistance);
     
-    Pose2d distancePose = new Pose2d(new Translation2d(x, y), new Rotation2d());
-    SmartDashboard.putString("Limelight Destination", distancePose.toString());
-    return distancePose;
+    Pose2d conePose = new Pose2d(new Translation2d(forwardDistance, strafeDistance), new Rotation2d());
+
+    
+    SmartDashboard.putString("Limelight Destination", conePose.toString());
+    return conePose;
 
 
   }

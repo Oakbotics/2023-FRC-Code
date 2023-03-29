@@ -38,6 +38,9 @@ public class CandleSubsystem extends SubsystemBase {
     public void setOrange(){
         m_candle.setLEDs(255, 165, 0, 0, 0, 8);
     } 
+    public void setRed(){
+        m_candle.setLEDs(255, 0, 0, 0, 0, 60);
+    } 
 
     public void setFireAnimation(){
         m_candle.animate(new FireAnimation(1, 0.4, 60, 0.7, 0.2, false, 8));

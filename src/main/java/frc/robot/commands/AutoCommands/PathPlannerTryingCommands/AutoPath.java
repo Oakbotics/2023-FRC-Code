@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.Constants.AutoConstants;
 
 public class AutoPath extends SequentialCommandGroup {
 
@@ -40,8 +41,8 @@ public class AutoPath extends SequentialCommandGroup {
                 m_driveSubsystem::getPose, // Pose2d supplier.
                 m_driveSubsystem::resetOdometry, // Resets the odometry at the beginning of auto.
                 Constants.DriveConstants.kDriveKinematics,
-                new PIDConstants(5.0, 0.0, 0.0), // PID constants to correct for translation error (X and Y).
-                new PIDConstants(0.5, 0.0, 0.0), // PID constants to correct for rotation error (Creates rotation controller).
+                new PIDConstants(Constants.AutoConstants.kPXController, 0,Constants.AutoConstants.kDController), // PID constants to correct for translation error (X and Y).
+                new PIDConstants(Constants.AutoConstants.kPThetaController, 0.0, Constants.AutoConstants.kDThetaControllerD), // PID constants to correct for rotation error (Creates rotation controller).
                 m_driveSubsystem::setModuleStates,
                 eventMap,
                 true, // Mirrored depending on alliance color.

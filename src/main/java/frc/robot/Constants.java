@@ -182,10 +182,10 @@ public final class Constants {
   
 
 
-  public final class ReflectiveTapeConstants{
-    public static final double limelightHeightmetres = 0.97155;
-    public static final double poleTapeTopHeightmetres = 0.66;
-
+  public static final class ReflectiveTapeConstants{
+    public static final double limelightHeightmetres = Units.inchesToMeters(38.125);
+    public static final double poleTapeTopHeightmetres = Units.inchesToMeters(26.125);
+    public static final double limelightHorizontalOffset = Units.inchesToMeters(5.5);
 
 
 

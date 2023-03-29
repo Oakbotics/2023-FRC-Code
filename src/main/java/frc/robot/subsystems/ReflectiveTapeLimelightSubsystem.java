@@ -4,9 +4,12 @@
 
 package frc.robot.subsystems;
 
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -42,7 +45,7 @@ public class ReflectiveTapeLimelightSubsystem extends SubsystemBase {
 
     SmartDashboard.putData(m_field);
 
-    m_limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
+    m_limelightTable = NetworkTableInstance.getDefault().getTable("limelight-reflect");
   }
 
   public void getNetworkTableValues(){
@@ -84,11 +87,11 @@ public class ReflectiveTapeLimelightSubsystem extends SubsystemBase {
 
     double distance = (
         Math.abs((ReflectiveTapeConstants.limelightHeightmetres - ReflectiveTapeConstants.poleTapeTopHeightmetres))
-        /Math.tan(y)
+        /Math.tan(Units.degreesToRadians(y))
     );
 
     SmartDashboard.putNumber("Distance from pole, metres", distance);
-    
+    SmartDashboard.putNumber("Cone Pose", getDistanceFromReflectiveTape());
 
   }
 
@@ -101,26 +104,26 @@ public class ReflectiveTapeLimelightSubsystem extends SubsystemBase {
   }
 
 
-  public Pose2d getDistanceFromReflectiveTape(){
+  public double getDistanceFromReflectiveTape(){
     
     double forwardDistance = (
         Math.abs((ReflectiveTapeConstants.limelightHeightmetres - ReflectiveTapeConstants.poleTapeTopHeightmetres))
-        /Math.tan(y)
+        /Math.tan(Units.degreesToRadians(y))  
     );
 
     double strafeDistance = (
         
-        forwardDistance * Math.tan(x)
-    );
+        forwardDistance * Math.tan(Units.degreesToRadians(x))
+    )- ReflectiveTapeConstants.limelightHorizontalOffset;
 
-
+    
     SmartDashboard.putNumber("Distance from pole, metres", forwardDistance);
     
     Pose2d conePose = new Pose2d(new Translation2d(forwardDistance, strafeDistance), new Rotation2d());
 
     
     SmartDashboard.putString("Limelight Destination", conePose.toString());
-    return conePose;
+    return strafeDistance;
 
 
   }

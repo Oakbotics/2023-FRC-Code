@@ -1,6 +1,8 @@
 package frc.robot.commands.AutoCommands.PathPlannerTryingCommands;
 
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
 import com.pathplanner.lib.PathConstraints;
@@ -33,6 +35,7 @@ public class PathPlanGoToPositionSwerveCommand  {  //NOT GOING TO USE
     @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
     
     private final DriveSubsystem m_driveSubsystem; 
+    private final PPSwerveControllerCommand swerveCommand;
     // private final LimelightSubsystem m_limelightSubsystem;
     private final TrajectoryConfig config = new TrajectoryConfig(
         AutoConstants.kMaxSpeedMetresPerSecond,
@@ -56,29 +59,37 @@ public class PathPlanGoToPositionSwerveCommand  {  //NOT GOING TO USE
    public PathPlanGoToPositionSwerveCommand(DriveSubsystem driveSubsytem, Pose2d endingPose) {
     m_driveSubsystem = driveSubsytem;
 
+    SmartDashboard.putNumber("Smart y val", endingPose.getY());
+
     PathPlannerTrajectory traj = PathPlanner.generatePath(
-        new PathConstraints(AutoConstants.kMaxSpeedMetresPerSecond, AutoConstants.kMaxAccelerationMetersPerSecondSquared), 
-        new PathPoint(new Translation2d(0,0), Rotation2d.fromDegrees(m_driveSubsystem.getHeading())),
-        new PathPoint(endingPose.getTranslation(), Rotation2d.fromDegrees(m_driveSubsystem.getHeading()))
+        new PathConstraints(2, 2), 
+        new PathPoint(m_driveSubsystem.getPose().getTranslation(), m_driveSubsystem.getPose().getRotation()),
+        // new PathPoint(endingPose, m_driveSubsystem.getPose().getRotation())
+
+        new PathPoint(endingPose.getTranslation(), m_driveSubsystem.getPose().getRotation())
     );
 
 
 
-    // new PPSwerveControllerCommand(
-    //     traj, 
-    //     m_driveSubsystem::getPose, // Pose supplier
-    //     DriveConstants.kDriveKinematics, // SwerveDriveKinematics
-    //     new PIDController(0, 0, 0), // X controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
-    //     new PIDController(0, 0, 0), // Y controller (usually the same values as X controller)
-    //     new PIDController(0, 0, 0), // Rotation controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
-    //     m_driveSubsystem::setModuleStates, // Module states consumer
-    //     true, // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
-    //     this // Requires this drive subsystem
-    // );
+    swerveCommand = new PPSwerveControllerCommand(
+        traj, 
+        m_driveSubsystem::getPose, // Pose supplier
+        DriveConstants.kDriveKinematics, // SwerveDriveKinematics
+        new PIDController(0, 0, 0), // X controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
+        new PIDController(0, 0, 0), // Y controller (usually the same values as X controller)
+        new PIDController(0, 0, 0), // Rotation controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
+        m_driveSubsystem::setModuleStates, // Module states consumer
+        true, // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
+        m_driveSubsystem // Requires this drive subsystem
+    );
 
 
     }
 
-     
+    public PPSwerveControllerCommand getAutonomousCommand(){
+        thetaController.enableContinuousInput(-Math.PI, Math.PI);
+        // m_driveSubsystem.resetOdometry(exampleTrajectory.getInitialPose());
+        return swerveCommand;
+    }     
 
 }

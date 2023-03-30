@@ -44,7 +44,6 @@ public class PathPlanGoToPositionSwerveCommand  {  //NOT GOING TO USE
         .setKinematics(DriveConstants.kDriveKinematics)
         .setReversed(false);
 
-    private Trajectory exampleTrajectory; 
         
     ProfiledPIDController thetaController = new ProfiledPIDController(
         AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints);
@@ -56,7 +55,7 @@ public class PathPlanGoToPositionSwerveCommand  {  //NOT GOING TO USE
    *
    * @param driveSubsytem The subsystem used by this command.
    */
-   public PathPlanGoToPositionSwerveCommand(DriveSubsystem driveSubsytem, Pose2d endingPose) {
+   public PathPlanGoToPositionSwerveCommand(DriveSubsystem driveSubsytem, Pose2d  endingPose) {
     m_driveSubsystem = driveSubsytem;
 
     SmartDashboard.putNumber("Smart y val", endingPose.getY());
@@ -65,7 +64,6 @@ public class PathPlanGoToPositionSwerveCommand  {  //NOT GOING TO USE
         new PathConstraints(2, 2), 
         new PathPoint(m_driveSubsystem.getPose().getTranslation(), m_driveSubsystem.getPose().getRotation()),
         // new PathPoint(endingPose, m_driveSubsystem.getPose().getRotation())
-
         new PathPoint(endingPose.getTranslation(), m_driveSubsystem.getPose().getRotation())
     );
 

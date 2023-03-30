@@ -4,7 +4,10 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.PathPoint;
+
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.OIConstants;
@@ -146,6 +149,18 @@ public class RobotContainer {
       .andThen(new InstantCommand(()-> SmartDashboard.putString("Moved to Cone", "Finished"))
 
       ));
+
+    new POVButton(m_driverController, idk)
+      .onTrue(
+        m_robotDrive.followTrajectoryCommand(
+          new PathPoint(m_robotDrive.getPose().getTranslation(), m_robotDrive.getPose().getRotation()), 
+          new PathPoint(m_robotDrive.getPose().getTranslation().plus(
+            new Translation2d(0, m_reflectiveLimelight.getDistanceFromReflectiveTape())), m_robotDrive.getRotation())
+          )
+      
+      );
+      
+    
 
 
     new Trigger(

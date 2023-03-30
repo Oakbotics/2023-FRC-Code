@@ -9,7 +9,13 @@ import java.text.spi.DecimalFormatSymbolsProvider;
 import org.opencv.core.RotatedRect;
 
 import com.kauailabs.navx.frc.AHRS;
+import com.pathplanner.lib.PathConstraints;
+import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.PathPoint;
+import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -23,6 +29,8 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriveConstants;
 import frc.utils.SwerveUtils;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveSubsystem extends SubsystemBase {
@@ -274,6 +282,32 @@ public class DriveSubsystem extends SubsystemBase {
     m_frontRight.resetEncoders();
     m_rearRight.resetEncoders();
   }
+
+  public Command followTrajectoryCommand(PathPoint startingPathPoint, PathPoint endingPathPoint) {
+    
+    PathPlannerTrajectory traj = PathPlanner.generatePath(
+        new PathConstraints(2, 2), 
+        startingPathPoint,
+        // new PathPoint(endingPose, m_driveSubsystem.getPose().getRotation())
+        endingPathPoint
+    );
+
+
+    return new SequentialCommandGroup(
+
+         new PPSwerveControllerCommand(
+             traj, 
+             this::getPose, // Pose supplier
+             DriveConstants.kDriveKinematics, // SwerveDriveKinematics
+             new PIDController(0, 0, 0), // X controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
+             new PIDController(0, 0, 0), // Y controller (usually the same values as X controller)
+             new PIDController(0, 0, 0), // Rotation controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
+             this::setModuleStates, // Module states consumer
+             true, // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
+             this // Requires this drive subsystem
+         )
+     );
+ }  
 
   /** Zeroes the heading of the robot. */
   public void zeroHeading() {

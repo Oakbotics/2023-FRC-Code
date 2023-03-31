@@ -8,7 +8,9 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.AutoCommands.PathPlannerTryingCommands.BealSteal;
+import frc.robot.commands.AutoCommands.PathPlannerTryingCommands.EventTester;
 import frc.robot.commands.AutoCommands.PathPlannerTryingCommands.TestPath;
+import frc.robot.commands.AutoCommands.PathPlannerTryingCommands.TestPathMidCube;
 import frc.robot.subsystems.DriveSubsystem;
 
 /**
@@ -62,7 +64,7 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     // m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
-    m_autonomousCommand = new TestPath(m_robotContainer.getDriveSubsystem(), m_robotContainer.getArmSubsystem(), m_robotContainer.getIntakeSubsystem());
+    m_autonomousCommand = new TestPathMidCube(m_robotContainer.getDriveSubsystem(), m_robotContainer.getArmSubsystem(), m_robotContainer.getIntakeSubsystem());
 
     /*
      * String autoSelected = SmartDashboard.getString("Auto Selector",

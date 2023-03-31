@@ -25,9 +25,9 @@ import frc.robot.commands.AutoCommands.PathPlannerTryingCommands.AutoPath;
 
 
 
-public class TestPath extends SequentialCommandGroup {
+public class EventTester extends SequentialCommandGroup {
 
-    public TestPath(DriveSubsystem driveSubsystem, ArmSubsystem armSubsystem, IntakeSubsystem intakeSubsystem) {
+    public EventTester(DriveSubsystem driveSubsystem, ArmSubsystem armSubsystem, IntakeSubsystem intakeSubsystem) {
 
         // Specify velocity limitations.
         PathConstraints velocity = new PathConstraints(2.0, 2.0);
@@ -36,24 +36,8 @@ public class TestPath extends SequentialCommandGroup {
         // Added Instant command to reset the speed of the Swerve to 100% to ensure that it is not in slowmode and can successfully auto level.
         addCommands( 
             new InstantCommand(()-> driveSubsystem.zeroHeading(), driveSubsystem),
-            new ArmCommandHigh(armSubsystem),
-            new OuttakeCommand(intakeSubsystem).withTimeout(1.5),
-            new ParallelCommandGroup(
-                new ArmCommandLow(armSubsystem),
-                new AutoPath("TestPath", velocity, driveSubsystem, intakeSubsystem)
-            ),
-            new ParallelCommandGroup(
-                new ArmCommandLowCone(armSubsystem),
-                new IntakeCommand(intakeSubsystem).withTimeout(2),
-                new AutoPath("Intake Path", velocity, driveSubsystem, intakeSubsystem)
-            ),
-            new ParallelCommandGroup(
-                new ArmCommandMidCube(armSubsystem),
-                new AutoPath("ReversePath", velocity, driveSubsystem, intakeSubsystem)
-            ),
-            new ArmCommandHigh(armSubsystem),
-            new OuttakeCommand(intakeSubsystem).withTimeout(1.5),
-            new ArmCommandLow(armSubsystem)
+            new ArmCommandLow(armSubsystem),
+            new AutoPath("PickUpPiece1", velocity, driveSubsystem, intakeSubsystem)
         );
     }
 

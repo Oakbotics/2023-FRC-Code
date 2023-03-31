@@ -29,14 +29,14 @@ public class BealSteal extends SequentialCommandGroup {
         // Play command sequence.
         // Added Instant command to reset the speed of the Swerve to 100% to ensure that it is not in slowmode and can successfully auto level.
         addCommands( 
-            new InstantCommand(()-> driveSubsystem.zeroHeading(), driveSubsystem),
-            new ArmCommandLow(armSubsystem),
-            new AutoPath("Back30cm", velocity, driveSubsystem),
-            new ArmCommandHigh(armSubsystem),
-            new AutoPath("Front30cm", velocity, driveSubsystem),
-            new OuttakeCommand(intakeSubsystem).repeatedly().withTimeout(1),
-            new ArmCommandLow(armSubsystem),
-            new AutoPath("ToChargeStation", velocity, driveSubsystem)
+            // new InstantCommand(()-> driveSubsystem.zeroHeading(), driveSubsystem),
+            // new ArmCommandLow(armSubsystem),
+            // new AutoPath("Back30cm", velocity, driveSubsystem),
+            // new ArmCommandHigh(armSubsystem),
+            // new AutoPath("Front30cm", velocity, driveSubsystem),
+            // new OuttakeCommand(intakeSubsystem).repeatedly().withTimeout(1),
+            // new ArmCommandLow(armSubsystem),
+            // new AutoPath("ToChargeStation", velocity, driveSubsystem)
             
                 
         );

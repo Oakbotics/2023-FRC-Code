@@ -27,8 +27,9 @@ public class CandleSubsystem extends SubsystemBase {
         configAll.vBatOutputMode = VBatOutputMode.On;
         m_candle = new CANdle(Constants.LightConstants.CANdleID, "rio");
         m_candle.configAllSettings(configAll, 100);
-        m_candle.animate(new ColorFlowAnimation(255, 0, 0, 0, 0.2, 120, Direction.Forward, 8));
-        stopLight();
+        // m_candle.animate(new ColorFlowAnimation(255, 0, 0, 0, 0.2, 120, Direction.Forward, 8));
+        // stopLight();
+        setBlue();
     }
 
     public void setPurple(){
@@ -37,6 +38,10 @@ public class CandleSubsystem extends SubsystemBase {
 
     public void setOrange(){
         m_candle.setLEDs(255, 165, 0, 0, 0, 8);
+    } 
+
+    public void setBlue(){
+        m_candle.setLEDs(0, 0, 255, 0, 8, 60);
     } 
 
     public void setFireAnimation(){

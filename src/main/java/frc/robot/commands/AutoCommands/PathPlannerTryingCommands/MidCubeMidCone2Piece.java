@@ -26,9 +26,9 @@ import frc.robot.commands.AutoCommands.PathPlannerTryingCommands.AutoPath;
 
 
 
-public class TestPathMidCube extends SequentialCommandGroup {
+public class MidCubeMidCone2Piece extends SequentialCommandGroup {
 
-    public TestPathMidCube(DriveSubsystem driveSubsystem, ArmSubsystem armSubsystem, IntakeSubsystem intakeSubsystem) {
+    public MidCubeMidCone2Piece(DriveSubsystem driveSubsystem, ArmSubsystem armSubsystem, IntakeSubsystem intakeSubsystem) {
 
         // Specify velocity limitations.
         PathConstraints velocity = new PathConstraints(2, 2);

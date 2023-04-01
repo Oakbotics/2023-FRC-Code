@@ -54,7 +54,7 @@ public class MidCubeMidCone2Piece extends SequentialCommandGroup {
             new ArmCommandMid(armSubsystem),
             new ShoulderDropCommand(armSubsystem, intakeSubsystem),
             new InstantCommand(()-> intakeSubsystem.setIdleModeBrake(false)),
-            new AutoPath("Back30cm", velocity, driveSubsystem, intakeSubsystem),
+            new AutoPath("Back30cmTop", velocity, driveSubsystem, intakeSubsystem),
             new InstantCommand(()-> intakeSubsystem.setIdleModeBrake(true)),
             new ArmCommandLow(armSubsystem),
             new InstantCommand(()-> driveSubsystem.zeroHeading(180), driveSubsystem)

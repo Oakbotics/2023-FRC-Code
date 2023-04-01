@@ -7,9 +7,6 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.commands.AutoCommands.PathPlannerTryingCommands.BealSteal;
-import frc.robot.commands.AutoCommands.PathPlannerTryingCommands.EventTester;
-import frc.robot.commands.AutoCommands.PathPlannerTryingCommands.TestPath;
 import frc.robot.commands.AutoCommands.PathPlannerTryingCommands.MidCubeMidCone2Piece;
 import frc.robot.subsystems.DriveSubsystem;
 

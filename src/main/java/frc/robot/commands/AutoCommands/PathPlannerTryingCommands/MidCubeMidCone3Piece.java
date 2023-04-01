@@ -45,7 +45,7 @@ public class MidCubeMidCone3Piece extends SequentialCommandGroup {
             new OuttakeCommand(intakeSubsystem).withTimeout(0.5),
             new ParallelCommandGroup(
                 new ArmCommandLowCone(armSubsystem),
-                new AutoPath("TestPath1", velocity, driveSubsystem, intakeSubsystem)
+                new AutoPath("ForwardPath1", velocity, driveSubsystem, intakeSubsystem)
             ),
             new ParallelCommandGroup(
                 new ArmCommandMid(armSubsystem),
@@ -59,18 +59,18 @@ public class MidCubeMidCone3Piece extends SequentialCommandGroup {
             new ParallelCommandGroup(
                 new ArmCommandLowCone(armSubsystem),
                 new InstantCommand(()-> intakeSubsystem.setIdleModeBrake(true)),
-                new AutoPath("TestPath2", velocity, driveSubsystem, intakeSubsystem)
+                new AutoPath("ForwardPath2", velocity, driveSubsystem, intakeSubsystem)
             ),
             new ParallelCommandGroup(
                 new ArmCommandMid(armSubsystem),
                 new AutoPath("ReversePath2", velocity, driveSubsystem,intakeSubsystem)
             ),
-            new InstantCommand(()-> driveSubsystem.zeroHeading(180), driveSubsystem)
+            new InstantCommand(()-> driveSubsystem.zeroHeading(180), driveSubsystem),
             new InstantCommand(()-> intakeSubsystem.setIdleModeBrake(false)),
             new ShoulderDropCommand(armSubsystem, intakeSubsystem),
             new AutoPath("Back30cmBottemCone", driveSubsystem, intakeSubsystem),
             new InstantCommand(()-> intakeSubsystem.setIdleModeBrake(true)),
-            new ArmCommandLow(armSubsystem),
+            new ArmCommandLow(armSubsystem)
            
             );
     }

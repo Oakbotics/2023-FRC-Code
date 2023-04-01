@@ -26,9 +26,9 @@ import frc.robot.commands.AutoCommands.PathPlannerTryingCommands.AutoPath;
 
 
 
-public class MidCubeMidCone2Piece extends SequentialCommandGroup {
+public class MidCubeMidCone2PieceBump extends SequentialCommandGroup {
 
-    public MidCubeMidCone2Piece(DriveSubsystem driveSubsystem, ArmSubsystem armSubsystem, IntakeSubsystem intakeSubsystem) {
+    public MidCubeMidCone2PieceBump(DriveSubsystem driveSubsystem, ArmSubsystem armSubsystem, IntakeSubsystem intakeSubsystem) {
 
         // Specify velocity limitations.
         PathConstraints velocity = new PathConstraints(2, 2);
@@ -39,22 +39,22 @@ public class MidCubeMidCone2Piece extends SequentialCommandGroup {
             new InstantCommand(()-> driveSubsystem.zeroHeading(), driveSubsystem),
             new ArmCommandLow(armSubsystem),
             new ParallelCommandGroup(
-                new AutoPath("Back30cmCube", velocity, driveSubsystem, intakeSubsystem),
+                new AutoPath("Back30cmCubeBump", velocity, driveSubsystem, intakeSubsystem),
                 new ArmCommandMid(armSubsystem)
             ),
             new OuttakeCommand(intakeSubsystem).withTimeout(0.5),
             new ParallelCommandGroup(
                 new ArmCommandLowCone(armSubsystem),
-                new AutoPath("ForwardPath1", velocity, driveSubsystem, intakeSubsystem)
+                new AutoPath("BumpForward", velocity, driveSubsystem, intakeSubsystem)
             ),
             new ParallelCommandGroup(
                 new ArmCommandMid(armSubsystem),
-                new AutoPath("ReversePath1", velocity, driveSubsystem,intakeSubsystem)
+                new AutoPath("BumpReverse", velocity, driveSubsystem,intakeSubsystem)
             ),
             new ArmCommandMid(armSubsystem),
             new ShoulderDropCommand(armSubsystem, intakeSubsystem),
             new InstantCommand(()-> intakeSubsystem.setIdleModeBrake(false)),
-            new AutoPath("Back30cmTop", velocity, driveSubsystem, intakeSubsystem),
+            new AutoPath("Back30cmConeBump", velocity, driveSubsystem, intakeSubsystem),
             new InstantCommand(()-> intakeSubsystem.setIdleModeBrake(true)),
             new ArmCommandLow(armSubsystem),
             new InstantCommand(()-> driveSubsystem.zeroHeading(180), driveSubsystem)

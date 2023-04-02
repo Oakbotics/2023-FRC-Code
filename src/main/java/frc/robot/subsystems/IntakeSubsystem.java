@@ -31,8 +31,8 @@ public class IntakeSubsystem extends SubsystemBase {
       m_intakeMotorBottom.setIdleMode(IdleMode.kBrake);
       m_intakeMotorTop.setIdleMode(IdleMode.kBrake);
 
-      m_intakeMotorBottom.setSmartCurrentLimit(15);
-      m_intakeMotorTop.setSmartCurrentLimit(15);
+      m_intakeMotorBottom.setSmartCurrentLimit(20);
+      m_intakeMotorTop.setSmartCurrentLimit(20);
 
 
   }

@@ -31,7 +31,7 @@ public class MidCubeMidCone3Piece extends SequentialCommandGroup {
     public MidCubeMidCone3Piece(DriveSubsystem driveSubsystem, ArmSubsystem armSubsystem, IntakeSubsystem intakeSubsystem) {
 
         // Specify velocity limitations.
-        PathConstraints velocity = new PathConstraints(2, 2);
+        PathConstraints velocity = new PathConstraints(3, 3);
 
         // Play command sequence.
         // Added Instant command to reset the speed of the Swerve to 100% to ensure that it is not in slowmode and can successfully auto level.
@@ -39,8 +39,8 @@ public class MidCubeMidCone3Piece extends SequentialCommandGroup {
             new InstantCommand(()-> driveSubsystem.zeroHeading(), driveSubsystem),
             new ArmCommandLow(armSubsystem),
             new ParallelCommandGroup(
-                new AutoPath("Back30cmCube", velocity, driveSubsystem, intakeSubsystem),
-                new ArmCommandMid(armSubsystem)
+                new AutoPath("Back30cmCube", velocity, driveSubsystem, intakeSubsystem)
+                // new ArmCommandMid(armSubsystem)
             ),
             new OuttakeCommand(intakeSubsystem).withTimeout(0.5),
             new ParallelCommandGroup(
@@ -48,12 +48,12 @@ public class MidCubeMidCone3Piece extends SequentialCommandGroup {
                 new AutoPath("ForwardPath1", velocity, driveSubsystem, intakeSubsystem)
             ),
             new ParallelCommandGroup(
-                new ArmCommandMid(armSubsystem),
+                new ArmCommandLow(armSubsystem),
                 new AutoPath("ReversePath1", velocity, driveSubsystem,intakeSubsystem)
             ),
-            new ArmCommandMid(armSubsystem),
+            // new ArmCommandMid(armSubsystem),    
             new ParallelCommandGroup(
-                new ShoulderDropCommand(armSubsystem, intakeSubsystem),
+                // new ShoulderDropCommand(armSubsystem, intakeSubsystem),
                 new InstantCommand(()-> intakeSubsystem.setIdleModeBrake(false))
             ),
             new ParallelCommandGroup(
@@ -62,13 +62,13 @@ public class MidCubeMidCone3Piece extends SequentialCommandGroup {
                 new AutoPath("ForwardPath2", velocity, driveSubsystem, intakeSubsystem)
             ),
             new ParallelCommandGroup(
-                new ArmCommandMid(armSubsystem),
-                new AutoPath("ReversePath2", velocity, driveSubsystem,intakeSubsystem)
+                // new ArmCommandMid(armSubsystem),
+                // new AutoPath("ReversePath2", velocity, driveSubsystem,intakeSubsystem)
             ),
             new InstantCommand(()-> driveSubsystem.zeroHeading(180), driveSubsystem),
             new InstantCommand(()-> intakeSubsystem.setIdleModeBrake(false)),
-            new ShoulderDropCommand(armSubsystem, intakeSubsystem),
-            new AutoPath("Back30cmBottemCone", driveSubsystem, intakeSubsystem),
+            // new ShoulderDropCommand(armSubsystem, intakeSubsystem),
+            // new AutoPath("Back30cmBottemCone", driveSubsystem, intakeSubsystem),
             new InstantCommand(()-> intakeSubsystem.setIdleModeBrake(true)),
             new ArmCommandLow(armSubsystem)
            

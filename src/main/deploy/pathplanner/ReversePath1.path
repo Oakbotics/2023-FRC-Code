@@ -2,12 +2,12 @@
   "waypoints": [
     {
       "anchorPoint": {
-        "x": 7.25,
+        "x": 7.35,
         "y": 3.7
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.318903369398188,
+        "x": 5.418903369398188,
         "y": 5.02682088499569
       },
       "holonomicAngle": 0.0,
@@ -24,15 +24,15 @@
     },
     {
       "anchorPoint": {
-        "x": 2.15,
-        "y": 4.75
+        "x": 1.9,
+        "y": 5.15
       },
       "prevControl": {
-        "x": 4.369251488859273,
-        "y": 4.598468274371228
+        "x": 4.119251488859273,
+        "y": 4.998468274371229
       },
       "nextControl": null,
-      "holonomicAngle": 170.0,
+      "holonomicAngle": 180.0,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
@@ -45,5 +45,12 @@
       }
     }
   ],
-  "markers": []
+  "markers": [
+    {
+      "position": 0.9,
+      "names": [
+        "MidCone"
+      ]
+    }
+  ]
 }

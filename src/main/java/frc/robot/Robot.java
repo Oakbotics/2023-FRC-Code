@@ -4,10 +4,13 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.AutoCommands.PathPlannerTryingCommands.MidCubeMidCone2Piece;
+import frc.robot.commands.AutoCommands.PathPlannerTryingCommands.MidCubeMidCone3Piece;
 import frc.robot.subsystems.DriveSubsystem;
 
 /**
@@ -21,7 +24,7 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
   
-
+ 
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -61,7 +64,7 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     // m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
-    m_autonomousCommand = new MidCubeMidCone2Piece(m_robotContainer.getDriveSubsystem(), m_robotContainer.getArmSubsystem(), m_robotContainer.getIntakeSubsystem());
+    m_autonomousCommand = new MidCubeMidCone3Piece(m_robotContainer.getDriveSubsystem(), m_robotContainer.getArmSubsystem(), m_robotContainer.getIntakeSubsystem());
 
     /*
      * String autoSelected = SmartDashboard.getString("Auto Selector",

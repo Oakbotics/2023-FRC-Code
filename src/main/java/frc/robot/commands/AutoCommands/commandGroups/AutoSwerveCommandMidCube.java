@@ -9,7 +9,6 @@ import frc.robot.commands.ArmCommandLow;
 import frc.robot.commands.ArmCommandMid;
 import frc.robot.commands.ArmCommandMidCube;
 import frc.robot.commands.ArmCommandSubstation;
-import frc.robot.commands.CandleAnimateCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.OuttakeCommand;
 import frc.robot.commands.ShoulderDropCommand;

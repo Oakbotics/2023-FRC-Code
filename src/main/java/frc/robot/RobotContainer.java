@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.OIConstants;
@@ -54,7 +55,8 @@ public class RobotContainer {
   private final XboxController m_driverController = new XboxController(Constants.ControllerConstants.driverControllerId);
   private final XboxController m_opController = new XboxController(Constants.ControllerConstants.operatorControllerId);
 
-  
+  DigitalInput IntakeSensor = new DigitalInput(0);
+  private final boolean intakeSensor = IntakeSensor.get();
 
   
   /**
@@ -110,6 +112,7 @@ public class RobotContainer {
     // ));
 
 
+  SmartDashboard.putBoolean("IntakeSensor", intakeSensor);
   
 
     new JoystickButton(m_driverController, XboxController.Button.kLeftBumper.value).whileTrue(new IntakeCommand(m_intakeSubsystem));
@@ -147,7 +150,7 @@ public class RobotContainer {
     //   );
     
     
-    // m_candleSubsystem.setDefaultCommand(new CandleAnimateCommand(m_candleSubsystem));
+    // m_candleSubsystem.setDefaultCommand(new GreenCandleCommand(m_candleSubsystem));
     
     
     m_robotDrive.setDefaultCommand(

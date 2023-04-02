@@ -1,4 +1,4 @@
-package frc.robot.commands.AutoCommands.PathPlannerTryingCommands;
+package frc.robot.commands.AutoCommands.PathPlannerAutoCommands;
 
 
 import com.pathplanner.lib.PathConstraints;
@@ -12,18 +12,20 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.commands.ArmCommandHigh;
 import frc.robot.commands.ArmCommandLow;
+import frc.robot.commands.ArmCommandMid;
+import frc.robot.commands.ArmCommandMidCube;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.OuttakeCommand;
+import frc.robot.commands.AutoCommands.PathPlannerAutoCommands.AutoPath;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.commands.AutoCommands.PathPlannerTryingCommands.AutoPath;
 
 
 
-public class HighCubeCommunityBalance extends SequentialCommandGroup {
+public class MidCubeCommunityPickUpBalance extends SequentialCommandGroup {
 
-    public HighCubeCommunityBalance(DriveSubsystem driveSubsystem, ArmSubsystem armSubsystem, IntakeSubsystem intakeSubsystem) {
+    public MidCubeCommunityPickUpBalance(DriveSubsystem driveSubsystem, ArmSubsystem armSubsystem, IntakeSubsystem intakeSubsystem) {
 
         // Specify velocity limitations.
         PathConstraints velocity = new PathConstraints(0.5, 0.5);
@@ -35,13 +37,13 @@ public class HighCubeCommunityBalance extends SequentialCommandGroup {
             new ArmCommandLow(armSubsystem),
             new ParallelCommandGroup(
                 new AutoPath("Back30cmCubeBalance", velocity, driveSubsystem, intakeSubsystem, armSubsystem),
-                new ArmCommandHigh(armSubsystem)
+                new ArmCommandMidCube(armSubsystem)
             ),
-            new AutoPath("Front30cmCubeBalance", velocity, driveSubsystem, intakeSubsystem, armSubsystem),
             new OuttakeCommand(intakeSubsystem).repeatedly().withTimeout(1),
-            new AutoPath("Back30cmCubeBalance", velocity, driveSubsystem, intakeSubsystem, armSubsystem),
-            new ArmCommandLow(armSubsystem),
-            new AutoPath("CommunityBalance", velocity, driveSubsystem, intakeSubsystem, armSubsystem),
+            new ParallelCommandGroup(
+                new ArmCommandLow(armSubsystem),
+                new AutoPath("CommunityBalance", velocity, driveSubsystem, intakeSubsystem, armSubsystem)
+            ),
             new InstantCommand(()-> driveSubsystem.zeroHeading(180), driveSubsystem),
             new RunCommand(()-> driveSubsystem.setX(), driveSubsystem)
         

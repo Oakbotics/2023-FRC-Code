@@ -1,4 +1,4 @@
-package frc.robot.commands.AutoCommands.PathPlannerTryingCommands;
+package frc.robot.commands.AutoCommands.PathPlannerAutoCommands;
 
 
 import com.pathplanner.lib.PathConstraints;
@@ -19,10 +19,10 @@ import frc.robot.commands.DriveCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.OuttakeCommand;
 import frc.robot.commands.ShoulderDropCommand;
+import frc.robot.commands.AutoCommands.PathPlannerAutoCommands.AutoPath;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.commands.AutoCommands.PathPlannerTryingCommands.AutoPath;
 
 
 

@@ -25,8 +25,12 @@ import frc.robot.subsystems.ShoulderSubsystem;
 import frc.robot.subsystems.WristSubsystem;
 import frc.robot.commands.*;
 import frc.robot.commands.AutoCommands.SwerveExampleAuto;
-import frc.robot.commands.AutoCommands.PathPlannerTryingCommands.HighCubeBalance;
-import frc.robot.commands.AutoCommands.PathPlannerTryingCommands.HighCubeCommunityBalance;
+import frc.robot.commands.AutoCommands.PathPlannerAutoCommands.HighCubeBalance;
+import frc.robot.commands.AutoCommands.PathPlannerAutoCommands.HighCubeCommunityBalance;
+import frc.robot.commands.AutoCommands.PathPlannerAutoCommands.HighCubeCommunityPickUpBalance;
+import frc.robot.commands.AutoCommands.PathPlannerAutoCommands.MidCubeMidCone2HalfPieceBalance;
+import frc.robot.commands.AutoCommands.PathPlannerAutoCommands.MidCubeMidCone2PieceBump;
+import frc.robot.commands.AutoCommands.PathPlannerAutoCommands.MidCubeMidCone3Piece;
 import frc.robot.commands.AutoCommands.commandGroups.AutoSwerveCommandHighCone;
 import frc.robot.commands.AutoCommands.commandGroups.AutoSwerveCommandHighCube;
 import frc.robot.commands.AutoCommands.commandGroups.AutoSwerveCommandMid;
@@ -56,9 +60,16 @@ public class RobotContainer {
   private final XboxController m_driverController = new XboxController(Constants.ControllerConstants.driverControllerId);
   private final XboxController m_opController = new XboxController(Constants.ControllerConstants.operatorControllerId);
 
-  
+
+
   private final Command m_highcubebalance = new HighCubeBalance(m_robotDrive, m_armSubsystem, m_intakeSubsystem);
   private final Command m_highcubecommunitybalance = new HighCubeCommunityBalance(m_robotDrive, m_armSubsystem, m_intakeSubsystem);
+  private final Command m_highcubecommunitypickupbalance = new HighCubeCommunityPickUpBalance(m_robotDrive, m_armSubsystem, m_intakeSubsystem);
+  private final Command m_midcubebalance = new HighCubeCommunityPickUpBalance(m_robotDrive, m_armSubsystem, m_intakeSubsystem);
+
+  private final Command m_midcubemidcone2halfpiecebalance = new MidCubeMidCone2HalfPieceBalance(m_robotDrive, m_armSubsystem, m_intakeSubsystem);
+  private final Command m_midcubemidcone3piece = new MidCubeMidCone3Piece(m_robotDrive, m_armSubsystem, m_intakeSubsystem);
+  private final Command m_midcubemidcone2piecebump = new MidCubeMidCone2PieceBump(m_robotDrive, m_armSubsystem, m_intakeSubsystem);
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
   
@@ -72,8 +83,9 @@ public class RobotContainer {
 
     SmartDashboard.putNumber("Auto Distance", 1);
 
-    m_chooser.addOption("High Cube Then Balance", m_highcubebalance);
-    m_chooser.addOption("High Cube Then Leave Community Then Balance", m_highcubecommunitybalance);
+    m_chooser.setDefaultOption("Mid Cube then 2 Mid Cones", m_midcubemidcone3piece);
+    m_chooser.addOption("Mid Cube then Mid Cone then Pick Up a 3rd Piece then balance", m_midcubemidcone2halfpiecebalance);
+    m_chooser.addOption("Mid Cube then Mid Cone Over Bump", m_midcubemidcone2piecebump);
     SmartDashboard.putData("Auto choices", m_chooser);
   }
 

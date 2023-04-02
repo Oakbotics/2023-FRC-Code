@@ -39,22 +39,22 @@ public class MidCubeMidCone2PieceBump extends SequentialCommandGroup {
             new InstantCommand(()-> driveSubsystem.zeroHeading(), driveSubsystem),
             new ArmCommandLow(armSubsystem),
             new ParallelCommandGroup(
-                new AutoPath("Back30cmCubeBump", velocity, driveSubsystem, intakeSubsystem),
+                new AutoPath("Back30cmCubeBump", velocity, driveSubsystem, intakeSubsystem, armSubsystem),
                 new ArmCommandMid(armSubsystem)
             ),
             new OuttakeCommand(intakeSubsystem).withTimeout(0.5),
             new ParallelCommandGroup(
                 new ArmCommandLowCone(armSubsystem),
-                new AutoPath("BumpForward", velocity, driveSubsystem, intakeSubsystem)
+                new AutoPath("BumpForward", velocity, driveSubsystem, intakeSubsystem, armSubsystem)
             ),
             new ParallelCommandGroup(
                 new ArmCommandMid(armSubsystem),
-                new AutoPath("BumpReverse", velocity, driveSubsystem,intakeSubsystem)
+                new AutoPath("BumpReverse", velocity, driveSubsystem,intakeSubsystem, armSubsystem)
             ),
             new ArmCommandMid(armSubsystem),
             new ShoulderDropCommand(armSubsystem, intakeSubsystem),
             new InstantCommand(()-> intakeSubsystem.setIdleModeBrake(false)),
-            new AutoPath("Back30cmConeBump", velocity, driveSubsystem, intakeSubsystem),
+            new AutoPath("Back30cmConeBump", velocity, driveSubsystem, intakeSubsystem, armSubsystem),
             new InstantCommand(()-> intakeSubsystem.setIdleModeBrake(true)),
             new ArmCommandLow(armSubsystem),
             new InstantCommand(()-> driveSubsystem.zeroHeading(180), driveSubsystem)

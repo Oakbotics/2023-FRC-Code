@@ -54,6 +54,12 @@
       "names": [
         "Intake"
       ]
+    },
+    {
+      "position": 0.1,
+      "names": [
+        "LowCone"
+      ]
     }
   ]
 }

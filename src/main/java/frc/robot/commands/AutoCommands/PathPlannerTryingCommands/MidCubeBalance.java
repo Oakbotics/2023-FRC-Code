@@ -38,11 +38,11 @@ public class MidCubeBalance extends SequentialCommandGroup {
             new InstantCommand(()-> driveSubsystem.zeroHeading(), driveSubsystem),
             new ArmCommandLow(armSubsystem),
             new ParallelCommandGroup(
-                new AutoPath("Back30cmCubeBalance", velocity, driveSubsystem, intakeSubsystem),
+                new AutoPath("Back30cmCubeBalance", velocity, driveSubsystem, intakeSubsystem, armSubsystem),
                 new ArmCommandMidCube(armSubsystem)
             ),
             new ArmCommandLow(armSubsystem),
-            new AutoPath("ToChargeStation", velocity, driveSubsystem, intakeSubsystem),
+            new AutoPath("ToChargeStation", velocity, driveSubsystem, intakeSubsystem, armSubsystem),
             new InstantCommand(()-> driveSubsystem.zeroHeading(180), driveSubsystem),
             new RunCommand(()-> driveSubsystem.setX(), driveSubsystem)
                 

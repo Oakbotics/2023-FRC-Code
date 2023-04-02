@@ -40,16 +40,16 @@ public class TestPath extends SequentialCommandGroup {
             new OuttakeCommand(intakeSubsystem).withTimeout(1.5),
             new ParallelCommandGroup(
                 new ArmCommandLow(armSubsystem),
-                new AutoPath("TestPath", velocity, driveSubsystem, intakeSubsystem)
+                new AutoPath("TestPath", velocity, driveSubsystem, intakeSubsystem, armSubsystem)
             ),
             new ParallelCommandGroup(
                 new ArmCommandLowCone(armSubsystem),
                 new IntakeCommand(intakeSubsystem).withTimeout(2),
-                new AutoPath("Intake Path", velocity, driveSubsystem, intakeSubsystem)
+                new AutoPath("Intake Path", velocity, driveSubsystem, intakeSubsystem, armSubsystem)
             ),
             new ParallelCommandGroup(
                 new ArmCommandMidCube(armSubsystem),
-                new AutoPath("ReversePath", velocity, driveSubsystem, intakeSubsystem)
+                new AutoPath("ReversePath", velocity, driveSubsystem, intakeSubsystem, armSubsystem)
             ),
             new ArmCommandHigh(armSubsystem),
             new OuttakeCommand(intakeSubsystem).withTimeout(1.5),

@@ -34,14 +34,14 @@ public class HighCubeCommunityPickUpBalance extends SequentialCommandGroup {
             new InstantCommand(()-> driveSubsystem.zeroHeading(), driveSubsystem),
             new ArmCommandLow(armSubsystem),
             new ParallelCommandGroup(
-                new AutoPath("Back30cmCubeBalance", velocity, driveSubsystem, intakeSubsystem),
+                new AutoPath("Back30cmCubeBalance", velocity, driveSubsystem, intakeSubsystem, armSubsystem),
                 new ArmCommandHigh(armSubsystem)
             ),
-            new AutoPath("Front30cmCubeBalance", velocity, driveSubsystem, intakeSubsystem),
+            new AutoPath("Front30cmCubeBalance", velocity, driveSubsystem, intakeSubsystem, armSubsystem),
             new OuttakeCommand(intakeSubsystem).repeatedly().withTimeout(1),
-            new AutoPath("Back30cmCubeBalance", velocity, driveSubsystem, intakeSubsystem),
+            new AutoPath("Back30cmCubeBalance", velocity, driveSubsystem, intakeSubsystem, armSubsystem),
             new ArmCommandLow(armSubsystem),
-            new AutoPath("CommunityPickUpBalance", velocity, driveSubsystem, intakeSubsystem),
+            new AutoPath("CommunityPickUpBalance", velocity, driveSubsystem, intakeSubsystem, armSubsystem),
             new InstantCommand(()-> driveSubsystem.zeroHeading(180), driveSubsystem),
             new RunCommand(()-> driveSubsystem.setX(), driveSubsystem)
                 

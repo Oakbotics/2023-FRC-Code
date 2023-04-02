@@ -57,6 +57,12 @@
       "names": [
         "LowCone"
       ]
+    },
+    {
+      "position": 0.054545454545454564,
+      "names": [
+        "IntakeBrake"
+      ]
     }
   ]
 }

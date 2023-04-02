@@ -48,7 +48,7 @@ public class AutoPath extends SequentialCommandGroup {
         eventMap.put("MidCone", new ArmCommandMid(armSubsystem));
         eventMap.put("IntakeCoast", new InstantCommand(()-> intakeSubsystem.setIdleModeBrake(false)));
         eventMap.put("Low", new ArmCommandLow(armSubsystem));
-        eventMap.put("IntakeCoast",new InstantCommand(()-> intakeSubsystem.setIdleModeBrake(true)));
+        eventMap.put("IntakeBrake",new InstantCommand(()-> intakeSubsystem.setIdleModeBrake(true)));
         eventMap.put("LowCone", new ArmCommandLowCone(armSubsystem));
         
 

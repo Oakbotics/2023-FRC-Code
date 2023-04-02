@@ -38,20 +38,20 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
 
-  public void runIntake(double intakeSpeed){
-      m_intakeMotorTop.set(intakeSpeed);
-      m_intakeMotorBottom.set(intakeSpeed);
+  public void runIntake(double intakeVoltage){
+      m_intakeMotorTop.setVoltage(intakeVoltage);
+      m_intakeMotorBottom.setVoltage(intakeVoltage);
   }
 
 
-  public void reverseIntake(double intakeSpeed){
-    m_intakeMotorTop.set(-(intakeSpeed));
-    m_intakeMotorBottom.set(-(intakeSpeed));
+  public void reverseIntake(double intakeVoltage){
+    m_intakeMotorTop.setVoltage(-(intakeVoltage));
+    m_intakeMotorBottom.setVoltage(-(intakeVoltage));
 }
 
 public void stopIntake(double intakeSpeed){
-    m_intakeMotorTop.set(0);
-    m_intakeMotorBottom.set(0);
+    m_intakeMotorTop.setVoltage(0);
+    m_intakeMotorBottom.setVoltage(0);
 }
 
 

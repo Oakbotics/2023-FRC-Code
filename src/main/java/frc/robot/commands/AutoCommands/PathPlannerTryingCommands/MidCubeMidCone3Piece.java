@@ -39,40 +39,27 @@ public class MidCubeMidCone3Piece extends SequentialCommandGroup {
             new InstantCommand(()-> driveSubsystem.zeroHeading(), driveSubsystem),
             new ArmCommandLow(armSubsystem),
             new ParallelCommandGroup(
-                new AutoPath("Back30cmCube", velocity, driveSubsystem, intakeSubsystem)
-                // new ArmCommandMid(armSubsystem)
+                new AutoPath("Back30cmCube", velocity, driveSubsystem, intakeSubsystem, armSubsystem),
+                new ArmCommandMidCube(armSubsystem)
             ),
             new OuttakeCommand(intakeSubsystem).withTimeout(0.5),
+            new AutoPath("ForwardPath1", velocity, driveSubsystem, intakeSubsystem, armSubsystem),
+            new AutoPath("ReversePath1", velocity, driveSubsystem,intakeSubsystem, armSubsystem),
             new ParallelCommandGroup(
-                new ArmCommandLowCone(armSubsystem),
-                new AutoPath("ForwardPath1", velocity, driveSubsystem, intakeSubsystem)
+                new InstantCommand(()-> intakeSubsystem.setIdleModeBrake(false)),
+                new ShoulderDropCommand(armSubsystem, intakeSubsystem)
             ),
+            new AutoPath("ForwardPath2", velocity, driveSubsystem, intakeSubsystem, armSubsystem),
+            new AutoPath("ReversePath2", velocity, driveSubsystem,intakeSubsystem, armSubsystem),
+            new InstantCommand(()-> driveSubsystem.zeroHeading(180), driveSubsystem),
             new ParallelCommandGroup(
-                new ArmCommandLow(armSubsystem),
-                new AutoPath("ReversePath1", velocity, driveSubsystem,intakeSubsystem)
-            ),
-            // new ArmCommandMid(armSubsystem),    
-            new ParallelCommandGroup(
-                // new ShoulderDropCommand(armSubsystem, intakeSubsystem),
-                new InstantCommand(()-> intakeSubsystem.setIdleModeBrake(false))
-            ),
-            new ParallelCommandGroup(
-                new ArmCommandLowCone(armSubsystem),
-                new InstantCommand(()-> intakeSubsystem.setIdleModeBrake(true)),
-                new AutoPath("ForwardPath2", velocity, driveSubsystem, intakeSubsystem)
-            ),
-            new ParallelCommandGroup(
-                // new ArmCommandMid(armSubsystem),
-                // new AutoPath("ReversePath2", velocity, driveSubsystem,intakeSubsystem)
+                new InstantCommand(()-> intakeSubsystem.setIdleModeBrake(false)),
+                new ShoulderDropCommand(armSubsystem, intakeSubsystem),
+                new AutoPath("Back30cmBottemCone", driveSubsystem, intakeSubsystem, armSubsystem)
             ),
             new InstantCommand(()-> driveSubsystem.zeroHeading(180), driveSubsystem),
-            new InstantCommand(()-> intakeSubsystem.setIdleModeBrake(false)),
-            // new ShoulderDropCommand(armSubsystem, intakeSubsystem),
-            // new AutoPath("Back30cmBottemCone", driveSubsystem, intakeSubsystem),
             new InstantCommand(()-> intakeSubsystem.setIdleModeBrake(true)),
             new ArmCommandLow(armSubsystem)
-           
-            );
+        );
     }
-
 }

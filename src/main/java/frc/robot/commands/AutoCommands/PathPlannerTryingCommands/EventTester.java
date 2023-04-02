@@ -37,7 +37,7 @@ public class EventTester extends SequentialCommandGroup {
         addCommands( 
             new InstantCommand(()-> driveSubsystem.zeroHeading(), driveSubsystem),
             new ArmCommandLow(armSubsystem),
-            new AutoPath("PickUpPiece1", velocity, driveSubsystem, intakeSubsystem)
+            new AutoPath("PickUpPiece1", velocity, driveSubsystem, intakeSubsystem, armSubsystem)
         );
     }
 

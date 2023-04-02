@@ -39,6 +39,13 @@ public class CandleSubsystem extends SubsystemBase {
     public void setOrange(){
         m_candle.setLEDs(255, 165, 0, 0, 0, 8);
     } 
+    public void setRed(){
+        m_candle.setLEDs(255, 0, 0, 0, 8, 180);
+    } 
+
+    public void setGreen(){
+        m_candle.setLEDs(0, 255,0, 0, 8, 60);
+    } 
 
     public void setBlue(){
         m_candle.setLEDs(0, 0, 255, 0, 8, 60);

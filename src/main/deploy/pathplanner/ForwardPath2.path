@@ -1,0 +1,68 @@
+{
+  "waypoints": [
+    {
+      "anchorPoint": {
+        "x": 1.9,
+        "y": 5.15
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 6.375896328715734,
+        "y": 5.515787325591746
+      },
+      "holonomicAngle": 180.0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 7.15,
+        "y": 3.05
+      },
+      "prevControl": {
+        "x": 6.513952334742277,
+        "y": 4.356475183157936
+      },
+      "nextControl": null,
+      "holonomicAngle": -70.0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    }
+  ],
+  "markers": [
+    {
+      "position": 0.9,
+      "names": [
+        "Intake"
+      ]
+    },
+    {
+      "position": 0.05,
+      "names": [
+        "LowCone"
+      ]
+    },
+    {
+      "position": 0.054545454545454564,
+      "names": [
+        "IntakeBrake"
+      ]
+    }
+  ]
+}

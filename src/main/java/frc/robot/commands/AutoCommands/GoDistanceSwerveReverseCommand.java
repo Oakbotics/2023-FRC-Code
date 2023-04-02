@@ -1,12 +1,4 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.commands.AutoCommands;
-
-import frc.robot.Constants.AutoConstants;
-import frc.robot.Constants.DriveConstants;
-import frc.robot.subsystems.DriveSubsystem;
 
 import java.util.List;
 
@@ -14,36 +6,34 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
+import frc.robot.Constants.AutoConstants;
+import frc.robot.Constants.DriveConstants;
+import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.LimelightSubsystem;
 
-/** An example command that uses an example subsystem. */
-public class SwerveExampleAuto {
-  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
+
+public class GoDistanceSwerveReverseCommand  {
+    @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
     
     private final DriveSubsystem m_driveSubsystem; 
+    // private final LimelightSubsystem m_limelightSubsystem;
     private final TrajectoryConfig config = new TrajectoryConfig(
         AutoConstants.kMaxSpeedMetresPerSecond,
         AutoConstants.kMaxAccelerationMetersPerSecondSquared)
         // Add kinematics to ensure max speed is actually obeyed
-        .setKinematics(DriveConstants.kDriveKinematics);
+        .setKinematics(DriveConstants.kDriveKinematics)
+        .setReversed(true);
 
-    private final Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
-        // Start at the origin facing the +X direction
-        new Pose2d(0, 0, new Rotation2d(0)),
-        // Pass through these two interior waypoints, making an 's' curve path
-        List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
-        // End 3 meters straight ahead of where we started, facing forward
-        new Pose2d(3, 0, new Rotation2d(180)),
-
-        config);
+    private Trajectory exampleTrajectory; 
         
     ProfiledPIDController thetaController = new ProfiledPIDController(
         AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints);
-        
+
     SwerveControllerCommand swerveControllerCommand;
     
   /**
@@ -51,10 +41,27 @@ public class SwerveExampleAuto {
    *
    * @param driveSubsytem The subsystem used by this command.
    */
-   public SwerveExampleAuto(DriveSubsystem driveSubsytem) {
+   public GoDistanceSwerveReverseCommand(DriveSubsystem driveSubsytem, LimelightSubsystem limelightSubsystem, Pose2d startingPose, Pose2d endingPose) {
     m_driveSubsystem = driveSubsytem;
+    // m_limelightSubsystem = limelightSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
-    
+    exampleTrajectory= TrajectoryGenerator.generateTrajectory(
+        // Start at the origin facing the +X direction
+        //m_limelightSubsystem.getRobotPose(),
+        new Pose2d(startingPose.getX(), startingPose.getY(), startingPose.getRotation()),
+        // Pass through these two interior waypoints, making ans  's' curve path
+        List.of(),
+        // End 3 meters straight ahead of where we started, facing forward
+        new Pose2d(endingPose.getX(), endingPose.getY(), endingPose.getRotation()),
+
+        config);
+
+        SmartDashboard.putNumber("BotPoseX", limelightSubsystem.getRobotPose().getX());
+        SmartDashboard.putNumber("BotPoseY", limelightSubsystem.getRobotPose().getY());
+        SmartDashboard.putNumber("DestinationX", startingPose.getX());
+        SmartDashboard.putNumber("DestinationY", startingPose.getY());
+        SmartDashboard.putString("Trajectory", exampleTrajectory.toString());
+        SmartDashboard.putString("Theta Controller Setpoint", thetaController.getSetpoint().toString());
     swerveControllerCommand = new SwerveControllerCommand(
         exampleTrajectory,
         m_driveSubsystem::getPose, // Functional interface to feed supplier
@@ -72,7 +79,8 @@ public class SwerveExampleAuto {
 
     public SwerveControllerCommand getAutonomousCommand(){
         thetaController.enableContinuousInput(-Math.PI, Math.PI);
-        m_driveSubsystem.resetOdometry(exampleTrajectory.getInitialPose());
+        // m_driveSubsystem.resetOdometry(exampleTrajectory.getInitialPose());
         return swerveControllerCommand;
     }
+
 }

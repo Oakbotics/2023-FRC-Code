@@ -17,17 +17,21 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.ArmCommandGroup.WristMoveDegreeCommand;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
-
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.CandleSubsystem;
 import frc.robot.subsystems.ShoulderSubsystem;
 import frc.robot.subsystems.WristSubsystem;
 import frc.robot.commands.*;
+import frc.robot.commands.AutoCommands.SwerveExampleAuto;
+import frc.robot.commands.AutoCommands.PathPlannerTryingCommands.HighCubeBalance;
+import frc.robot.commands.AutoCommands.PathPlannerTryingCommands.HighCubeCommunityBalance;
 import frc.robot.commands.AutoCommands.commandGroups.AutoSwerveCommandHighCone;
 import frc.robot.commands.AutoCommands.commandGroups.AutoSwerveCommandHighCube;
 import frc.robot.commands.AutoCommands.commandGroups.AutoSwerveCommandMid;
 import frc.robot.commands.AutoCommands.commandGroups.AutoSwerveCommandMidCube;
+import frc.robot.commands.AutoCommands.commandGroups.AutoSwerveCommandNoOutake;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -53,6 +57,9 @@ public class RobotContainer {
   private final XboxController m_opController = new XboxController(Constants.ControllerConstants.operatorControllerId);
 
   
+  private final Command m_highcubebalance = new HighCubeBalance(m_robotDrive, m_armSubsystem, m_intakeSubsystem);
+  private final Command m_highcubecommunitybalance = new HighCubeCommunityBalance(m_robotDrive, m_armSubsystem, m_intakeSubsystem);
+  SendableChooser<Command> m_chooser = new SendableChooser<>();
 
   
   /**
@@ -64,6 +71,10 @@ public class RobotContainer {
     // Configure default commands
 
     SmartDashboard.putNumber("Auto Distance", 1);
+
+    m_chooser.addOption("High Cube Then Balance", m_highcubebalance);
+    m_chooser.addOption("High Cube Then Leave Community Then Balance", m_highcubecommunitybalance);
+    SmartDashboard.putData("Auto choices", m_chooser);
   }
 
   /**
@@ -177,10 +188,25 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand() {
-    m_robotDrive.zeroHeading();
+   public Command getAutonomousCommand() {
+  //   m_robotDrive.zeroHeading();
     // new CandleAnimateCommand(m_candleSubsystem);
     // SwerveControllerCommand command = new AutoScorePreloadMid(m_armSubsystem,m_robotDrive, m_intakeSubsystem, m_limelightSubsystem );
-    return new AutoSwerveCommandMidCube(m_armSubsystem,m_robotDrive, m_intakeSubsystem, m_limelightSubsystem).andThen(() -> m_robotDrive.drive(0, 0, 0, true));
+     return new AutoSwerveCommandNoOutake(m_armSubsystem, m_robotDrive, m_intakeSubsystem, m_limelightSubsystem).andThen(() -> m_robotDrive.drive(0, 0, 0, true));
+   }
+  //  }
+  // }
+
+  // }
+
+  public DriveSubsystem getDriveSubsystem(){
+   return m_robotDrive;
+  }
+  public ArmSubsystem getArmSubsystem(){
+    return m_armSubsystem;
+  }
+   public IntakeSubsystem getIntakeSubsystem(){
+    return m_intakeSubsystem;
   }
 }
+

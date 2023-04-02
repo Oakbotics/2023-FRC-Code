@@ -4,6 +4,10 @@
 
 package frc.robot.subsystems;
 
+import java.text.spi.DecimalFormatSymbolsProvider;
+
+import org.opencv.core.RotatedRect;
+
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
@@ -79,7 +83,7 @@ public class DriveSubsystem extends SubsystemBase {
     // Update the odometry in the periodic block
 
     m_odometry.update(
-        Rotation2d.fromDegrees(m_gyro.getAngle()),
+        Rotation2d.fromDegrees(-m_gyro.getAngle()),
         new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
             m_frontRight.getPosition(),
@@ -91,6 +95,10 @@ public class DriveSubsystem extends SubsystemBase {
       SmartDashboard.putNumber("Gyro Roll", m_gyro.getRoll());
       SmartDashboard.putNumber("Gyro Yaw", m_gyro.getAngle());
       SmartDashboard.putString("Odometry", m_odometry.getPoseMeters().toString());
+      SmartDashboard.putString("Front Left Position", m_frontLeft.getPosition().toString());
+      SmartDashboard.putString("Back Left Position", m_rearLeft.getPosition().toString());
+      SmartDashboard.putString("Front Right Position", m_frontRight.getPosition().toString());
+      SmartDashboard.putString("Back Right Position", m_rearRight.getPosition().toString());
   }
 
   public void toggleFieldRelative(){
@@ -213,18 +221,37 @@ public class DriveSubsystem extends SubsystemBase {
     m_rearRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
   }
 
+  public void setSide() {
+    m_frontLeft.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(90)));
+    m_frontRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(90)));
+    m_rearLeft.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(90)));
+    m_rearRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(90)));
+  }
   /**
    * Sets the swerve ModuleStates.
    *
    * @param desiredStates The desired SwerveModule states.
    */
+  //public void setModuleStates(SwerveModuleState[] desiredStates) {
+  //   ChassisSpeeds chassisSpeeds = DriveConstants.kDriveKinematics.toChassisSpeeds(desiredStates);
+  //   var swerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(
+  //           ChassisSpeeds.fromFieldRelativeSpeeds(chassisSpeeds.vxMetersPerSecond, chassisSpeeds.vyMetersPerSecond, chassisSpeeds.omegaRadiansPerSecond, Rotation2d.fromDegrees(-m_gyro.getAngle())));
+  //   SwerveModuleState = DriveConstants.kDriveKinematics.toSwerveModuleStates(ChassisSpeeds, null)
+  //   SwerveDriveKinematics.desaturateWheelSpeeds(
+  //     swerveModuleStates, DriveConstants.kMaxSpeedFeetPerSecond);
+  //   m_frontLeft.setDesiredState(swerveModuleStates[0]);
+  //   m_frontRight.setDesiredState(swerveModuleStates[1]);
+  //   m_rearLeft.setDesiredState(swerveModuleStates[2]);
+  //   m_rearRight.setDesiredState(swerveModuleStates[3]);
+  // }
+
   public void setModuleStates(SwerveModuleState[] desiredStates) {
     SwerveDriveKinematics.desaturateWheelSpeeds(
         desiredStates, DriveConstants.kMaxSpeedFeetPerSecond);
-    m_frontLeft.setDesiredState(desiredStates[0]);
-    m_frontRight.setDesiredState(desiredStates[1]);
-    m_rearLeft.setDesiredState(desiredStates[2]);
-    m_rearRight.setDesiredState(desiredStates[3]);
+    m_frontLeft.setDesiredState(new SwerveModuleState(desiredStates[0].speedMetersPerSecond, desiredStates[0].angle));
+    m_frontRight.setDesiredState(new SwerveModuleState(desiredStates[1].speedMetersPerSecond, desiredStates[1].angle));
+    m_rearLeft.setDesiredState(new SwerveModuleState(desiredStates[2].speedMetersPerSecond, desiredStates[2].angle));
+    m_rearRight.setDesiredState(new SwerveModuleState(desiredStates[3].speedMetersPerSecond, desiredStates[3].angle));
   }
 
   public void setModuleStatesReversed(SwerveModuleState[] desiredStates) {
@@ -256,6 +283,10 @@ public class DriveSubsystem extends SubsystemBase {
       m_gyro.setAngleAdjustment(offset);     
     }
       SmartDashboard.putNumber("Angle Ajustment", m_gyro.getAngleAdjustment());
+  }
+
+  public Rotation2d getRotation(){
+    return new Rotation2d(m_gyro.getAngle());
   }
 
   /**

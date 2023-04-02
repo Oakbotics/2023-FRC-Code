@@ -4,14 +4,16 @@
 
 package frc.robot.commands.AutoCommands.commandGroups;
 
+import frc.robot.commands.ArmCommandHigh;
 import frc.robot.commands.ArmCommandLow;
 import frc.robot.commands.ArmCommandMid;
 import frc.robot.commands.ArmCommandMidCube;
 import frc.robot.commands.ArmCommandSubstation;
-import frc.robot.commands.CandleAnimateCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.OuttakeCommand;
 import frc.robot.commands.ShoulderDropCommand;
+import frc.robot.commands.AutoCommands.GoDistanceSwerveCommand;
+import frc.robot.commands.AutoCommands.GoDistanceSwerveReverseCommand;
 import frc.robot.commands.AutoCommands.GoToPositionSwerveReverseCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.CandleSubsystem;
@@ -51,27 +53,18 @@ public class AutoSwerveCommandMidCube extends SequentialCommandGroup {
     addCommands(
       
         new InstantCommand(()-> m_driveSubsystem.zeroHeading(), m_driveSubsystem),
-        new DriveCommand(m_driveSubsystem, 0, 0, 0).withTimeout(1),
         new ArmCommandLow(m_armSubsystem),
-        new GoToPositionSwerveReverseCommand(m_driveSubsystem, m_limelightSubsystem, new Pose2d(new Translation2d(2.20,0), Rotation2d.fromDegrees(0))).getAutonomousCommand(),
-        new ArmCommandMidCube(m_armSubsystem),
-        // new ShoulderDropCommand(armSubsystem, intakeSubsystem),
-        new InstantCommand(()-> m_intakeSubsystem.setIdleModeBrake(false)),
+        new GoDistanceSwerveReverseCommand(m_driveSubsystem, m_limelightSubsystem, new Pose2d(new Translation2d(0,0), Rotation2d.fromDegrees(0)), new Pose2d(new Translation2d(-0.3, 0), Rotation2d.fromDegrees(0))).getAutonomousCommand(),
+        new ArmCommandHigh(armSubsystem),
+        new GoDistanceSwerveCommand(m_driveSubsystem, m_limelightSubsystem,  new Pose2d(new Translation2d(-0.3,0), Rotation2d.fromDegrees(0)), new Pose2d(new Translation2d(0,0), Rotation2d.fromDegrees(0))).getAutonomousCommand(),
         new OuttakeCommand(m_intakeSubsystem).repeatedly().withTimeout(1),
+        new GoDistanceSwerveReverseCommand(m_driveSubsystem, m_limelightSubsystem, new Pose2d(new Translation2d(0,0), Rotation2d.fromDegrees(0)), new Pose2d(new Translation2d(-0.3, 0), Rotation2d.fromDegrees(0))).getAutonomousCommand(),
         new ArmCommandLow(m_armSubsystem),
-        new InstantCommand(()-> m_intakeSubsystem.setIdleModeBrake(true)),
-        new GoToPositionSwerveReverseCommand(m_driveSubsystem, m_limelightSubsystem, new Pose2d(new Translation2d(0,0), Rotation2d.fromDegrees(0))).getAutonomousCommand(),
+        new GoDistanceSwerveReverseCommand(m_driveSubsystem, m_limelightSubsystem, new Pose2d(new Translation2d(-0.3,0), Rotation2d.fromDegrees(0)), new Pose2d(new Translation2d(-4, 0), Rotation2d.fromDegrees(0))).getAutonomousCommand(),
+        new GoDistanceSwerveCommand(m_driveSubsystem, m_limelightSubsystem, new Pose2d(new Translation2d(-4,0), Rotation2d.fromDegrees(0)), new Pose2d(new Translation2d(-2.4, 0), Rotation2d.fromDegrees(0))).getAutonomousCommand(),
         new InstantCommand(()-> m_driveSubsystem.zeroHeading(180), m_driveSubsystem),
         new RunCommand(()-> m_driveSubsystem.setX(), m_driveSubsystem)
        
         );
-    
-
     }
-
-
-
-  // Called when the command is initially schePduled.
-
-  
 }

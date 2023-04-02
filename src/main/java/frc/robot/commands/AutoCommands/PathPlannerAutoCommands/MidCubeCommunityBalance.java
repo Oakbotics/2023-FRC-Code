@@ -1,4 +1,4 @@
-package frc.robot.commands.AutoCommands.PathPlannerTryingCommands;
+package frc.robot.commands.AutoCommands.PathPlannerAutoCommands;
 
 
 import com.pathplanner.lib.PathConstraints;
@@ -16,18 +16,16 @@ import frc.robot.commands.ArmCommandMid;
 import frc.robot.commands.ArmCommandMidCube;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.OuttakeCommand;
-import frc.robot.commands.ShoulderDropCommand;
+import frc.robot.commands.AutoCommands.PathPlannerAutoCommands.AutoPath;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.LimelightSubsystem;
-import frc.robot.commands.AutoCommands.PathPlannerTryingCommands.AutoPath;
 
 
 
-public class MidCubeBalance extends SequentialCommandGroup {
+public class MidCubeCommunityBalance extends SequentialCommandGroup {
 
-    public MidCubeBalance(DriveSubsystem driveSubsystem, ArmSubsystem armSubsystem, IntakeSubsystem intakeSubsystem) {
+    public MidCubeCommunityBalance(DriveSubsystem driveSubsystem, ArmSubsystem armSubsystem, IntakeSubsystem intakeSubsystem) {
 
         // Specify velocity limitations.
         PathConstraints velocity = new PathConstraints(0.5, 0.5);
@@ -41,16 +39,16 @@ public class MidCubeBalance extends SequentialCommandGroup {
                 new AutoPath("Back30cmCubeBalance", velocity, driveSubsystem, intakeSubsystem, armSubsystem),
                 new ArmCommandMidCube(armSubsystem)
             ),
-            new ArmCommandLow(armSubsystem),
-            new AutoPath("ToChargeStation", velocity, driveSubsystem, intakeSubsystem, armSubsystem),
+            new OuttakeCommand(intakeSubsystem).repeatedly().withTimeout(1),
+            new ParallelCommandGroup(
+                new ArmCommandLow(armSubsystem),
+                new AutoPath("CommunityBalance", velocity, driveSubsystem, intakeSubsystem, armSubsystem)
+            ),
             new InstantCommand(()-> driveSubsystem.zeroHeading(180), driveSubsystem),
             new RunCommand(()-> driveSubsystem.setX(), driveSubsystem)
+        
                 
         );
-    }
-
-    public MidCubeBalance(ArmSubsystem m_armSubsystem, DriveSubsystem m_robotDrive, IntakeSubsystem m_intakeSubsystem,
-            LimelightSubsystem m_limelightSubsystem) {
     }
 
 }

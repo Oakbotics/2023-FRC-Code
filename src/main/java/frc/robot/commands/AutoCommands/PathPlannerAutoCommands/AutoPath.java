@@ -1,4 +1,4 @@
-package frc.robot.commands.AutoCommands.PathPlannerTryingCommands;
+package frc.robot.commands.AutoCommands.PathPlannerAutoCommands;
 
 import java.util.HashMap;
 import java.util.List;

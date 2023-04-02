@@ -5,6 +5,10 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.CandleSubsystem;
+
+import java.util.function.DoubleSupplier;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 
 /** An example command that uses an example subsystem. */
@@ -22,6 +26,7 @@ public class PurpleCandleCommand extends InstantCommand {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(candleSubsystem);
   }
+
 
   // Called when the command is initially scheduled.
   @Override

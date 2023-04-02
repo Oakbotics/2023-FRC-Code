@@ -4,12 +4,15 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPoint;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.ArmConstants;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -131,34 +134,61 @@ public class RobotContainer {
         () -> m_robotDrive.zeroHeading()  
       ));
 
-    new POVButton(m_driverController, 90)
-      .onTrue(new InstantCommand(
-        () -> m_robotDrive.zeroHeading(
-          m_limelightSubsystem.getRobotAngle()
-        )  //Add limelight, and then test
-      ));
+    // new POVButton(m_driverController, 90)
+    //   .onTrue( 
+    //     new PathSwerveRotateToZero(m_robotDrive, 0).getAutonomousCommand()
+
+
+        // new InstantCommand(
+        // () -> m_robotDrive.zeroHeading(
+        //   m_limelightSubsystem.getRobotAngle()
+        // )  //Add limelight, and then test
+      // );
       
     new POVButton(m_driverController, 180)
-      .onTrue(new RotateSwerveCommand(90, m_robotDrive) //Mr Smith changed to on true
+      .whileTrue(
+        new RotateSwerveCommand(0, m_robotDrive).withTimeout(0.5)
       .andThen(
         new InstantCommand(()-> SmartDashboard.putString("Turning Finished", "Finished"))
-      ));
-    
-    new POVButton(m_driverController, 270)
-      .onTrue(new LimelightSwerveGoToConeCommand(m_robotDrive, m_reflectiveLimelight)
-      .andThen(new InstantCommand(()-> SmartDashboard.putString("Moved to Cone", "Finished"))
-
-      ));
-
-    new POVButton(m_driverController, idk)
-      .onTrue(
-        m_robotDrive.followTrajectoryCommand(
-          new PathPoint(m_robotDrive.getPose().getTranslation(), m_robotDrive.getPose().getRotation()), 
-          new PathPoint(m_robotDrive.getPose().getTranslation().plus(
-            new Translation2d(0, m_reflectiveLimelight.getDistanceFromReflectiveTape())), m_robotDrive.getRotation())
-          )
+      )
+      .andThen(
+        new BetterPPSwerveControllerCommand(
+          new PathConstraints(1, 1),
+          m_robotDrive::getPose, // Pose supplier
+          DriveConstants.kDriveKinematics, // SwerveDriveKinematics
+          new PIDController(5.0, 0.0, 0.0), // X controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
+          new PIDController(5.0, 0.0, 0.0), // Y controller (usually the same values as X controller)
+          new PIDController(0.5, 0, 0), // Rotation controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
+          m_robotDrive::setModuleStates, // Module states consumer
+          true,          // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
+          m_reflectiveLimelight,
+          m_robotDrive // Requires this drive subsystem
+        )
+      )); //Mr Smith changed to on true
       
-      );
+    
+    // new POVButton(m_driverController, 270)
+    //   .onTrue(new LimelightSwerveGoToConeCommand(m_robotDrive, m_reflectiveLimelight)
+    //   .andThen(new InstantCommand(()-> SmartDashboard.putString("Moved to Cone", "Finished"))
+
+    //   ));
+
+    new POVButton(m_driverController, 270)
+      .onTrue(
+        
+        new BetterPPSwerveControllerCommand(
+          new PathConstraints(1, 1),
+          m_robotDrive::getPose, // Pose supplier
+          DriveConstants.kDriveKinematics, // SwerveDriveKinematics
+          new PIDController(5.0, 0.0, 0.0), // X controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
+          new PIDController(5.0, 0.0, 0.0), // Y controller (usually the same values as X controller)
+          new PIDController(0.5, 0, 0), // Rotation controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
+          m_robotDrive::setModuleStates, // Module states consumer
+          true,          // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
+          m_reflectiveLimelight,
+          m_robotDrive // Requires this drive subsystem
+        )
+    );
       
     
 
@@ -230,3 +260,4 @@ public class RobotContainer {
   }
 }
 
+// L bozo

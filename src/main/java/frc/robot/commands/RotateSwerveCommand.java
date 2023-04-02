@@ -18,11 +18,11 @@ public class RotateSwerveCommand extends PIDCommand {
     super(
         new PIDController(TurningConstants.kP, TurningConstants.kI, TurningConstants.kD),
         // Close loop on heading
-        drive::getHeading,
+        drive::getPoseRotation,
         // Set reference to target
-        -targetAngleDegrees,
+        targetAngleDegrees,
         // Pipe output to turn robot
-        output -> drive.drive(0, 0, output, true),
+        output -> drive.drive(0, 0, -output, true),
         // Require the drive
         drive);
 
@@ -43,7 +43,6 @@ public class RotateSwerveCommand extends PIDCommand {
     // End when the controller is at the reference.
     return getController().atSetpoint();
   }
-
 
 
 }

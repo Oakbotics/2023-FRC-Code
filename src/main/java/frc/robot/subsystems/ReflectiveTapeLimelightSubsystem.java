@@ -34,7 +34,8 @@ public class ReflectiveTapeLimelightSubsystem extends SubsystemBase {
   private double y;
   private double v;
   private double a;
-
+  private double strafeDistance;
+  private double forwardDistance;
 
   
   private String networkTable;
@@ -69,11 +70,25 @@ public class ReflectiveTapeLimelightSubsystem extends SubsystemBase {
     a = ta.getDouble(4);
     v = tv.getDouble(4);
 
+  forwardDistance = (
+      Math.abs((ReflectiveTapeConstants.limelightHeightmetres - ReflectiveTapeConstants.poleTapeTopHeightmetres))
+      /Math.tan(Units.degreesToRadians(y))  
+  );
+
+  strafeDistance = (
+        
+        forwardDistance * Math.tan(Units.degreesToRadians(x))
+    )- ReflectiveTapeConstants.limelightHorizontalOffset;
+
+
     //post to smart dashboard periodically
     SmartDashboard.putNumber("LimelightX", x);
     SmartDashboard.putNumber("LimelightY", y);
     SmartDashboard.putNumber("LimelightArea", a);
     SmartDashboard.putNumber("Target Available", v);
+    SmartDashboard.putNumber("Forward Distance", forwardDistance);
+
+
 
 
 
@@ -85,13 +100,9 @@ public class ReflectiveTapeLimelightSubsystem extends SubsystemBase {
     // long ty = m_limelightTable.getEntry("ty").getLastChange();
     // long ta = m_limelightTable.getEntry("ta").getLastChange();
 
-    double distance = (
-        Math.abs((ReflectiveTapeConstants.limelightHeightmetres - ReflectiveTapeConstants.poleTapeTopHeightmetres))
-        /Math.tan(Units.degreesToRadians(y))
-    );
-
-    SmartDashboard.putNumber("Distance from pole, metres", distance);
-    SmartDashboard.putNumber("Cone Pose", getDistanceFromReflectiveTape());
+  
+    SmartDashboard.putNumber("Distance from pole, metres", forwardDistance);
+    SmartDashboard.putNumber("Strafe Distance", strafeDistance);
 
   }
 
@@ -106,26 +117,29 @@ public class ReflectiveTapeLimelightSubsystem extends SubsystemBase {
 
   public double getDistanceFromReflectiveTape(){
     
-    double forwardDistance = (
-        Math.abs((ReflectiveTapeConstants.limelightHeightmetres - ReflectiveTapeConstants.poleTapeTopHeightmetres))
-        /Math.tan(Units.degreesToRadians(y))  
-    );
+    if (v == 1){
+      
+    
+    
 
-    double strafeDistance = (
+     strafeDistance = (
         
         forwardDistance * Math.tan(Units.degreesToRadians(x))
     )- ReflectiveTapeConstants.limelightHorizontalOffset;
 
-    
-    SmartDashboard.putNumber("Distance from pole, metres", forwardDistance);
-    
-    Pose2d conePose = new Pose2d(new Translation2d(forwardDistance, strafeDistance), new Rotation2d());
+  }
+  else{
+    forwardDistance = 0;
+    strafeDistance = 0;
+  }
+  
+  SmartDashboard.putNumber("Distance from pole, metres", forwardDistance);
+  SmartDashboard.putNumber("Strafe Distance", strafeDistance);
+  Pose2d conePose = new Pose2d(new Translation2d(forwardDistance, strafeDistance), new Rotation2d());
 
     
     SmartDashboard.putString("Limelight Destination", conePose.toString());
     return strafeDistance;
-
-
   }
 
 }

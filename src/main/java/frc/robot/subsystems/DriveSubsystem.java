@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import java.text.spi.DecimalFormatSymbolsProvider;
+import java.util.function.DoubleSupplier;
 
 import org.opencv.core.RotatedRect;
 
@@ -19,6 +20,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
@@ -28,6 +30,7 @@ import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.commands.PurpleCandleCommand;
 import frc.utils.SwerveUtils;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -99,9 +102,8 @@ public class DriveSubsystem extends SubsystemBase {
             m_rearRight.getPosition()
         });
 
-      SmartDashboard.putNumber("Gyro Pitch", m_gyro.getPitch());
-      SmartDashboard.putNumber("Gyro Roll", m_gyro.getRoll());
       SmartDashboard.putNumber("Gyro Yaw", m_gyro.getAngle());
+      SmartDashboard.putNumber("Pose Rotation", getPose().getRotation().getDegrees());
       SmartDashboard.putString("Odometry", m_odometry.getPoseMeters().toString());
       SmartDashboard.putString("Front Left Position", m_frontLeft.getPosition().toString());
       SmartDashboard.putString("Back Left Position", m_rearLeft.getPosition().toString());
@@ -283,15 +285,23 @@ public class DriveSubsystem extends SubsystemBase {
     m_rearRight.resetEncoders();
   }
 
-  public Command followTrajectoryCommand(PathPoint startingPathPoint, PathPoint endingPathPoint) {
+  // public Command followTrajectoryCommand(PathPoint startingPathPoint, PathPoint endingPathPoint) {
+  public Command followTrajectoryCommand(Pose2d start, DoubleSupplier limelightVal) {
+      PathPoint startingPathPoint = new PathPoint(start.getTranslation(), start.getRotation());
+      PathPoint endingPathPoint = new PathPoint(start.getTranslation().plus(
+        new Translation2d(0, 0.2)), start.getRotation());
+    // new PathPoint(startingPathPoint.plus(
+    //   new Translation2d(0, 0.2)), m_robotDrive.getPose().getRotation())
+    // )
     
     PathPlannerTrajectory traj = PathPlanner.generatePath(
-        new PathConstraints(2, 2), 
+        new PathConstraints(0.2, 0.2), 
         startingPathPoint,
         // new PathPoint(endingPose, m_driveSubsystem.getPose().getRotation())
         endingPathPoint
     );
 
+    SmartDashboard.putNumber("Trajectory from drive", limelightVal.getAsDouble());
 
     return new SequentialCommandGroup(
 
@@ -335,6 +345,10 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public double getHeading() {
     return Rotation2d.fromDegrees(m_gyro.getAngle()).getDegrees();
+  }
+
+  public double getPoseRotation(){
+    return -getPose().getRotation().getDegrees();
   }
 
   /**

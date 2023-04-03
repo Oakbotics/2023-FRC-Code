@@ -5,14 +5,22 @@
 package frc.robot.subsystems;
 
 import java.text.spi.DecimalFormatSymbolsProvider;
+import java.util.function.DoubleSupplier;
 
 import org.opencv.core.RotatedRect;
 
 import com.kauailabs.navx.frc.AHRS;
+import com.pathplanner.lib.PathConstraints;
+import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.PathPoint;
+import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
@@ -22,7 +30,10 @@ import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.commands.PurpleCandleCommand;
 import frc.utils.SwerveUtils;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveSubsystem extends SubsystemBase {
@@ -91,9 +102,8 @@ public class DriveSubsystem extends SubsystemBase {
             m_rearRight.getPosition()
         });
 
-      SmartDashboard.putNumber("Gyro Pitch", m_gyro.getPitch());
-      SmartDashboard.putNumber("Gyro Roll", m_gyro.getRoll());
       SmartDashboard.putNumber("Gyro Yaw", m_gyro.getAngle());
+      SmartDashboard.putNumber("Pose Rotation", getPose().getRotation().getDegrees());
       SmartDashboard.putString("Odometry", m_odometry.getPoseMeters().toString());
       SmartDashboard.putString("Front Left Position", m_frontLeft.getPosition().toString());
       SmartDashboard.putString("Back Left Position", m_rearLeft.getPosition().toString());
@@ -103,6 +113,10 @@ public class DriveSubsystem extends SubsystemBase {
 
   public void toggleFieldRelative(){
     isFieldRelative=(!isFieldRelative);
+  }
+
+  public void setFieldRelative(){
+    isFieldRelative = true;
   }
 
   /**
@@ -121,7 +135,7 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public void resetOdometry(Pose2d pose) {
     m_odometry.resetPosition(
-        Rotation2d.fromDegrees(m_gyro.getAngle()),
+        Rotation2d.fromDegrees(-m_gyro.getAngle()),
         new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
             m_frontRight.getPosition(),
@@ -271,6 +285,40 @@ public class DriveSubsystem extends SubsystemBase {
     m_rearRight.resetEncoders();
   }
 
+  // public Command followTrajectoryCommand(PathPoint startingPathPoint, PathPoint endingPathPoint) {
+  public Command followTrajectoryCommand(Pose2d start, DoubleSupplier limelightVal) {
+      PathPoint startingPathPoint = new PathPoint(start.getTranslation(), start.getRotation());
+      PathPoint endingPathPoint = new PathPoint(start.getTranslation().plus(
+        new Translation2d(0, 0.2)), start.getRotation());
+    // new PathPoint(startingPathPoint.plus(
+    //   new Translation2d(0, 0.2)), m_robotDrive.getPose().getRotation())
+    // )
+    
+    PathPlannerTrajectory traj = PathPlanner.generatePath(
+        new PathConstraints(0.2, 0.2), 
+        startingPathPoint,
+        // new PathPoint(endingPose, m_driveSubsystem.getPose().getRotation())
+        endingPathPoint
+    );
+
+    SmartDashboard.putNumber("Trajectory from drive", limelightVal.getAsDouble());
+
+    return new SequentialCommandGroup(
+
+         new PPSwerveControllerCommand(
+             traj, 
+             this::getPose, // Pose supplier
+             DriveConstants.kDriveKinematics, // SwerveDriveKinematics
+             new PIDController(0, 0, 0), // X controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
+             new PIDController(0, 0, 0), // Y controller (usually the same values as X controller)
+             new PIDController(0, 0, 0), // Rotation controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
+             this::setModuleStates, // Module states consumer
+             true, // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
+             this // Requires this drive subsystem
+         )
+     );
+ }  
+
   /** Zeroes the heading of the robot. */
   public void zeroHeading() {
     m_gyro.reset();
@@ -286,7 +334,8 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public Rotation2d getRotation(){
-    return new Rotation2d(m_gyro.getAngle());
+    return Rotation2d.fromDegrees(m_gyro.getAngle());
+    
   }
 
   /**
@@ -296,6 +345,10 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public double getHeading() {
     return Rotation2d.fromDegrees(m_gyro.getAngle()).getDegrees();
+  }
+
+  public double getPoseRotation(){
+    return -getPose().getRotation().getDegrees();
   }
 
   /**

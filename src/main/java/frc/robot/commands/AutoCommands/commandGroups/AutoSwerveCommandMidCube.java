@@ -56,12 +56,12 @@ public class AutoSwerveCommandMidCube extends SequentialCommandGroup {
         new ArmCommandLow(m_armSubsystem),
         new GoDistanceSwerveReverseCommand(m_driveSubsystem, m_limelightSubsystem, new Pose2d(new Translation2d(0,0), Rotation2d.fromDegrees(0)), new Pose2d(new Translation2d(-0.3, 0), Rotation2d.fromDegrees(0))).getAutonomousCommand(),
         new ArmCommandHigh(armSubsystem),
-        new GoDistanceSwerveCommand(m_driveSubsystem, m_limelightSubsystem,  new Pose2d(new Translation2d(-0.3,0), Rotation2d.fromDegrees(0)), new Pose2d(new Translation2d(0,0), Rotation2d.fromDegrees(0))).getAutonomousCommand(),
+        new GoDistanceSwerveCommand(m_driveSubsystem, new Pose2d(new Translation2d(-0.3,0), Rotation2d.fromDegrees(0)), new Pose2d(new Translation2d(0,0), Rotation2d.fromDegrees(0))).getAutonomousCommand(),
         new OuttakeCommand(m_intakeSubsystem).repeatedly().withTimeout(1),
         new GoDistanceSwerveReverseCommand(m_driveSubsystem, m_limelightSubsystem, new Pose2d(new Translation2d(0,0), Rotation2d.fromDegrees(0)), new Pose2d(new Translation2d(-0.3, 0), Rotation2d.fromDegrees(0))).getAutonomousCommand(),
         new ArmCommandLow(m_armSubsystem),
         new GoDistanceSwerveReverseCommand(m_driveSubsystem, m_limelightSubsystem, new Pose2d(new Translation2d(-0.3,0), Rotation2d.fromDegrees(0)), new Pose2d(new Translation2d(-4, 0), Rotation2d.fromDegrees(0))).getAutonomousCommand(),
-        new GoDistanceSwerveCommand(m_driveSubsystem, m_limelightSubsystem, new Pose2d(new Translation2d(-4,0), Rotation2d.fromDegrees(0)), new Pose2d(new Translation2d(-2.4, 0), Rotation2d.fromDegrees(0))).getAutonomousCommand(),
+        new GoDistanceSwerveCommand(m_driveSubsystem,  new Pose2d(new Translation2d(-4,0), Rotation2d.fromDegrees(0)), new Pose2d(new Translation2d(-2.4, 0), Rotation2d.fromDegrees(0))).getAutonomousCommand(),
         new InstantCommand(()-> m_driveSubsystem.zeroHeading(180), m_driveSubsystem),
         new RunCommand(()-> m_driveSubsystem.setX(), m_driveSubsystem)
        

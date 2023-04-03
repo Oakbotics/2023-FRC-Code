@@ -166,12 +166,42 @@ public final class Constants {
   public final class LightConstants{
    public static final int CANdleID = 5;
    }
+
+   public static final class TurningConstants{
+    // public static final double kP = 0.00025;       Old values
+    // public static final double kI = 0.0;
+    // public static final double kD = 0.001;
+    // public static final double kTurnToleranceDeg = 5;
+    // public static final double kTurnRateToleranceDegPerS = 5;
+
+    public static final double kP = 0.02;
+    public static final double kI = 0.0;
+    public static final double kD = 0.00;
+    public static final double kTurnToleranceDeg = 5;
+    public static final double kTurnRateToleranceDegPerS = 5;
+    
+    
+  }  
   
   public final class ControllerConstants{
      public static final int driverControllerId = 0;
      public static final int operatorControllerId = 1;
   }
   
+
+
+  public static final class ReflectiveTapeConstants{
+    public static final double limelightHeightmetres = Units.inchesToMeters(38.125);
+    // public static final double poleTapeTopHeightmetres = Units.inchesToMeters(26.125); // game manual height
+    public static final double poleTapeTopHeightmetres = Units.inchesToMeters(27); // our scuffed height
+    public static final double limelightHorizontalOffset = Units.inchesToMeters(5.5);
+
+
+
+
+  }
+
+
   public final class ArmConstants{
     public static final int ShoulderId = 14;
     public static final int WristID = 1;

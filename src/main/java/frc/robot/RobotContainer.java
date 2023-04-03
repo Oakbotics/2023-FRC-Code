@@ -4,9 +4,15 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.PathConstraints;
+import com.pathplanner.lib.PathPoint;
+
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.ArmConstants;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -23,6 +29,7 @@ import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.CandleSubsystem;
 import frc.robot.subsystems.ShoulderSubsystem;
 import frc.robot.subsystems.WristSubsystem;
+import frc.robot.subsystems.ReflectiveTapeLimelightSubsystem;
 import frc.robot.commands.*;
 import frc.robot.commands.AutoCommands.SwerveExampleAuto;
 import frc.robot.commands.AutoCommands.PathPlannerAutoCommands.HighCubeBalance;
@@ -55,6 +62,7 @@ public class RobotContainer {
   private final ArmSubsystem m_armSubsystem = new ArmSubsystem(m_shoulderSubsystem, m_wristSubsystem);
   private final CandleSubsystem m_candleSubsystem = new CandleSubsystem(Constants.LightConstants.CANdleID);
   private final LimelightSubsystem m_limelightSubsystem = new LimelightSubsystem();
+  private final ReflectiveTapeLimelightSubsystem m_reflectiveLimelight = new ReflectiveTapeLimelightSubsystem();
   // The driver's controller
   // The robot's subsystems and commands are defined here...
   private final XboxController m_driverController = new XboxController(Constants.ControllerConstants.driverControllerId);
@@ -147,12 +155,63 @@ public class RobotContainer {
         () -> m_robotDrive.zeroHeading()  
       ));
 
-    new POVButton(m_driverController, 90)
-      .onTrue(new InstantCommand(
-        () -> m_robotDrive.zeroHeading(
-          m_limelightSubsystem.getRobotAngle()
-        )  //Add limelight, and then test
-      ));
+    // new POVButton(m_driverController, 90)
+    //   .onTrue( 
+    //     new PathSwerveRotateToZero(m_robotDrive, 0).getAutonomousCommand()
+
+
+        // new InstantCommand(
+        // () -> m_robotDrive.zeroHeading(
+        //   m_limelightSubsystem.getRobotAngle()
+        // )  //Add limelight, and then test
+      // );
+      
+    new POVButton(m_driverController, 180)
+      .whileTrue(
+        new RotateSwerveCommand(0, m_robotDrive).withTimeout(0.5)
+      .andThen(
+        new InstantCommand(()-> SmartDashboard.putString("Turning Finished", "Finished"))
+      )
+      .andThen(
+        new BetterPPSwerveControllerCommand(
+          new PathConstraints(1, 1),
+          m_robotDrive::getPose, // Pose supplier
+          DriveConstants.kDriveKinematics, // SwerveDriveKinematics
+          new PIDController(5.0, 0.0, 0.0), // X controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
+          new PIDController(5.0, 0.0, 0.0), // Y controller (usually the same values as X controller)
+          new PIDController(0.5, 0, 0), // Rotation controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
+          m_robotDrive::setModuleStates, // Module states consumer
+          true,          // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
+          m_reflectiveLimelight,
+          m_robotDrive // Requires this drive subsystem
+        )
+      )); //Mr Smith changed to on true
+      
+    
+    // new POVButton(m_driverController, 270)
+    //   .onTrue(new LimelightSwerveGoToConeCommand(m_robotDrive, m_reflectiveLimelight)
+    //   .andThen(new InstantCommand(()-> SmartDashboard.putString("Moved to Cone", "Finished"))
+
+    //   ));
+
+    new POVButton(m_driverController, 270)
+      .onTrue(
+        
+        new BetterPPSwerveControllerCommand(
+          new PathConstraints(1, 1),
+          m_robotDrive::getPose, // Pose supplier
+          DriveConstants.kDriveKinematics, // SwerveDriveKinematics
+          new PIDController(5.0, 0.0, 0.0), // X controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
+          new PIDController(5.0, 0.0, 0.0), // Y controller (usually the same values as X controller)
+          new PIDController(0.5, 0, 0), // Rotation controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
+          m_robotDrive::setModuleStates, // Module states consumer
+          true,          // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
+          m_reflectiveLimelight,
+          m_robotDrive // Requires this drive subsystem
+        )
+    );
+      
+    
 
 
     new Trigger(
@@ -222,3 +281,4 @@ public class RobotContainer {
   }
 }
 
+// L bozo

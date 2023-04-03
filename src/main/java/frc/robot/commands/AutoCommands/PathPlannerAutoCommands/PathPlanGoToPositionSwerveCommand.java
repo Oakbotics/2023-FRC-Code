@@ -1,8 +1,15 @@
-package frc.robot.commands.AutoCommands;
+package frc.robot.commands.AutoCommands.PathPlannerAutoCommands;
 
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
+import com.pathplanner.lib.PathConstraints;
+import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.PathPoint;
+import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
 import edu.wpi.first.math.controller.HolonomicDriveController;
@@ -24,10 +31,11 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 
 
-public class GoDistanceSwerveCommand  {
+public class PathPlanGoToPositionSwerveCommand  {  //NOT GOING TO USE
     @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
     
     private final DriveSubsystem m_driveSubsystem; 
+    private final PPSwerveControllerCommand swerveCommand;
     // private final LimelightSubsystem m_limelightSubsystem;
     private final TrajectoryConfig config = new TrajectoryConfig(
         AutoConstants.kMaxSpeedMetresPerSecond,
@@ -36,7 +44,6 @@ public class GoDistanceSwerveCommand  {
         .setKinematics(DriveConstants.kDriveKinematics)
         .setReversed(false);
 
-    private Trajectory exampleTrajectory; 
         
     ProfiledPIDController thetaController = new ProfiledPIDController(
         AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints);
@@ -48,49 +55,39 @@ public class GoDistanceSwerveCommand  {
    *
    * @param driveSubsytem The subsystem used by this command.
    */
-   public GoDistanceSwerveCommand(DriveSubsystem driveSubsytem, Pose2d startingPose, Pose2d endingPose) {
+   public PathPlanGoToPositionSwerveCommand(DriveSubsystem driveSubsytem, Pose2d  endingPose) {
     m_driveSubsystem = driveSubsytem;
-    // m_limelightSubsystem = limelightSubsystem;
-    // Use addRequirements() here to declare subsystem dependencies.
-    exampleTrajectory= TrajectoryGenerator.generateTrajectory(
-        // Start at the origin facing the +X direction
-        //m_limelightSubsystem.getRobotPose(),
-        new Pose2d(startingPose.getX(), startingPose.getY(), startingPose.getRotation()),
-        // Pass through these two interior waypoints, making ans  's' curve path
-        List.of(),
-        // End 3 meters straight ahead of where we started, facing forward
-        new Pose2d(endingPose.getX(), endingPose.getY(), endingPose.getRotation()),
 
-        config);
+    SmartDashboard.putNumber("Smart y val", endingPose.getY());
+
+    PathPlannerTrajectory traj = PathPlanner.generatePath(
+        new PathConstraints(2, 2), 
+        new PathPoint(m_driveSubsystem.getPose().getTranslation(), m_driveSubsystem.getPose().getRotation()),
+        // new PathPoint(endingPose, m_driveSubsystem.getPose().getRotation())
+        new PathPoint(endingPose.getTranslation(), m_driveSubsystem.getPose().getRotation())
+    );
 
 
-        SmartDashboard.putNumber("DestinationX", startingPose.getX());
-        SmartDashboard.putNumber("DestinationY", startingPose.getY());
-        SmartDashboard.putString("Trajectory", exampleTrajectory.toString());
-        SmartDashboard.putString("Theta Controller Setpoint", thetaController.getSetpoint().toString());
 
-        Supplier<Rotation2d> rSupplier = () -> (m_driveSubsystem.getRotation());
-    swerveControllerCommand = new SwerveControllerCommand(
-        exampleTrajectory,
-        m_driveSubsystem::getPose, // Functional interface to feed supplier
-        DriveConstants.kDriveKinematics,
-
-        // Position controllers
-        new HolonomicDriveController(
-        new PIDController(AutoConstants.kPXController, 0, AutoConstants.kDController),
-        new PIDController(AutoConstants.kPYController, 0, AutoConstants.kDController),
-        thetaController),
-        // rSupplier,
-        m_driveSubsystem::setModuleStates,
-        m_driveSubsystem);
+    swerveCommand = new PPSwerveControllerCommand(
+        traj, 
+        m_driveSubsystem::getPose, // Pose supplier
+        DriveConstants.kDriveKinematics, // SwerveDriveKinematics
+        new PIDController(0, 0, 0), // X controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
+        new PIDController(0, 0, 0), // Y controller (usually the same values as X controller)
+        new PIDController(0, 0, 0), // Rotation controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
+        m_driveSubsystem::setModuleStates, // Module states consumer
+        true, // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
+        m_driveSubsystem // Requires this drive subsystem
+    );
 
 
     }
 
-    public SwerveControllerCommand getAutonomousCommand(){
+    public PPSwerveControllerCommand getAutonomousCommand(){
         thetaController.enableContinuousInput(-Math.PI, Math.PI);
         // m_driveSubsystem.resetOdometry(exampleTrajectory.getInitialPose());
-        return swerveControllerCommand;
-    }
+        return swerveCommand;
+    }     
 
 }

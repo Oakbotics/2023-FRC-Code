@@ -11,7 +11,7 @@ import frc.robot.commands.DriveCommand;
 import frc.robot.commands.OuttakeCommand;
 import frc.robot.commands.AutoCommands.GoDistanceSwerveCommand;
 import frc.robot.commands.AutoCommands.GoToPositionSwerveReverseCommand;
-import frc.robot.commands.AutoCommands.PathPlannerTryingCommands.PathPlanGoToPositionSwerveCommand;
+import frc.robot.commands.AutoCommands.PathPlannerAutoCommands.PathPlanGoToPositionSwerveCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;

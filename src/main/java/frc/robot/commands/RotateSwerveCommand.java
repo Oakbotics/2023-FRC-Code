@@ -18,7 +18,7 @@ public class RotateSwerveCommand extends PIDCommand {
     super(
         new PIDController(TurningConstants.kP, TurningConstants.kI, TurningConstants.kD),
         // Close loop on heading
-        drive::getPoseRotation,
+        drive::getWrappedPoseRotation,
         // Set reference to target
         targetAngleDegrees,
         // Pipe output to turn robot

@@ -10,14 +10,19 @@ import com.pathplanner.lib.PathPoint;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.IntakeSensorSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import frc.robot.commands.ArmCommandGroup.WristMoveDegreeCommand;
@@ -63,11 +68,13 @@ public class RobotContainer {
   private final CandleSubsystem m_candleSubsystem = new CandleSubsystem(Constants.LightConstants.CANdleID);
   private final LimelightSubsystem m_limelightSubsystem = new LimelightSubsystem();
   private final ReflectiveTapeLimelightSubsystem m_reflectiveLimelight = new ReflectiveTapeLimelightSubsystem();
+  private final IntakeSensorSubsystem m_IntakeSensorSubsystem = new IntakeSensorSubsystem();
   // The driver's controller
   // The robot's subsystems and commands are defined here...
   private final XboxController m_driverController = new XboxController(Constants.ControllerConstants.driverControllerId);
   private final XboxController m_opController = new XboxController(Constants.ControllerConstants.operatorControllerId);
 
+  // DigitalInput IntakeSensor = new DigitalInput(1);
 
 
   private final Command m_highcubebalance = new HighCubeBalance(m_robotDrive, m_armSubsystem, m_intakeSubsystem);
@@ -88,8 +95,6 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
     // Configure default commands
-
-    SmartDashboard.putNumber("Auto Distance", 1);
 
     m_chooser.setDefaultOption("Mid Cube then 2 Mid Cones", m_midcubemidcone3piece);
     m_chooser.addOption("Mid Cube then Mid Cone then Pick Up a 3rd Piece then balance", m_midcubemidcone2halfpiecebalance);
@@ -124,6 +129,26 @@ public class RobotContainer {
     new ShoulderDropCommand(m_armSubsystem, m_intakeSubsystem)
   );
 
+
+  new Trigger(
+    () -> m_IntakeSensorSubsystem.IntakeSensorState() == true
+
+  ).onTrue(
+    new RunCommand(() -> {
+       m_opController.setRumble(RumbleType.kLeftRumble, 1.0);
+       m_opController.setRumble(RumbleType.kRightRumble, 1.0);
+       SmartDashboard.putString("nerds", "nerds");
+    }
+    ).withTimeout(2).andThen(new InstantCommand(() -> {
+      m_opController.setRumble(RumbleType.kLeftRumble, 0);
+      m_opController.setRumble(RumbleType.kRightRumble, 0);
+      SmartDashboard.putString("nerds2", "nerds2");
+
+      }
+     )
+    )
+  );
+
     // new Trigger(
     //   () -> m_opController.getLeftY() != 0
     // ).whileTrue(
@@ -154,6 +179,29 @@ public class RobotContainer {
       .onTrue(new InstantCommand(
         () -> m_robotDrive.zeroHeading()  
       ));
+
+      new Trigger(
+        () -> m_IntakeSensorSubsystem.IntakeSensorState() == true
+    
+      ).onTrue(
+        new RunCommand(() -> {
+           m_driverController.setRumble(RumbleType.kLeftRumble, 1.0);
+           m_driverController.setRumble(RumbleType.kRightRumble, 1.0);
+           SmartDashboard.putString("nerds", "nerds");
+        }
+        ).withTimeout(2).andThen(new InstantCommand(() -> {
+          m_driverController.setRumble(RumbleType.kLeftRumble, 0);
+          m_driverController.setRumble(RumbleType.kRightRumble, 0);
+          SmartDashboard.putString("nerds2", "nerds2");
+    
+          }
+         )
+        )
+      );
+        
+
+      // SmartDashboard.putBoolean("Intake Sensor", IntakeSensor.get());
+      
 
     // new POVButton(m_driverController, 90)
     //   .onTrue( 

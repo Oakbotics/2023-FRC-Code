@@ -168,14 +168,14 @@ public class RobotContainer {
       
     new POVButton(m_driverController, 180)
       .whileTrue(
-        new RotateSwerveCommand(0, m_robotDrive).withTimeout(0.5)
+        new RotateSwerveCommand(180, m_robotDrive).withTimeout(1.5)
       .andThen(
         new InstantCommand(()-> SmartDashboard.putString("Turning Finished", "Finished"))
       )
       .andThen(
         new BetterPPSwerveControllerCommand(
           new PathConstraints(1, 1),
-          m_robotDrive::getPose, // Pose supplier
+          m_robotDrive::getWrappedPose, // Pose supplier
           DriveConstants.kDriveKinematics, // SwerveDriveKinematics
           new PIDController(5.0, 0.0, 0.0), // X controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
           new PIDController(5.0, 0.0, 0.0), // Y controller (usually the same values as X controller)

@@ -46,7 +46,7 @@ public class ReflectiveTapeLimelightSubsystem extends SubsystemBase {
 
     SmartDashboard.putData(m_field);
 
-    m_limelightTable = NetworkTableInstance.getDefault().getTable("limelight-reflect");
+    m_limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
   }
 
   public void getNetworkTableValues(){

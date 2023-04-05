@@ -86,6 +86,16 @@ public class DriveSubsystem extends SubsystemBase {
           m_rearRight.getPosition()
       });
 
+    SwerveDriveOdometry m_odometryWrapped = new SwerveDriveOdometry(
+        DriveConstants.kDriveKinematics,
+        Rotation2d.fromDegrees(m_gyro.getAngle()),
+        new SwerveModulePosition[] {
+            m_frontLeft.getPosition(),
+            m_frontRight.getPosition(),
+            m_rearLeft.getPosition(),
+            m_rearRight.getPosition()
+        });    
+
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {
     m_gyro.reset();
@@ -103,6 +113,16 @@ public class DriveSubsystem extends SubsystemBase {
             m_rearLeft.getPosition(),
             m_rearRight.getPosition()
         });
+
+    m_odometryWrapped.update(
+        Rotation2d.fromDegrees(getWrappedPoseRotation()),
+        new SwerveModulePosition[] {
+            m_frontLeft.getPosition(),
+            m_frontRight.getPosition(),
+            m_rearLeft.getPosition(),
+            m_rearRight.getPosition()
+        });
+      
 
       SmartDashboard.putNumber("Gyro Yaw", m_gyro.getAngle());
       SmartDashboard.putNumber("Pose Rotation", getPose().getRotation().getDegrees());
@@ -350,11 +370,16 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public double getPoseRotation(){
-    return -getPose().getRotation().getDegrees();
+    return getPose().getRotation().getDegrees();
   }
 
   public double getWrappedPoseRotation(){
     return Units.radiansToDegrees(MathUtil.angleModulus(-getPose().getRotation().getRadians()));
+  }
+
+  public Pose2d getWrappedPose(){
+    return m_odometryWrapped.getPoseMeters();
+    // return new Pose2d(this.getPose().getTranslation(), Rotation2d.fromDegrees(getWrappedPoseRotation()));
   }
 
   /**

@@ -97,9 +97,9 @@ public class BetterPPSwerveControllerCommand extends CommandBase {
 
     this.trajectory = PathPlanner.generatePath(
         constraints, 
-        new PathPoint(poseSupplier.get().getTranslation(), poseSupplier.get().getRotation()),
+        new PathPoint(poseSupplier.get().getTranslation(), Rotation2d.fromDegrees(180)),
         // new PathPoint(endingPose, m_driveSubsystem.getPose().getRotation())
-        new PathPoint(poseSupplier.get().getTranslation(), poseSupplier.get().getRotation()
+        new PathPoint(poseSupplier.get().getTranslation(), Rotation2d.fromDegrees(180)
 
     ));
     
@@ -126,7 +126,7 @@ public class BetterPPSwerveControllerCommand extends CommandBase {
         // new PathPoint(endingPose, m_driveSubsystem.getPose().getRotation())
         new PathPoint(poseSupplier.get().getTranslation()
             .plus(
-            new Translation2d(0, limelight.getDistanceFromReflectiveTape())), Rotation2d.fromDegrees(0))
+            new Translation2d(0, limelight.getDistanceFromReflectiveTape())), poseSupplier.get().getRotation())
 
         );
 

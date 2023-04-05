@@ -57,8 +57,7 @@ public class GoToPositionSwerveReverseCommand  {
 
         config);
 
-        SmartDashboard.putNumber("BotPoseX", limelightSubsystem.getRobotPose().getX());
-        SmartDashboard.putNumber("BotPoseY", limelightSubsystem.getRobotPose().getY());
+       
         SmartDashboard.putNumber("DestinationX", destination.getX());
         SmartDashboard.putNumber("DestinationY", destination.getY());
         SmartDashboard.putString("Trajectory", exampleTrajectory.toString());

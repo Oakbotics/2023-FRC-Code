@@ -36,6 +36,7 @@ import frc.robot.commands.AutoCommands.PathPlannerAutoCommands.HighCubeBalance;
 import frc.robot.commands.AutoCommands.PathPlannerAutoCommands.HighCubeCommunityBalance;
 import frc.robot.commands.AutoCommands.PathPlannerAutoCommands.HighCubeCommunityPickUpBalance;
 import frc.robot.commands.AutoCommands.PathPlannerAutoCommands.MidCubeMidCone2HalfPieceBalance;
+import frc.robot.commands.AutoCommands.PathPlannerAutoCommands.MidCubeMidCone2Piece;
 import frc.robot.commands.AutoCommands.PathPlannerAutoCommands.MidCubeMidCone2PieceBump;
 import frc.robot.commands.AutoCommands.PathPlannerAutoCommands.MidCubeMidCone3Piece;
 import frc.robot.commands.AutoCommands.commandGroups.AutoSwerveCommandHighCone;
@@ -73,11 +74,13 @@ public class RobotContainer {
   private final Command m_highcubebalance = new HighCubeBalance(m_robotDrive, m_armSubsystem, m_intakeSubsystem);
   private final Command m_highcubecommunitybalance = new HighCubeCommunityBalance(m_robotDrive, m_armSubsystem, m_intakeSubsystem);
   private final Command m_highcubecommunitypickupbalance = new HighCubeCommunityPickUpBalance(m_robotDrive, m_armSubsystem, m_intakeSubsystem);
-  private final Command m_midcubebalance = new HighCubeCommunityPickUpBalance(m_robotDrive, m_armSubsystem, m_intakeSubsystem);
+  private final Command m_midcubebalance = new AutoSwerveCommandMidCube(m_armSubsystem, m_robotDrive, m_intakeSubsystem, m_limelightSubsystem);
 
   private final Command m_midcubemidcone2halfpiecebalance = new MidCubeMidCone2HalfPieceBalance(m_robotDrive, m_armSubsystem, m_intakeSubsystem);
   private final Command m_midcubemidcone3piece = new MidCubeMidCone3Piece(m_robotDrive, m_armSubsystem, m_intakeSubsystem);
+  private final Command m_midcubemidcone2piece = new MidCubeMidCone2Piece(m_robotDrive, m_armSubsystem, m_intakeSubsystem);
   private final Command m_midcubemidcone2piecebump = new MidCubeMidCone2PieceBump(m_robotDrive, m_armSubsystem, m_intakeSubsystem);
+
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
   
@@ -91,9 +94,10 @@ public class RobotContainer {
 
     SmartDashboard.putNumber("Auto Distance", 1);
 
-    m_chooser.setDefaultOption("Mid Cube then 2 Mid Cones", m_midcubemidcone3piece);
-    m_chooser.addOption("Mid Cube then Mid Cone then Pick Up a 3rd Piece then balance", m_midcubemidcone2halfpiecebalance);
-    m_chooser.addOption("Mid Cube then Mid Cone Over Bump", m_midcubemidcone2piecebump);
+    // m_chooser.setDefaultOption("Mid Cube then 2 Mid Cones", m_midcubemidcone3piece);
+    // m_chooser.addOption("Mid Cube then Mid Cone then Pick Up a 3rd Piece then balance", m_midcubemidcone2halfpiecebalance);
+    m_chooser.setDefaultOption("Mid Cube Balance", m_midcubebalance);
+    m_chooser.addOption("Mid Cube then Mid Cone", m_midcubemidcone2piece);
     SmartDashboard.putData("Auto choices", m_chooser);
   }
 
@@ -166,26 +170,26 @@ public class RobotContainer {
         // )  //Add limelight, and then test
       // );
       
-    new POVButton(m_driverController, 180)
-      .whileTrue(
-        new RotateSwerveCommand(0, m_robotDrive).withTimeout(0.5)
-      .andThen(
-        new InstantCommand(()-> SmartDashboard.putString("Turning Finished", "Finished"))
-      )
-      .andThen(
-        new BetterPPSwerveControllerCommand(
-          new PathConstraints(1, 1),
-          m_robotDrive::getPose, // Pose supplier
-          DriveConstants.kDriveKinematics, // SwerveDriveKinematics
-          new PIDController(5.0, 0.0, 0.0), // X controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
-          new PIDController(5.0, 0.0, 0.0), // Y controller (usually the same values as X controller)
-          new PIDController(0.5, 0, 0), // Rotation controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
-          m_robotDrive::setModuleStates, // Module states consumer
-          true,          // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
-          m_reflectiveLimelight,
-          m_robotDrive // Requires this drive subsystem
-        )
-      )); //Mr Smith changed to on true
+    // new POVButton(m_driverController, 180)
+    //   .whileTrue(
+    //     new RotateSwerveCommand(0, m_robotDrive).withTimeout(0.5)
+    //   .andThen(
+    //     new InstantCommand(()-> SmartDashboard.putString("Turning Finished", "Finished"))
+    //   )
+    //   .andThen(
+    //     new BetterPPSwerveControllerCommand(
+    //       new PathConstraints(1, 1),
+    //       m_robotDrive::getPose, // Pose supplier
+    //       DriveConstants.kDriveKinematics, // SwerveDriveKinematics
+    //       new PIDController(5.0, 0.0, 0.0), // X controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
+    //       new PIDController(5.0, 0.0, 0.0), // Y controller (usually the same values as X controller)
+    //       new PIDController(0.5, 0, 0), // Rotation controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
+    //       m_robotDrive::setModuleStates, // Module states consumer
+    //       true,          // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
+    //       m_reflectiveLimelight,
+    //       m_robotDrive // Requires this drive subsystem
+    //     )
+    //   )); //Mr Smith changed to on true
       
     
     // new POVButton(m_driverController, 270)
@@ -194,22 +198,22 @@ public class RobotContainer {
 
     //   ));
 
-    new POVButton(m_driverController, 270)
-      .onTrue(
+    // new POVButton(m_driverController, 270)
+    //   .onTrue(
         
-        new BetterPPSwerveControllerCommand(
-          new PathConstraints(1, 1),
-          m_robotDrive::getPose, // Pose supplier
-          DriveConstants.kDriveKinematics, // SwerveDriveKinematics
-          new PIDController(5.0, 0.0, 0.0), // X controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
-          new PIDController(5.0, 0.0, 0.0), // Y controller (usually the same values as X controller)
-          new PIDController(0.5, 0, 0), // Rotation controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
-          m_robotDrive::setModuleStates, // Module states consumer
-          true,          // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
-          m_reflectiveLimelight,
-          m_robotDrive // Requires this drive subsystem
-        )
-    );
+    //     new BetterPPSwerveControllerCommand(
+    //       new PathConstraints(1, 1),
+    //       m_robotDrive::getPose, // Pose supplier
+    //       DriveConstants.kDriveKinematics, // SwerveDriveKinematics
+    //       new PIDController(5.0, 0.0, 0.0), // X controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
+    //       new PIDController(5.0, 0.0, 0.0), // Y controller (usually the same values as X controller)
+    //       new PIDController(0.5, 0, 0), // Rotation controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
+    //       m_robotDrive::setModuleStates, // Module states consumer
+    //       true,          // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
+    //       m_reflectiveLimelight,
+    //       m_robotDrive // Requires this drive subsystem
+    //     )
+    // );
       
     
 

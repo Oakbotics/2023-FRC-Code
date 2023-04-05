@@ -192,8 +192,8 @@ public final class Constants {
 
   public static final class ReflectiveTapeConstants{
     public static final double limelightHeightmetres = Units.inchesToMeters(38.125);
-    // public static final double poleTapeTopHeightmetres = Units.inchesToMeters(26.125); // game manual height
-    public static final double poleTapeTopHeightmetres = Units.inchesToMeters(27); // our scuffed height
+    public static final double poleTapeTopHeightmetres = Units.inchesToMeters(26.125); // game manual height
+    // public static final double poleTapeTopHeightmetres = Units.inchesToMeters(27); // our scuffed height
     public static final double limelightHorizontalOffset = Units.inchesToMeters(5.5);
 
 

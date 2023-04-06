@@ -62,9 +62,9 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    // m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
-    m_autonomousCommand = new MidCubeMidCone3Piece(m_robotContainer.getDriveSubsystem(), m_robotContainer.getArmSubsystem(), m_robotContainer.getIntakeSubsystem());
+    // m_autonomousCommand = new MidCubeMidCone3Piece(m_robotContainer.getDriveSubsystem(), m_robotContainer.getArmSubsystem(), m_robotContainer.getIntakeSubsystem());
 
     /*
      * String autoSelected = SmartDashboard.getString("Auto Selector",

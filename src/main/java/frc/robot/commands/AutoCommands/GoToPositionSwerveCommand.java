@@ -69,8 +69,8 @@ public class GoToPositionSwerveCommand {
         DriveConstants.kDriveKinematics,
 
         // Position controllers
-        new PIDController(AutoConstants.kPXController, 0, 0),
-        new PIDController(AutoConstants.kPYController, 0, 0),
+        new PIDController(1, 0, 0),
+        new PIDController(1, 0, 0),
         thetaController,
         m_driveSubsystem::setModuleStates,
         m_driveSubsystem);

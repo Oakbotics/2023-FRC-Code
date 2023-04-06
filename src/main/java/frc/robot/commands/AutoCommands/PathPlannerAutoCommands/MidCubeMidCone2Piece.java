@@ -44,11 +44,11 @@ public class MidCubeMidCone2Piece extends SequentialCommandGroup {
             ),
             new OuttakeCommand(intakeSubsystem).withTimeout(0.5),
             new ParallelCommandGroup(
-                // new ArmCommandLowCone(armSubsystem),
+                new ArmCommandLowCone(armSubsystem),
                 new AutoPath("ForwardPath1", velocity, driveSubsystem, intakeSubsystem, armSubsystem)
             ),
             new ParallelCommandGroup(
-                // new ArmCommandMid(armSubsystem),
+                new ArmCommandMid(armSubsystem),
                 new AutoPath("ReversePath1", velocity, driveSubsystem,intakeSubsystem, armSubsystem)
             ),
             new ArmCommandMid(armSubsystem),

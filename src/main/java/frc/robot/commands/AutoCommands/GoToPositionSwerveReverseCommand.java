@@ -32,7 +32,7 @@ public class GoToPositionSwerveReverseCommand  {
     private Trajectory exampleTrajectory; 
         
     ProfiledPIDController thetaController = new ProfiledPIDController(
-        AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints);
+        0.1, 0, 0, AutoConstants.kThetaControllerConstraints);
 
     SwerveControllerCommand swerveControllerCommand;
     
@@ -68,8 +68,8 @@ public class GoToPositionSwerveReverseCommand  {
         DriveConstants.kDriveKinematics,
 
         // Position controllers
-        new PIDController(AutoConstants.kPXController, 0, 0),
-        new PIDController(AutoConstants.kPYController, 0, 0),
+        new PIDController(1, 0, 0),
+        new PIDController(1, 0, 0),
         thetaController,
         m_driveSubsystem::setModuleStates,
         m_driveSubsystem);

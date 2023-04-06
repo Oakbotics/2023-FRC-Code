@@ -94,9 +94,9 @@ public class RobotContainer {
 
     SmartDashboard.putNumber("Auto Distance", 1);
 
-    // m_chooser.setDefaultOption("Mid Cube then 2 Mid Cones", m_midcubemidcone3piece);
+    m_chooser.setDefaultOption("Mid Cube Balance (One Piece)", m_midcubebalance); 
+    // m_chooser.addOption("Mid Cube then 2 Mid Cones", m_midcubemidcone3piece);
     // m_chooser.addOption("Mid Cube then Mid Cone then Pick Up a 3rd Piece then balance", m_midcubemidcone2halfpiecebalance);
-    m_chooser.setDefaultOption("Mid Cube Balance", m_midcubebalance);
     m_chooser.addOption("Mid Cube then Mid Cone", m_midcubemidcone2piece);
     SmartDashboard.putData("Auto choices", m_chooser);
   }
@@ -267,8 +267,10 @@ public class RobotContainer {
   //   m_robotDrive.zeroHeading();
     // new CandleAnimateCommand(m_candleSubsystem);
     // SwerveControllerCommand command = new AutoScorePreloadMid(m_armSubsystem,m_robotDrive, m_intakeSubsystem, m_limelightSubsystem );
-     return new AutoSwerveCommandNoOutake(m_armSubsystem, m_robotDrive, m_intakeSubsystem, m_limelightSubsystem).andThen(() -> m_robotDrive.drive(0, 0, 0, true));
-   }
+     return m_chooser.getSelected();
+    //  AutoSwerveCommandNoOutake(m_armSubsystem, m_robotDrive, m_intakeSubsystem, m_limelightSubsystem).andThen(() -> m_robotDrive.drive(0, 0, 0, true));
+   
+     }
   //  }
   // }
 

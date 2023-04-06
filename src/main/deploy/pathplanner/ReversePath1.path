@@ -3,12 +3,12 @@
     {
       "anchorPoint": {
         "x": 7.35,
-        "y": 3.7
+        "y": 3.85
       },
       "prevControl": null,
       "nextControl": {
         "x": 5.418903369398188,
-        "y": 5.02682088499569
+        "y": 5.17682088499569
       },
       "holonomicAngle": 0.0,
       "isReversal": false,
@@ -45,12 +45,5 @@
       }
     }
   ],
-  "markers": [
-    {
-      "position": 0.9,
-      "names": [
-        "MidCone"
-      ]
-    }
-  ]
+  "markers": []
 }

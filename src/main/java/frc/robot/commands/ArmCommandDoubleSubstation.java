@@ -27,7 +27,7 @@ public class ArmCommandDoubleSubstation extends SequentialCommandGroup {
 
     addCommands(
       //new ShoulderMoveDegreeCommand(m_ArmSubsystem, m_ArmSubsystem.getShoulderPosition()),
-      new ShoulderMoveDegreeCommand(m_ArmSubsystem, 83),
+      new ShoulderMoveDegreeCommand(m_ArmSubsystem, 86),
       new WristMoveDegreeCommand(m_ArmSubsystem, 108)
       //new WristMoveDegreeCommand(m_ArmSubsystem, 120)
 

@@ -31,31 +31,28 @@ public class MidCubeMidCone2PieceBump extends SequentialCommandGroup {
     public MidCubeMidCone2PieceBump(DriveSubsystem driveSubsystem, ArmSubsystem armSubsystem, IntakeSubsystem intakeSubsystem) {
 
         // Specify velocity limitations.
-        PathConstraints velocity = new PathConstraints(2, 2);
+        PathConstraints velocity = new PathConstraints(1.25, 1.25);
 
         // Play command sequence.
         // Added Instant command to reset the speed of the Swerve to 100% to ensure that it is not in slowmode and can successfully auto level.
         addCommands( 
             new InstantCommand(()-> driveSubsystem.zeroHeading(), driveSubsystem),
             new ArmCommandLow(armSubsystem),
-            new ParallelCommandGroup(
-                new AutoPath("Back30cmCubeBump", velocity, driveSubsystem, intakeSubsystem, armSubsystem),
-                new ArmCommandMid(armSubsystem)
-            ),
+            new AutoPath("Back30cmCubeBump", velocity, driveSubsystem, intakeSubsystem, armSubsystem),
+            new ArmCommandMidCube(armSubsystem),
             new OuttakeCommand(intakeSubsystem).withTimeout(0.5),
             new ParallelCommandGroup(
                 new ArmCommandLowCone(armSubsystem),
                 new AutoPath("BumpForward", velocity, driveSubsystem, intakeSubsystem, armSubsystem)
             ),
             new ParallelCommandGroup(
-                new ArmCommandMid(armSubsystem),
-                new AutoPath("BumpReverse", velocity, driveSubsystem,intakeSubsystem, armSubsystem)
+                new ArmCommandLow(armSubsystem),
+                new AutoPath("BumpReverseNew", velocity, driveSubsystem,intakeSubsystem, armSubsystem)
             ),
-            new ArmCommandMid(armSubsystem),
-            new ShoulderDropCommand(armSubsystem, intakeSubsystem),
-            new InstantCommand(()-> intakeSubsystem.setIdleModeBrake(false)),
-            new AutoPath("Back30cmConeBump", velocity, driveSubsystem, intakeSubsystem, armSubsystem),
-            new InstantCommand(()-> intakeSubsystem.setIdleModeBrake(true)),
+            // new ShoulderDropCommand(armSubsystem, intakeSubsystem),
+            // new InstantCommand(()-> intakeSubsystem.setIdleModeBrake(false)),
+            // new AutoPath("Back30cmConeBump", velocity, driveSubsystem, intakeSubsystem, armSubsystem),
+            // new InstantCommand(()-> intakeSubsystem.setIdleModeBrake(true)),
             new ArmCommandLow(armSubsystem),
             new InstantCommand(()-> driveSubsystem.zeroHeading(180), driveSubsystem)
             );

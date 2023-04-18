@@ -26,39 +26,32 @@ import frc.robot.subsystems.IntakeSubsystem;
 
 
 
-public class MidCubeMidCone2Piece extends SequentialCommandGroup {
+public class HighCube2PieceBump extends SequentialCommandGroup {
 
-    public MidCubeMidCone2Piece(DriveSubsystem driveSubsystem, ArmSubsystem armSubsystem, IntakeSubsystem intakeSubsystem) {
+    public HighCube2PieceBump(DriveSubsystem driveSubsystem, ArmSubsystem armSubsystem, IntakeSubsystem intakeSubsystem) {
 
         // Specify velocity limitations.
-        PathConstraints velocity = new PathConstraints(2, 2);
+        PathConstraints velocity = new PathConstraints(1.25, 1.25);
 
         // Play command sequence.
         // Added Instant command to reset the speed of the Swerve to 100% to ensure that it is not in slowmode and can successfully auto level.
         addCommands( 
             new InstantCommand(()-> driveSubsystem.zeroHeading(), driveSubsystem),
             new ArmCommandLow(armSubsystem),
-            new ParallelCommandGroup(
-                new AutoPath("Back30cmCube", velocity, driveSubsystem, intakeSubsystem, armSubsystem),
-                new ArmCommandMidCube(armSubsystem)
-            ),
+            new AutoPath("Back30cmCubeBump", velocity, driveSubsystem, intakeSubsystem, armSubsystem),
+            new ArmCommandHigh(armSubsystem),
+            new AutoPath("Forward30cmCubeBump", velocity, driveSubsystem, intakeSubsystem, armSubsystem),
             new OuttakeCommand(intakeSubsystem).withTimeout(0.5),
+            new AutoPath("Back30cmCubeBump", velocity, driveSubsystem, intakeSubsystem, armSubsystem),
             new ParallelCommandGroup(
                 new ArmCommandLowCone(armSubsystem),
-                new AutoPath("TestPath1", velocity, driveSubsystem, intakeSubsystem, armSubsystem)
+                new AutoPath("BumpForward", velocity, driveSubsystem, intakeSubsystem, armSubsystem)
             ),
             new ParallelCommandGroup(
-                new ArmCommandMid(armSubsystem),
-                new AutoPath("ReverseTestPath", velocity, driveSubsystem,intakeSubsystem, armSubsystem)
+                new ArmCommandLow(armSubsystem),
+                new AutoPath("BumpReverseNew", velocity, driveSubsystem,intakeSubsystem, armSubsystem)
             ),
-            new ArmCommandMid(armSubsystem),
-            new ShoulderDropCommand(armSubsystem, intakeSubsystem),
-            new InstantCommand(()-> intakeSubsystem.setIdleModeBrake(false)),
-            new AutoPath("Back30cmTop", velocity, driveSubsystem, intakeSubsystem, armSubsystem),
-            new InstantCommand(()-> intakeSubsystem.setIdleModeBrake(true)),
-            new ArmCommandLow(armSubsystem),
             new InstantCommand(()-> driveSubsystem.zeroHeading(180), driveSubsystem)
             );
     }
-
 }

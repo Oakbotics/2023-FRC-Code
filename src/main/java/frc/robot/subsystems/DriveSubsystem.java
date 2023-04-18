@@ -105,12 +105,12 @@ public class DriveSubsystem extends SubsystemBase {
         });
 
       SmartDashboard.putNumber("Gyro Yaw", m_gyro.getAngle());
-      SmartDashboard.putNumber("Pose Rotation", getPose().getRotation().getDegrees());
+      // SmartDashboard.putNumber("Pose Rotation", getPose().getRotation().getDegrees());
       SmartDashboard.putString("Odometry", m_odometry.getPoseMeters().toString());
-      SmartDashboard.putString("Front Left Position", m_frontLeft.getPosition().toString());
-      SmartDashboard.putString("Back Left Position", m_rearLeft.getPosition().toString());
-      SmartDashboard.putString("Front Right Position", m_frontRight.getPosition().toString());
-      SmartDashboard.putString("Back Right Position", m_rearRight.getPosition().toString());
+      // SmartDashboard.putString("Front Left Position", m_frontLeft.getPosition().toString());
+      // SmartDashboard.putString("Back Left Position", m_rearLeft.getPosition().toString());
+      // SmartDashboard.putString("Front Right Position", m_frontRight.getPosition().toString());
+      // SmartDashboard.putString("Back Right Position", m_rearRight.getPosition().toString());
   }
 
   public void toggleFieldRelative(){
@@ -303,7 +303,7 @@ public class DriveSubsystem extends SubsystemBase {
         endingPathPoint
     );
 
-    SmartDashboard.putNumber("Trajectory from drive", limelightVal.getAsDouble());
+    // SmartDashboard.putNumber("Trajectory from drive", limelightVal.getAsDouble());
 
     return new SequentialCommandGroup(
 

@@ -30,7 +30,7 @@ public class WristMoveDegreeCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    SmartDashboard.putString("End", "Mid Started");
+    // SmartDashboard.putString("End", "Mid Started");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -43,7 +43,7 @@ public class WristMoveDegreeCommand extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    SmartDashboard.putString("End", "Low Ended");
+    //SmartDashboard.putString("End", "Low Ended");
     
 
   }

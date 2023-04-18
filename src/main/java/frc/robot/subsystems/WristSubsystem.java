@@ -176,8 +176,8 @@ public class WristSubsystem extends SubsystemBase {
     
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Wrist encord value", m_encoder.getPosition());
-    SmartDashboard.putNumber("Wrist softlimit value", getReverseSoftLimit());
-    SmartDashboard.putNumber("Wrist Speed", m_encoder.getVelocity());
+    // SmartDashboard.putNumber("Wrist softlimit value", getReverseSoftLimit());
+    // SmartDashboard.putNumber("Wrist Speed", m_encoder.getVelocity());
     SmartDashboard.putNumber("WristOutput", m_motor.getAppliedOutput());
     SmartDashboard.putNumber("Wrist Limit", MAXPosition);
   }

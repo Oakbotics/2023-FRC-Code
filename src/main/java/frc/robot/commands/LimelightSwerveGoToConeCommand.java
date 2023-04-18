@@ -50,7 +50,7 @@ public class LimelightSwerveGoToConeCommand extends SequentialCommandGroup {
     Supplier<Double> limelightVal = () -> m_limelightSubsystem.getDistanceFromReflectiveTape();
 
     addCommands(
-        new InstantCommand(()-> SmartDashboard.putNumber("Limelight Distance Y (instant command)", Double.parseDouble(df.format(m_limelightSubsystem.getDistanceFromReflectiveTape())))),
+        // new InstantCommand(()-> SmartDashboard.putNumber("Limelight Distance Y (instant command)", Double.parseDouble(df.format(m_limelightSubsystem.getDistanceFromReflectiveTape())))),
         // new PathPlanGoToPositionSwerveCommand(m_driveSubsystem, () -> m_limelightSubsystem.getDistanceFromReflectiveTape()).getAutonomousCommand()
         new PathPlanGoToPositionSwerveCommand(m_driveSubsystem, new Pose2d(m_driveSubsystem.getPose().getTranslation()
             .plus(new Translation2d(0, Double.parseDouble(df.format(m_limelightSubsystem.getDistanceFromReflectiveTape())))), new Rotation2d(0))).getAutonomousCommand()

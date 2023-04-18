@@ -41,7 +41,7 @@ public class ShoulderMoveDegreeCommand extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    SmartDashboard.putString("End", "Mid Ended");
+    // SmartDashboard.putString("End", "Mid Ended");
   }
 
 //   Returns true when the command should end.

@@ -39,7 +39,7 @@ public class GoDistanceSwerveCommand  {
     private Trajectory exampleTrajectory; 
         
     ProfiledPIDController thetaController = new ProfiledPIDController(
-        AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints);
+        0.1, 0, 0, AutoConstants.kThetaControllerConstraints);
 
     SwerveControllerCommand swerveControllerCommand;
     
@@ -77,8 +77,8 @@ public class GoDistanceSwerveCommand  {
 
         // Position controllers
         new HolonomicDriveController(
-        new PIDController(AutoConstants.kPXController, 0, AutoConstants.kDController),
-        new PIDController(AutoConstants.kPYController, 0, AutoConstants.kDController),
+        new PIDController(1, 0, 0),
+        new PIDController(1, 0, 0),
         thetaController),
         // rSupplier,
         m_driveSubsystem::setModuleStates,

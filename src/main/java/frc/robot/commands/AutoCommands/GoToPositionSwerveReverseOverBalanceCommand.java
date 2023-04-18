@@ -17,7 +17,7 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 
 
-public class GoToPositionSwerveCommand {
+public class GoToPositionSwerveReverseOverBalanceCommand  {
     @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
     
     private final DriveSubsystem m_driveSubsystem; 
@@ -27,13 +27,13 @@ public class GoToPositionSwerveCommand {
         AutoConstants.kMaxAccelerationMetersPerSecondSquared)
         // Add kinematics to ensure max speed is actually obeyed
         .setKinematics(DriveConstants.kDriveKinematics)
-        .setReversed(false );
+        .setReversed(true);
 
     private Trajectory exampleTrajectory; 
         
     ProfiledPIDController thetaController = new ProfiledPIDController(
         0.1, 0, 0, AutoConstants.kThetaControllerConstraints);
-        
+
     SwerveControllerCommand swerveControllerCommand;
     
   /**
@@ -41,7 +41,7 @@ public class GoToPositionSwerveCommand {
    *
    * @param driveSubsytem The subsystem used by this command.
    */
-   public GoToPositionSwerveCommand(DriveSubsystem driveSubsytem, LimelightSubsystem limelightSubsystem, Pose2d destination) {
+   public GoToPositionSwerveReverseOverBalanceCommand(DriveSubsystem driveSubsytem, LimelightSubsystem limelightSubsystem, Pose2d destination) {
     m_driveSubsystem = driveSubsytem;
     // m_limelightSubsystem = limelightSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
@@ -49,7 +49,7 @@ public class GoToPositionSwerveCommand {
     exampleTrajectory= TrajectoryGenerator.generateTrajectory(
         // Start at the origin facing the +X direction
         //m_limelightSubsystem.getRobotPose(),
-        new Pose2d(0,0, new Rotation2d(0)),
+        new Pose2d(4.8,0, new Rotation2d(0)),
         // Pass through these two interior waypoints, making ans  's' curve path
         List.of(),
         // End 3 meters straight ahead of where we started, facing forward
@@ -57,12 +57,11 @@ public class GoToPositionSwerveCommand {
 
         config);
 
-        // SmartDashboard.putNumber("BotPoseX", limelightSubsystem.getRobotPose().getX());
-        // SmartDashboard.putNumber("BotPoseY", limelightSubsystem.getRobotPose().getY());
+       
         SmartDashboard.putNumber("DestinationX", destination.getX());
         SmartDashboard.putNumber("DestinationY", destination.getY());
         SmartDashboard.putString("Trajectory", exampleTrajectory.toString());
-
+        SmartDashboard.putString("Theta Controller Setpoint", thetaController.getSetpoint().toString());
     swerveControllerCommand = new SwerveControllerCommand(
         exampleTrajectory,
         m_driveSubsystem::getPose, // Functional interface to feed supplier

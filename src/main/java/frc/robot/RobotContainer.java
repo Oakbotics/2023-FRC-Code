@@ -10,11 +10,13 @@ import com.pathplanner.lib.PathPoint;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.IntakeSensorSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -32,9 +34,11 @@ import frc.robot.subsystems.WristSubsystem;
 import frc.robot.subsystems.ReflectiveTapeLimelightSubsystem;
 import frc.robot.commands.*;
 import frc.robot.commands.AutoCommands.SwerveExampleAuto;
+import frc.robot.commands.AutoCommands.PathPlannerAutoCommands.HighCube2PieceBump;
 import frc.robot.commands.AutoCommands.PathPlannerAutoCommands.HighCubeBalance;
 import frc.robot.commands.AutoCommands.PathPlannerAutoCommands.HighCubeCommunityBalance;
 import frc.robot.commands.AutoCommands.PathPlannerAutoCommands.HighCubeCommunityPickUpBalance;
+import frc.robot.commands.AutoCommands.PathPlannerAutoCommands.MidCubeBalance;
 import frc.robot.commands.AutoCommands.PathPlannerAutoCommands.MidCubeMidCone2HalfPieceBalance;
 import frc.robot.commands.AutoCommands.PathPlannerAutoCommands.MidCubeMidCone2Piece;
 import frc.robot.commands.AutoCommands.PathPlannerAutoCommands.MidCubeMidCone2PieceBump;
@@ -43,6 +47,7 @@ import frc.robot.commands.AutoCommands.commandGroups.AutoSwerveCommandHighCone;
 import frc.robot.commands.AutoCommands.commandGroups.AutoSwerveCommandHighCube;
 import frc.robot.commands.AutoCommands.commandGroups.AutoSwerveCommandMid;
 import frc.robot.commands.AutoCommands.commandGroups.AutoSwerveCommandMidCube;
+import frc.robot.commands.AutoCommands.commandGroups.AutoSwerveCommandMidCubeOver;
 import frc.robot.commands.AutoCommands.commandGroups.AutoSwerveCommandNoOutake;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -64,6 +69,8 @@ public class RobotContainer {
   private final CandleSubsystem m_candleSubsystem = new CandleSubsystem(Constants.LightConstants.CANdleID);
   private final LimelightSubsystem m_limelightSubsystem = new LimelightSubsystem();
   private final ReflectiveTapeLimelightSubsystem m_reflectiveLimelight = new ReflectiveTapeLimelightSubsystem();
+  private final IntakeSensorSubsystem m_IntakeSensorSubsystem = new IntakeSensorSubsystem();
+
   // The driver's controller
   // The robot's subsystems and commands are defined here...
   private final XboxController m_driverController = new XboxController(Constants.ControllerConstants.driverControllerId);
@@ -75,6 +82,8 @@ public class RobotContainer {
   private final Command m_highcubecommunitybalance = new HighCubeCommunityBalance(m_robotDrive, m_armSubsystem, m_intakeSubsystem);
   private final Command m_highcubecommunitypickupbalance = new HighCubeCommunityPickUpBalance(m_robotDrive, m_armSubsystem, m_intakeSubsystem);
   private final Command m_midcubebalance = new AutoSwerveCommandMidCube(m_armSubsystem, m_robotDrive, m_intakeSubsystem, m_limelightSubsystem);
+  private final Command m_midcubeoverbalance = new AutoSwerveCommandMidCubeOver(m_armSubsystem, m_robotDrive, m_intakeSubsystem, m_limelightSubsystem);
+
 
   private final Command m_midcubemidcone2halfpiecebalance = new MidCubeMidCone2HalfPieceBalance(m_robotDrive, m_armSubsystem, m_intakeSubsystem);
   private final Command m_midcubemidcone3piece = new MidCubeMidCone3Piece(m_robotDrive, m_armSubsystem, m_intakeSubsystem);
@@ -92,16 +101,17 @@ public class RobotContainer {
     configureButtonBindings();
     // Configure default commands
 
-    SmartDashboard.putNumber("Auto Distance", 1);
 
-    m_chooser.setDefaultOption("Mid Cube Balance (One Piece)", m_midcubebalance); 
+    // m_chooser.setDefaultOption("Mid Cube Balance (One Piece)", m_midcubebalance); 
     // m_chooser.addOption("Mid Cube then 2 Mid Cones", m_midcubemidcone3piece);
     // m_chooser.addOption("Mid Cube then Mid Cone then Pick Up a 3rd Piece then balance", m_midcubemidcone2halfpiecebalance);
+    m_chooser.setDefaultOption("Mid Cube Mobility Balance(One Piece)", m_midcubeoverbalance);
     m_chooser.addOption("Mid Cube then Mid Cone", m_midcubemidcone2piece);
+    m_chooser.addOption("Mid Cube Balance (One Piece)", m_midcubebalance); 
     SmartDashboard.putData("Auto choices", m_chooser);
   }
 
-  /**
+  /** 
    * Use this method to define your button->command mappings. Buttons can be
    * created by
    * instantiating a {@link edu.wpi.first.wpilibj.GenericHID} or one of its
@@ -142,6 +152,25 @@ public class RobotContainer {
     //     () -> m_opController.getRightY()
     // ));
 
+    new Trigger(
+      () -> m_IntakeSensorSubsystem.IntakeSensorState() == true
+  
+    ).onTrue(
+      new RunCommand(() -> {
+         m_opController.setRumble(RumbleType.kLeftRumble, 1.0);
+         m_opController.setRumble(RumbleType.kRightRumble, 1.0);
+         SmartDashboard.putString("nerds", "nerds");
+      }
+      ).withTimeout(2).andThen(new InstantCommand(() -> {
+        m_opController.setRumble(RumbleType.kLeftRumble, 0);
+        m_opController.setRumble(RumbleType.kRightRumble, 0);
+        SmartDashboard.putString("nerds2", "nerds2");
+  
+        }
+       )
+      )
+    );
+
 
   
 
@@ -156,7 +185,12 @@ public class RobotContainer {
                   
      new POVButton(m_driverController, 0)
       .onTrue(new InstantCommand(
-        () -> m_robotDrive.zeroHeading()  
+        () -> m_robotDrive.zeroHeading(0)  
+      ));
+
+      new POVButton(m_driverController, 180)
+      .onTrue(new InstantCommand(
+        () -> m_robotDrive.zeroHeading(180)  
       ));
 
     // new POVButton(m_driverController, 90)
@@ -256,6 +290,27 @@ public class RobotContainer {
                 -MathUtil.applyDeadband(m_driverController.getRightX() * (1.25 - m_driverController.getRightTriggerAxis()), OIConstants.kDriveDeadband),
                 true),
             m_robotDrive));
+
+         
+            
+            new Trigger(
+              () -> m_IntakeSensorSubsystem.IntakeSensorState() == true
+          
+            ).onTrue(
+              new RunCommand(() -> {
+                 m_driverController.setRumble(RumbleType.kLeftRumble, 1.0);
+                 m_driverController.setRumble(RumbleType.kRightRumble, 1.0);
+                 SmartDashboard.putString("nerds", "nerds");
+              }
+              ).withTimeout(2).andThen(new InstantCommand(() -> {
+                m_driverController.setRumble(RumbleType.kLeftRumble, 0);
+                m_driverController.setRumble(RumbleType.kRightRumble, 0);
+                SmartDashboard.putString("nerds2", "nerds2");
+          
+                }
+               )
+              )
+            );
   }
 
   /**
@@ -264,12 +319,12 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
    public Command getAutonomousCommand() {
-  //   m_robotDrive.zeroHeading();
-    // new CandleAnimateCommand(m_candleSubsystem);
-    // SwerveControllerCommand command = new AutoScorePreloadMid(m_armSubsystem,m_robotDrive, m_intakeSubsystem, m_limelightSubsystem );
-     return m_chooser.getSelected();
-    //  AutoSwerveCommandNoOutake(m_armSubsystem, m_robotDrive, m_intakeSubsystem, m_limelightSubsystem).andThen(() -> m_robotDrive.drive(0, 0, 0, true));
-   
+
+    //  return new MidCubeMidCone2Piece(m_robotDrive, m_armSubsystem, m_intakeSubsystem).andThen(() -> m_robotDrive.drive(0, 0, 0, true));
+    //  return new AutoSwerveCommandMidCube(m_armSubsystem, m_robotDrive, m_intakeSubsystem, m_limelightSubsystem).andThen(() -> m_robotDrive.drive(0, 0, 0, true));
+    // return new MidCubeMidCone2PieceBump(m_robotDrive, m_armSubsystem, m_intakeSubsystem).andThen(() -> m_robotDrive.drive(0, 0, 0, true));
+    return new HighCube2PieceBump(m_robotDrive, m_armSubsystem, m_intakeSubsystem).andThen(() -> m_robotDrive.drive(0, 0, 0, true));
+
      }
   //  }
   // }

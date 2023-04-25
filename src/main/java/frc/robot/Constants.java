@@ -181,7 +181,19 @@ public final class Constants {
     public static final double kTurnRateToleranceDegPerS = 5;
     
     
-  }  
+  } 
+  
+  public static final class AutoAlignStrafingConstants{
+
+    public static final double kP = 0.0;
+    public static final double kI = 0.0;
+    public static final double kD = 0.0;
+    public static final double kTurnToleranceDeg = 0.1;
+    public static final double kTurnRateToleranceDegPerS = 0.1;
+
+
+  }
+  
   
   public final class ControllerConstants{
      public static final int driverControllerId = 0;

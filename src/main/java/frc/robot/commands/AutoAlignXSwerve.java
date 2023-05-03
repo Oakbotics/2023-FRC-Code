@@ -24,7 +24,7 @@ public class AutoAlignXSwerve extends PIDCommand {
         // Set reference to target
         0,
         // Pipe output to strafe robot
-        output -> drive.drive(0, output, 0, true),
+        output -> drive.drive(0, -output , 0, true),
         // Require the drive
         drive,
         limelight);
@@ -38,7 +38,8 @@ public class AutoAlignXSwerve extends PIDCommand {
     // Set the controller tolerance - the delta tolerance ensures the robot is stationary at the
     // setpoint before it is considered as having reached the reference
     getController()
-        .setTolerance(AutoAlignStrafingConstants.kTurnToleranceDeg, AutoAlignStrafingConstants.kTurnRateToleranceDegPerS);
+        // .setTolerance(AutoAlignStrafingConstants.kTurnToleranceDeg, AutoAlignStrafingConstants.kTurnRateToleranceDegPerS);
+        .setTolerance(0, 0);
   }
 
   @Override

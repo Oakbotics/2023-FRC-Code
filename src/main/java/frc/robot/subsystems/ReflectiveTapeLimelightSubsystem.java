@@ -46,7 +46,7 @@ public class ReflectiveTapeLimelightSubsystem extends SubsystemBase {
 
     SmartDashboard.putData(m_field);
 
-    m_limelightTable = NetworkTableInstance.getDefault().getTable("limelight-reflect");
+    m_limelightTable = NetworkTableInstance.getDefault().getTable("limelight-aprilts");
     // NetworkTableInstance.getDefault().getTable("limelight").getEntry("stream").setNumber(0);
   }
 
@@ -102,8 +102,8 @@ public class ReflectiveTapeLimelightSubsystem extends SubsystemBase {
     // long ta = m_limelightTable.getEntry("ta").getLastChange();
 
   
-    // SmartDashboard.putNumber("Distance from pole, metres", forwardDistance);
-    // SmartDashboard.putNumber("Strafe Distance", strafeDistance);
+    SmartDashboard.putNumber("Distance from pole, metres", forwardDistance);
+    SmartDashboard.putNumber("Strafe Distance", strafeDistance);
 
   }
 

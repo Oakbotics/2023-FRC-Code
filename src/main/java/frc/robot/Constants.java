@@ -177,7 +177,7 @@ public final class Constants {
     public static final double kP = 0.02;
     public static final double kI = 0.0;
     public static final double kD = 0.00;
-    public static final double kTurnToleranceDeg = 5;
+    public static final double kTurnToleranceDeg = 1;
     public static final double kTurnRateToleranceDegPerS = 5;
     
     
@@ -185,7 +185,7 @@ public final class Constants {
   
   public static final class AutoAlignStrafingConstants{
 
-    public static final double kP = 0.0;
+    public static final double kP = 2;
     public static final double kI = 0.0;
     public static final double kD = 0.0;
     public static final double kTurnToleranceDeg = 0.1;
@@ -204,12 +204,11 @@ public final class Constants {
 
   public static final class ReflectiveTapeConstants{
     public static final double limelightHeightmetres = Units.inchesToMeters(38.125);
+    // public static final double limelightHeightmetres = Units.inchesToMeters(39.25); //Game bot on blocks
     // public static final double poleTapeTopHeightmetres = Units.inchesToMeters(26.125); // game manual height
-    public static final double poleTapeTopHeightmetres = Units.inchesToMeters(27); // our scuffed height
+    // public static final double poleTapeTopHeightmetres = Units.inchesToMeters(27); // our scuffed height
+    public static final double poleTapeTopHeightmetres = Units.inchesToMeters(26.25); // scuffed height 2.0
     public static final double limelightHorizontalOffset = Units.inchesToMeters(5.5);
-
-
-
 
   }
 

@@ -35,14 +35,19 @@ public class RotateSwerveCommand extends PIDCommand {
     // Set the controller tolerance - the delta tolerance ensures the robot is stationary at the
     // setpoint before it is considered as having reached the reference
     getController()
-        .setTolerance(TurningConstants.kTurnToleranceDeg, TurningConstants.kTurnRateToleranceDegPerS);
+        .setTolerance(TurningConstants.kTurnToleranceDeg);
   }
 
   @Override
   public boolean isFinished() {
     // End when the controller is at the reference.
-    return getController().atSetpoint();
+    
+    // return getController().atSetpoint();
+    SmartDashboard.putNumber("Turning Position error", getController().getPositionError());
+    return Math.abs(getController().getPositionError()) < TurningConstants.kTurnToleranceDeg;
   }
+
+  
 
 
 }

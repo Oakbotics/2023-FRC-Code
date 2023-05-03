@@ -111,6 +111,8 @@ public class DriveSubsystem extends SubsystemBase {
       // SmartDashboard.putString("Back Left Position", m_rearLeft.getPosition().toString());
       // SmartDashboard.putString("Front Right Position", m_frontRight.getPosition().toString());
       // SmartDashboard.putString("Back Right Position", m_rearRight.getPosition().toString());
+
+      SmartDashboard.putNumber("Front Left State", m_frontLeft.getState().speedMetersPerSecond);
   }
 
   public void toggleFieldRelative(){

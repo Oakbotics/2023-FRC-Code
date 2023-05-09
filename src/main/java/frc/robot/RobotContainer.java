@@ -4,9 +4,6 @@
 
 package frc.robot;
 
-import com.pathplanner.lib.PathConstraints;
-import com.pathplanner.lib.PathPoint;
-
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -159,12 +156,12 @@ public class RobotContainer {
       new RunCommand(() -> {
          m_opController.setRumble(RumbleType.kLeftRumble, 1.0);
          m_opController.setRumble(RumbleType.kRightRumble, 1.0);
-         SmartDashboard.putString("nerds", "nerds");
+        //  SmartDashboard.putString("nerds", "nerds");
       }
       ).withTimeout(2).andThen(new InstantCommand(() -> {
         m_opController.setRumble(RumbleType.kLeftRumble, 0);
         m_opController.setRumble(RumbleType.kRightRumble, 0);
-        SmartDashboard.putString("nerds2", "nerds2");
+        // SmartDashboard.putString("nerds2", "nerds2");
   
         }
        )
@@ -233,13 +230,13 @@ public class RobotContainer {
     //   ));
 
 
-    new POVButton(m_driverController, 270)
-      .whileTrue(new RotateSwerveCommand(0, m_robotDrive)
-      .andThen(new InstantCommand(()-> SmartDashboard.putString("Turning Finished", "Finished")))
-      .andThen(new AutoAlignXSwerve(m_reflectiveLimelight, m_robotDrive)
-      .andThen(new InstantCommand(()-> SmartDashboard.putString("Moved to Cone", "Finished")))
-      )
-      );
+    // new POVButton(m_driverController, 270)
+    //   .whileTrue(new RotateSwerveCommand(0, m_robotDrive)
+    //   .andThen(new InstantCommand(()-> SmartDashboard.putString("Turning Finished", "Finished")))
+    //   .andThen(new AutoAlignXSwerve(m_reflectiveLimelight, m_robotDrive)
+    //   .andThen(new InstantCommand(()-> SmartDashboard.putString("Moved to Cone", "Finished")))
+    //   )
+    //   );
 
     // new POVButton(m_driverController, 270)
     //   .onTrue(
@@ -309,12 +306,12 @@ public class RobotContainer {
               new RunCommand(() -> {
                  m_driverController.setRumble(RumbleType.kLeftRumble, 1.0);
                  m_driverController.setRumble(RumbleType.kRightRumble, 1.0);
-                 SmartDashboard.putString("nerds", "nerds");
+                //  SmartDashboard.putString("nerds", "nerds");
               }
               ).withTimeout(2).andThen(new InstantCommand(() -> {
                 m_driverController.setRumble(RumbleType.kLeftRumble, 0);
                 m_driverController.setRumble(RumbleType.kRightRumble, 0);
-                SmartDashboard.putString("nerds2", "nerds2");
+                // SmartDashboard.putString("nerds2", "nerds2");
           
                 }
                )
@@ -332,7 +329,8 @@ public class RobotContainer {
     //  return new MidCubeMidCone2Piece(m_robotDrive, m_armSubsystem, m_intakeSubsystem).andThen(() -> m_robotDrive.drive(0, 0, 0, true));
     //  return new AutoSwerveCommandMidCube(m_armSubsystem, m_robotDrive, m_intakeSubsystem, m_limelightSubsystem).andThen(() -> m_robotDrive.drive(0, 0, 0, true));
     // return new MidCubeMidCone2PieceBump(m_robotDrive, m_armSubsystem, m_intakeSubsystem).andThen(() -> m_robotDrive.drive(0, 0, 0, true));
-    return new HighCube2PieceBump(m_robotDrive, m_armSubsystem, m_intakeSubsystem).andThen(() -> m_robotDrive.drive(0, 0, 0, true));
+    // return new HighCube2PieceBump(m_robotDrive, m_armSubsystem, m_intakeSubsystem).andThen(() -> m_robotDrive.drive(0, 0, 0, true));
+    return new RunCommand(()->{});
 
      }
   //  }

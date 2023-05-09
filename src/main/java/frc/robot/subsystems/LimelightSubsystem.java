@@ -35,7 +35,7 @@ public class LimelightSubsystem extends SubsystemBase {
 
     SmartDashboard.putData(m_field);
 
-    // m_limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
+    m_limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
   }
 
   public void getNetworkTableValues(){

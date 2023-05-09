@@ -29,7 +29,8 @@ public class CandleSubsystem extends SubsystemBase {
         m_candle.configAllSettings(configAll, 100);
         // m_candle.animate(new ColorFlowAnimation(255, 0, 0, 0, 0.2, 120, Direction.Forward, 8));
         // stopLight();
-        setBlue();
+        // setBlue();
+        setRainbowAnimation();
     }
 
     public void setPurple(){
@@ -56,7 +57,7 @@ public class CandleSubsystem extends SubsystemBase {
     }
 
     public void setRainbowAnimation(){
-        m_candle.animate(new RainbowAnimation(1, 0.3, LedCount, true, 8));
+        m_candle.animate(new RainbowAnimation(1, 0.6, LedCount, true, 8));
     }
 
     public void setAllianceColor(){

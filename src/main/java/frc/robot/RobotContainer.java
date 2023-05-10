@@ -102,10 +102,16 @@ public class RobotContainer {
     // m_chooser.setDefaultOption("Mid Cube Balance (One Piece)", m_midcubebalance); 
     // m_chooser.addOption("Mid Cube then 2 Mid Cones", m_midcubemidcone3piece);
     // m_chooser.addOption("Mid Cube then Mid Cone then Pick Up a 3rd Piece then balance", m_midcubemidcone2halfpiecebalance);
+    
     m_chooser.setDefaultOption("Mid Cube Mobility Balance(One Piece)", m_midcubeoverbalance);
     m_chooser.addOption("Mid Cube then Mid Cone", m_midcubemidcone2piece);
     m_chooser.addOption("Mid Cube Balance (One Piece)", m_midcubebalance); 
     SmartDashboard.putData("Auto choices", m_chooser);
+
+    m_chooser.setDefaultOption("RGB", new RunCommand(()->{m_candleSubsystem.setRainbowAnimation();}));
+    m_chooser.addOption("Red", new RunCommand(()->{m_candleSubsystem.setFireAnimation();}));
+    m_chooser.addOption("Blue", new RunCommand(()->{m_candleSubsystem.setWater();})); 
+    SmartDashboard.putData("LED choices", m_chooser);
   }
 
   /** 
@@ -348,5 +354,14 @@ public class RobotContainer {
     return m_intakeSubsystem;
   }
 }
+
+
+// public void LEDPicker(){
+
+//   m_chooser.setDefaultOption("RGB", m_);
+//   m_chooser.addOption("Red", );
+//   m_chooser.addOption("Blue", ); 
+//   SmartDashboard.putData("LED choices", m_chooser);
+// }
 
 // L bozo

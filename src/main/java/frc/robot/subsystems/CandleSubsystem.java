@@ -30,7 +30,7 @@ public class CandleSubsystem extends SubsystemBase {
         // m_candle.animate(new ColorFlowAnimation(255, 0, 0, 0, 0.2, 120, Direction.Forward, 8));
         // stopLight();
         // setBlue();
-        setRainbowAnimation();
+        // setRainbowAnimation();
     }
 
     public void setPurple(){
@@ -58,6 +58,10 @@ public class CandleSubsystem extends SubsystemBase {
 
     public void setRainbowAnimation(){
         m_candle.animate(new RainbowAnimation(1, 0.6, LedCount, true, 8));
+    }
+
+    public void setWater(){
+        m_candle.animate(new ColorFlowAnimation(27, 149, 224, 0, 0.5, 120, Direction.Forward, 8));
     }
 
     public void setAllianceColor(){

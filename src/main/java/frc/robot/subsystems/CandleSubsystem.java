@@ -29,8 +29,11 @@ public class CandleSubsystem extends SubsystemBase {
         m_candle.configAllSettings(configAll, 100);
         // m_candle.animate(new ColorFlowAnimation(255, 0, 0, 0, 0.2, 120, Direction.Forward, 8));
         // stopLight();
-        // setBlue();
+        setBlue();
         // setRainbowAnimation();
+        // setFireAnimation();
+        // redToBlue();
+        // blueToRed();
     }
 
     public void setPurple(){
@@ -64,6 +67,42 @@ public class CandleSubsystem extends SubsystemBase {
         m_candle.animate(new ColorFlowAnimation(27, 149, 224, 0, 0.5, 120, Direction.Forward, 8));
     }
 
+/*    public void redToBlue(){
+        while (true){
+            for(int i = 0; i < 255; i++){
+                m_candle.animate(new LarsonAnimation(i, 0, 255-i));
+            }
+            for(int i = 0; i < 255; i++){
+                m_candle.animate(new LarsonAnimation(0, 255-i, 0, i, 0, 0.5, 120, 0, 7));
+            }
+        }
+    }
+*/
+
+// larson likes contradicting what parameters it takes
+
+    public void redToBlue(){
+        while (true){
+            for(int i = 0; i < 255; i++){
+                m_candle.animate(new ColorFlowAnimation(i, 0, 255-i, 0, 0.8, 120, Direction.Forward, 8));
+            }
+            for(int i = 0; i < 255; i++){
+                m_candle.animate(new ColorFlowAnimation(255-i, 0, i, 0, 0.8, 120, Direction.Forward, 8));
+            }
+        }
+    }
+
+    public void blueToRed(){
+        while (true){
+            for(int i = 0; i < 255; i++){
+                m_candle.animate(new ColorFlowAnimation(255-i, 0, i, 0, 0.8, 120, Direction.Forward, 8));
+            }
+            for(int i = 0; i < 255; i++){
+                m_candle.animate(new ColorFlowAnimation(i, 0, 255-i, 0, 0.8, 120, Direction.Forward, 8));
+            }
+            // m_candle.setLEDs(0, 0, 0);
+        }
+    }
     public void setAllianceColor(){
 
         if(DriverStation.getAlliance() == Alliance.Blue) m_candle.animate(new ColorFlowAnimation(0, 0, 255, 0, 0.5, LedCount, Direction.Forward, 8));

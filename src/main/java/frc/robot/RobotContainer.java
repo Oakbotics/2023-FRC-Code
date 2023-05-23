@@ -111,8 +111,10 @@ public class RobotContainer {
     m_chooser.setDefaultOption("RGB", new RunCommand(()->{m_candleSubsystem.setRainbowAnimation();}));
     m_chooser.addOption("Red", new RunCommand(()->{m_candleSubsystem.setFireAnimation();}));
     m_chooser.addOption("Blue", new RunCommand(()->{m_candleSubsystem.setWater();})); 
+    m_chooser.addOption("Red to Blue Grade Anim", new RunCommand(()->{m_candleSubsystem.redToBlue();})); 
+
     SmartDashboard.putData("LED choices", m_chooser);
-  }
+    }
 
   /** 
    * Use this method to define your button->command mappings. Buttons can be

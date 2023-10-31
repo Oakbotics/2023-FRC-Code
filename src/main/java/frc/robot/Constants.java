@@ -228,7 +228,7 @@ public final class Constants {
     public static final double WristVelocityMultiplier = 50;
 
     public static final float WristDefaultMaxPosition = 210;
-    public static final double WristRestPosition = 11;
+    public static final double WristRestPosition = 15;
 
   }
   

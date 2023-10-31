@@ -263,7 +263,7 @@ public class RobotContainer {
     ).whileTrue(
       new ConeIntakeWristCommand(m_armSubsystem, m_intakeSubsystem)
     ).onFalse(
-      new WristMoveDegreeCommand(m_armSubsystem, ArmConstants.WristRestPosition)
+      new ArmCommandLow(m_armSubsystem)
     );
 
      // new POVButton(m_driverController, 180)

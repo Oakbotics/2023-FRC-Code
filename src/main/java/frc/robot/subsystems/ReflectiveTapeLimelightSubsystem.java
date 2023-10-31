@@ -78,8 +78,8 @@ public class ReflectiveTapeLimelightSubsystem extends SubsystemBase {
 
   strafeDistance = (
         
-        forwardDistance * Math.tan(Units.degreesToRadians(x))
-    )- ReflectiveTapeConstants.limelightHorizontalOffset;
+        forwardDistance * Math.tan(Units.degreesToRadians(x))   
+    ) - ReflectiveTapeConstants.limelightHorizontalOffset;
 
 
     //post to smart dashboard periodically
@@ -119,14 +119,11 @@ public class ReflectiveTapeLimelightSubsystem extends SubsystemBase {
   public double getDistanceFromReflectiveTape(){
     
     if (v == 1){
-      
-    
-    
 
-     strafeDistance = (
+      strafeDistance = (
         
         forwardDistance * Math.tan(Units.degreesToRadians(x))
-    )- ReflectiveTapeConstants.limelightHorizontalOffset;
+        - ReflectiveTapeConstants.limelightHorizontalOffset);  
 
   }
   else{

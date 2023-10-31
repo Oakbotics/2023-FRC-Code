@@ -24,7 +24,7 @@ public class AutoAlignXSwerve extends PIDCommand {
         // Set reference to target
         0,
         // Pipe output to strafe robot
-        output -> drive.drive(0, -output , 0, true),
+        output -> drive.drive(0, output , 0, true),
         // Require the drive
         drive,
         limelight);

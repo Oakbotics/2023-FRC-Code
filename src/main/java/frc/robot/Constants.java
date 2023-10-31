@@ -208,7 +208,7 @@ public final class Constants {
     // public static final double poleTapeTopHeightmetres = Units.inchesToMeters(26.125); // game manual height
     // public static final double poleTapeTopHeightmetres = Units.inchesToMeters(27); // our scuffed height
     public static final double poleTapeTopHeightmetres = Units.inchesToMeters(26.25); // scuffed height 2.0
-    public static final double limelightHorizontalOffset = Units.inchesToMeters(5.5);
+    public static final double limelightHorizontalOffset = Units.inchesToMeters(6);
 
   }
 

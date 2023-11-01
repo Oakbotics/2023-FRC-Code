@@ -177,7 +177,7 @@ public class RobotContainer {
     new JoystickButton(m_driverController, XboxController.Button.kLeftBumper.value).whileTrue(new IntakeCommand(m_intakeSubsystem));
     new JoystickButton(m_driverController, XboxController.Button.kRightBumper.value).whileTrue(new OuttakeCommand(m_intakeSubsystem));
 
-    new JoystickButton(m_driverController, XboxController.Button.kB.value).onTrue(new InstantCommand(()-> m_robotDrive.toggleFieldRelative()));
+    new JoystickButton(m_driverController, XboxController.Button.kY.value).onTrue(new InstantCommand(()-> m_robotDrive.toggleFieldRelative()));
     new JoystickButton(m_driverController, XboxController.Button.kX.value)
         .toggleOnTrue(new RunCommand(
             () -> m_robotDrive.setX(),
@@ -233,7 +233,7 @@ public class RobotContainer {
     //   ));
 
 
-    new POVButton(m_driverController, 270)
+    new JoystickButton(m_driverController, XboxController.Button.kB.value)
       .whileTrue(new RotateSwerveCommand(180, m_robotDrive)
       .andThen(new InstantCommand(()-> SmartDashboard.putString("Turning Finished", "Finished")))
       .andThen(new AutoAlignXSwerve(m_reflectiveLimelight, m_robotDrive)

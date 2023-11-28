@@ -274,7 +274,7 @@ public class RobotContainer {
     //   );
     
     
-    // m_candleSubsystem.setDefaultCommand(new CandleAnimateCommand(m_candleSubsystem));
+    m_candleSubsystem.setDefaultCommand(new CandleAnimateCommand(m_candleSubsystem));
     
     
     m_robotDrive.setDefaultCommand(

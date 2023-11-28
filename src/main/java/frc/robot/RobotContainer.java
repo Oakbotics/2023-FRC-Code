@@ -172,7 +172,7 @@ public class RobotContainer {
     );
 
 
-  
+    new JoystickButton(m_driverController, XboxController.Button.kA.value).whileTrue(new AprilTagGoToZero(m_robotDrive, m_limelightSubsystem));
 
     new JoystickButton(m_driverController, XboxController.Button.kLeftBumper.value).whileTrue(new IntakeCommand(m_intakeSubsystem));
     new JoystickButton(m_driverController, XboxController.Button.kRightBumper.value).whileTrue(new OuttakeCommand(m_intakeSubsystem));

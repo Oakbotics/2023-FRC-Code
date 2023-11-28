@@ -4,19 +4,17 @@
 
 package frc.robot.subsystems;
 
+import java.lang.reflect.Field;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
-
 
 public class LimelightSubsystem extends SubsystemBase {
 
@@ -24,92 +22,54 @@ public class LimelightSubsystem extends SubsystemBase {
 
   private final Field2d m_field = new Field2d();
 
-  private Pose2d robotPose;
-  private double id;
-  
-  private String networkTable;
-  
-
   /** Creates a new ExampleSubsystem. */
   public LimelightSubsystem() {
 
-    SmartDashboard.putData(m_field);
+    SmartDashboard.putData("Field", m_field);
 
-    // m_limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
+    m_limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
+
+
+
+
   }
 
   public void getNetworkTableValues(){
     
-    // NetworkTableEntry tx = m_limelightTable.getEntry("tx");
-    // NetworkTableEntry ty = m_limelightTable.getEntry("ty");
-    // NetworkTableEntry ta = m_limelightTable.getEntry("ta"); 
-    // NetworkTableEntry tv = m_limelightTable.getEntry("tv"); 
 
-  
+  }
 
-    // //read values periodically
-    // double x = tx.getDouble(4);
-    // double y = ty.getDouble(4);
-    // double area = ta.getDouble(4);
-    // double targetAvailable = tv.getDouble(4);
+  public Pose2d getBotPose(){
 
-    // //post to smart dashboard periodically
-    // // SmartDashboard.putNumber("LimelightX", x);
-    // // SmartDashboard.putNumber("LimelightY", y);
-    // // SmartDashboard.putNumber("LimelightArea", area);
-    // // SmartDashboard.putNumber("Target Available", targetAvailable);
+    m_limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
+    double[] botPoseArray = m_limelightTable.getEntry("botpose_wpired").getDoubleArray(new double[10]); 
 
+    Pose2d botPose = new Pose2d(botPoseArray[0], botPoseArray[1], Rotation2d.fromDegrees(botPoseArray[5]));
 
+    m_field.setRobotPose(botPose);
+    SmartDashboard.putString("Bot pose string thing ", botPose.toString());
+   
+    return botPose;
+  }
 
+  public Pose2d getAprilTagDistance(){
+
+    m_limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
+    double[] botPoseArray = m_limelightTable.getEntry("targetpose_robotspace").getDoubleArray(new double[10]); 
+
+    Pose2d botPose = new Pose2d(botPoseArray[0], botPoseArray[1], Rotation2d.fromDegrees(botPoseArray[5]));
+
+    m_field.setRobotPose(botPose);
+   
+    return botPose;
   }
 
   @Override
   public void periodic() {
 
+    getBotPose();
 
-    // networkTable = DriverStation.getAlliance() == Alliance.Blue? "botpose_wpiblue" : "botpose_wpired";
-    // double[] botPose = m_limelightTable.getEntry(networkTable).getDoubleArray(new double[6]); 
-    // id = m_limelightTable.getEntry("tid").getDouble(-1);
-
-    // // robotPose = new Pose2d(new Translation2d(Math.abs(botPose[0]), Math.abs(botPose[1])), Rotation2d.fromDegrees(Math.abs(botPose[5])));
-    // robotPose = new Pose2d(new Translation2d((botPose[0]),(botPose[1])), Rotation2d.fromDegrees((botPose[5])));
-
-    // m_field.setRobotPose(robotPose);
-    // SmartDashboard.putString("Field Pose", m_field.getRobotPose().getTranslation().toString());
-    
-
-    // double[] ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("<variablename>").getDoubleArray(new double[6]);
-    // double[] tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("<variablename>").getDoubleArray(new double[6]);
-    // long ty = m_limelightTable.getEntry("ty").getLastChange();
-    // long ta = m_limelightTable.getEntry("ta").getLastChange();
-    
-    
-    // SmartDashboard.putNumber("Bot Rotation", botPose[5]);
-    // SmartDashboard.putNumber  ("LimelightID", id);  
-    // SmartDashboard.putNumber("BotPoseX", robotPose.getX());
-    // SmartDashboard.putNumber("BotPoseY", robotPose.getY());
-    // SmartDashboard.putNumber("LimelightY", ty);
-    // SmartDashboard.putNumber("LimelightArea", ta);
-    // // This method will be called once per scheduler run
   }
-
-
-    // public Pose2d getRobotPose(){
-    //     return robotPose; 
-    // }
-    
-    // public double getRobotAngle(){
-    //     if(id != -1){
-    //         return robotPose.getRotation().getDegrees();
-    //     }
-
-    //     return -1;
-        
-    // }
-  
-
-
-
 
   @Override
   public void simulationPeriodic() {

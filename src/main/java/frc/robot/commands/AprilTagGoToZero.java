@@ -30,7 +30,7 @@ public class AprilTagGoToZero extends CommandBase {
     addRequirements(driveSubsystem, limelightSubsystem);
 
 
-     xController = new PIDController(1, 0.15,3);
+     xController = new PIDController(0.5, 0,1.15); //Best values: 0.5, 0, 1.1
      yController = new PIDController(0, 0, 0);
      rotateController = new PIDController(0, 0, 0);
     
@@ -47,12 +47,12 @@ public class AprilTagGoToZero extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-        double botPoseX = m_LimelightSubsystem.getBotPose().getX();
-        double targetPoseX = m_LimelightSubsystem.getAprilTagDistance().getX() + 3;
+        double botPoseX = m_LimelightSubsystem.getBotPose().getX();// field relative
+        double targetPoseX = m_LimelightSubsystem.getAprilTagDistance().getX() + 3;// relative to robot
         double botPoseY = m_LimelightSubsystem.getBotPose().getY();
         double botPoseRotate = m_LimelightSubsystem.getBotPose().getRotation().getDegrees();
         // m_driveSubsystem.drive(xController.calculate(botPoseX,0), yController.calculate(botPoseY, 0),  rotateController.calculate(botPoseRotate, 0), true);    
-        m_driveSubsystem.drive(-xController.calculate(botPoseX, targetPoseX), 0, 0, true);    
+        m_driveSubsystem.drive(xController.calculate(botPoseX, 12.75), 0, 0, true);    
 
     }
 

@@ -42,7 +42,7 @@ public class LimelightSubsystem extends SubsystemBase {
   public Pose2d getBotPose(){
 
     m_limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
-    double[] botPoseArray = m_limelightTable.getEntry("botpose_wpired").getDoubleArray(new double[10]); 
+    double[] botPoseArray = m_limelightTable.getEntry("botpose_wpiblue").getDoubleArray(new double[10]); 
 
     Pose2d botPose = new Pose2d(botPoseArray[0], botPoseArray[1], Rotation2d.fromDegrees(botPoseArray[5]));
 

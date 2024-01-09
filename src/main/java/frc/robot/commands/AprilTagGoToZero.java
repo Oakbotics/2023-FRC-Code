@@ -26,13 +26,16 @@ public class AprilTagGoToZero extends CommandBase {
   public AprilTagGoToZero(DriveSubsystem driveSubsystem, LimelightSubsystem limelightSubsystem) {
     m_driveSubsystem = driveSubsystem;
     m_LimelightSubsystem = limelightSubsystem;
+   
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(driveSubsystem, limelightSubsystem);
+    double xSetPoint = 12.75;
+    double ySetPoint = 1.5;
+    double rotSetPoint = 0;
 
-
-     xController = new PIDController(0.5, 0,1.15); //Best values: 0.5, 0, 1.1
-     yController = new PIDController(0, 0, 0);
-     rotateController = new PIDController(0, 0, 0);
+     xController = new PIDController(0.5, 0,1.15); //Best values: 0.5, 0, 1.15
+     yController = new PIDController(0.5, 0,1.15);
+     rotateController = new PIDController(0.5, 0, 0.2);
     
   }
 
@@ -50,9 +53,19 @@ public class AprilTagGoToZero extends CommandBase {
         double botPoseX = m_LimelightSubsystem.getBotPose().getX();// field relative
         double targetPoseX = m_LimelightSubsystem.getAprilTagDistance().getX() + 3;// relative to robot
         double botPoseY = m_LimelightSubsystem.getBotPose().getY();
-        double botPoseRotate = m_LimelightSubsystem.getBotPose().getRotation().getDegrees();
-        // m_driveSubsystem.drive(xController.calculate(botPoseX,0), yController.calculate(botPoseY, 0),  rotateController.calculate(botPoseRotate, 0), true);    
-        m_driveSubsystem.drive(xController.calculate(botPoseX, 12.75), 0, 0, true);    
+        double botPoseRotate = m_LimelightSubsystem.getBotPose().getRotation().getRadians();
+        
+        double xSetPoint = 12.75;
+        double ySetPoint = 2;
+        double rotSetPoint = 0;
+        double errorMargin = 0.05;
+
+        if(Math.abs(botPoseX - xSetPoint) <= errorMargin){
+          botPoseX = xSetPoint;
+        }
+          
+       m_driveSubsystem.drive(xController.calculate(botPoseX, xSetPoint), yController.calculate(botPoseY, ySetPoint), rotateController.calculate(botPoseRotate, rotSetPoint), true);    
+        // m_driveSubsystem.drive(0, 0, rotateController.calculate(botPoseRotate, rotSetPoint), true);    
 
     }
 
